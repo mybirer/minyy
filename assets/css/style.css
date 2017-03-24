@@ -1,0 +1,31 @@
+h1.dashboard-title {
+    text-align: center;
+    font-size: 45pt;
+    font-weight: bold;
+    padding: 50px;
+}
+
+.dashboard-slogan {
+    text-align: center;
+    font-size: 18pt;
+}
+
+.box-toolbox::after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.box-toolbox .search-form {
+    max-width: 200px;
+}
+
+.box-toolbox {margin-top: 10px;}
+
+
+td.edit-link a {width: 100%;display: block;padding: 10px;}
+
+td.edit-link {
+    background-color: #ffe4c4;
+    padding: 0 !important;
+}
