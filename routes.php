@@ -38,7 +38,7 @@ if(array_key_exists($controller, $controllers)) {
                 call($controller,$action);
             }
             else{
-                call('page', 'error');
+                call('page', 'login');//belirtilen action private olduğu için yetkilendirme - login isteyecektir.
             }
         }
     }
