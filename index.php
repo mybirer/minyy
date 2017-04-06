@@ -9,3 +9,4 @@ require_once('helpers/view_helper.php');
 require_once('helpers/functions_helper.php');
 
 require_once('routes.php');
+require_once('sifre_hatirlatma.php);
