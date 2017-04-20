@@ -124,4 +124,13 @@ class Functions
                 %s
               </div>',$type,$icon,$title,$text);
     }
+    public static function getFolderContent($path){
+        return glob($path.'/*.*');
+    }
+    public static function requireFile($folder,$file){
+        $files=self::getFolderContent($folder);
+        if(in_array($folder."/".$file,$files)){
+            require_once($folder."/".$file);
+        }
+    }
 }

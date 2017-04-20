@@ -20,7 +20,7 @@ if (isset($_GET['controller']) && isset($_GET['action'])) {
  * Bu kısımda sistemde yer alan controllerlar, bu controllerların public olup olmadığı tutulur. Eğer public ise true, değilse false değerini alır
  * Aynı zamanda sistemde yer alan action ve do parametreleri de bu kısımda tanımlanır
  */
-$controllers = array( 'page' => ['home'=>true, 'error'=>true, 'login'=>true, 'register'=>true, 'logout'=>false],
+$controllers = array( 'page' => ['home'=>true, 'error'=>true, 'login'=>true, 'register'=>true, 'forgotpassword'=>true, 'logout'=>false],
                       'module' => ['dashboard'=>false, 'users'=>false, 'pages'=>false, 'posts'=>false, 'forms'=>false, 'medias'=>false, 'teams'=>false, 'languages'=>false],
                       'do' => ['list'=>false, 'add'=>false, 'edit'=>false,'remove'=>false]);
 
@@ -28,7 +28,7 @@ $controllers = array( 'page' => ['home'=>true, 'error'=>true, 'login'=>true, 're
  * Bu kısımda request edilen controller, action ve do parametreleri ile sistemdekiler kontrol edilir.
  */
 if(array_key_exists($controller, $controllers)) { 
-    if (in_array($action, $controllers[$controller])) { //eğer belirtilen controller varsa belirtilen actionun o controller içinde olup olmadığına bakılır
+    if (array_key_exists($action, $controllers[$controller])) { //eğer belirtilen controller varsa belirtilen actionun o controller içinde olup olmadığına bakılır
         if($controllers[$controller][$action]){ //eğer belirtilen action public ise logine bakılmaksızın direk çağrılır
             call($controller, $action);
         }
@@ -54,7 +54,8 @@ else{ //eğer belirtilen controller yoksa hata verilir
  * Bu fonksiyon ilgili actionu ve controlleri classlarını oluşturarak çağırır.
  */
 function call($controller, $action) {
-  require_once('controllers/' . $controller . '_controller.php'); //ilgili controlleri çağır
+    
+  Functions::requireFile('controllers',$controller.'_controller.php'); //ilgili controlleri çağır
   switch($controller) {
     case 'page':
       $controller = new PageController();

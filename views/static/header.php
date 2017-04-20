@@ -219,7 +219,7 @@
             </li>
             <li class="user-footer">
             <div class="pull-right">
-                <a href="index.php?controller=auth&action=logout" class="btn btn-default btn-flat">Çıkış Yap</a>
+                <a href="index.php?controller=page&action=logout" class="btn btn-default btn-flat">Çıkış Yap</a>
             </div>
             </li>
         </ul>

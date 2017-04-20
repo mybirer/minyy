@@ -4,13 +4,13 @@
     <a href="/"><b>Minyy</b></a>
   </div>
   <div class="login-box-body">
-    <?php if(isset($error_text)): ?>
+    <?php if(isset($_SESSION['error_text'])): ?>
     <div class="alert alert-danger">
             <h4><i class="icon fa fa-ban"></i> Hata!</h4>
-            <?php echo $error_text; ?>
+            <?php echo $_SESSION['error_text']; ?>
     </div>
     <?php endif; ?>
-    <p class="login-box-msg">Giriş yap</p>
+    <p class="login-box-msg">Devam edebilmek için lütfen giriş yapın</p>
     <form action="" method="post">
       <div class="form-group has-feedback">
         <input type="email" class="form-control" name="email" placeholder="Email">
@@ -28,6 +28,8 @@
         </div>
       </div>
     </form>
+    <a href="index.php?controller=page&action=forgotpassword">I forgot my password</a><br>
+    <a href="index.php?controller=page&action=register" class="text-center">Register a new membership</a>
   </div>
 </div>
 <?php ViewHelper::getFooter(); ?>

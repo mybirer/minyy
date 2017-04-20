@@ -19,8 +19,11 @@ class ViewHelper
         return self::$__title;
     }
 
-    public static function getView($view){
-        require_once('views/'.$view.'.php');
+    public static function getView($viewFolder,$viewFile){
+        //todo views klasörünün içindeki bütün dosyaların listesini al
+        //erişilmek istenen dosya var mı yok mu kontrol et
+        //yoksa exception at
+        Functions::requireFile('views/'.$viewFolder,$viewFile.'.php');
     }
 
     public static function setLayout($layout){

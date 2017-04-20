@@ -8,13 +8,12 @@ class AuthHelper
             $email=Functions::clearString($email);
             $password=Functions::clearString($password);
             $db = Db::getInstance();
-            $req = $db->prepare('SELECT * FROM mn_users WHERE email = :email AND password = MD5(:password)');
+            $req = $db->prepare('SELECT * FROM users WHERE email = :email AND password = MD5(:password)');
             $req->execute(array('email' => $email,'password' => $password));
             $res=$req->fetchObject();
             if($res){
-                $_SESSION['user_id']=$res->id;
-                $_SESSION['fullname']=$res->fullname;
-                $_SESSION['type']=$res->type;
+                $_SESSION['user_id']=$res->pkUserID;
+                $_SESSION['fullname']=$res->fullName;
                 $_SESSION['email']=$res->email;
                 $_SESSION['logged_in']=time();
                 return true;
@@ -28,11 +27,12 @@ class AuthHelper
     public static function updateSession(){
         try{
             $db = Db::getInstance();
-            $req = $db->prepare('UPDATE mn_users SET lastvisit_date=NOW() WHERE id = :id');
+            $req = $db->prepare('UPDATE users SET lastVisit=NOW() WHERE pkUserID = :id');
             $req->execute(array('id' => $_SESSION['user_id']));
             $_SESSION['logged_in']=time();
         }
         catch(PDOException $e){
+            var_dump($e);
             die('Die...');
         }
     }
@@ -41,7 +41,6 @@ class AuthHelper
         $_SESSION = array();
         unset($_SESSION['user_id']);
         unset($_SESSION['fullname']);
-        unset($_SESSION['type']);
         unset($_SESSION['email']);
         unset($_SESSION['logged_in']);
         session_destroy();
