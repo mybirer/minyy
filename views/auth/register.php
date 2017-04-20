@@ -1,20 +1,19 @@
 <?php ViewHelper::getHeader(); ?>
 <div class="login-box">
   <div class="login-logo">
-    <a href="/"><b>Minyy</b></a>
+    <a href="/"><b><?php echo ViewHelper::getTitle(); ?></b></a>
   </div>
   <div class="login-box-body">
-    <?php if(isset($_SESSION['error_text'])): ?>
-    <div class="alert alert-danger">
-            <h4><i class="icon fa fa-ban"></i> <?php T::__("Error"); ?></h4>
-            <?php echo $_SESSION['error_text']; ?>
-    </div>
-    <?php endif; ?>
+    <?php echo MessageHelper::getMessageHTML(); ?>
     <p class="login-box-msg"><?php T::__("Register a new membership"); ?></p>
     <form action="" method="post" autocomplete="on">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="fullname" placeholder="<?php T::__("Full Name"); ?>">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" name="username" placeholder="<?php T::__("Username"); ?>">
+        <span class="fa fa-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
         <input type="email" class="form-control" name="email" placeholder="<?php T::__("Email"); ?>">

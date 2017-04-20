@@ -22,22 +22,15 @@ class PageController
         AuthHelper::checkSession();
         if(isset($_POST['email']) && isset($_POST['password'])){
             $req=AuthHelper::loginSystem($_POST['email'],$_POST['password']);
-            if($req){
+            if($req['status']){
                 header('Location: index.php');
+                return;
             }
-            else{
-                $_SESSION['error_text']="Email veya parola yanlış olabilir. Yada panele erişim yetkiniz bulunmamaktadır. Lütfen bilgileri kontrol ederek tekrardan giriniz. ";
-                ViewHelper::setTitle('Minyy | Login');
-                ViewHelper::setBodyClasses('login-page');
-                ViewHelper::getView('auth','login');
-            }
-
+            MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
         }
-        else{
-            ViewHelper::setTitle('Minyy | Login');
-            ViewHelper::setBodyClasses('login-page');
-            ViewHelper::getView('auth','login');
-        }
+        ViewHelper::setTitle('Minyy | Login');
+        ViewHelper::setBodyClasses('login-page');
+        ViewHelper::getView('auth','login');
     }
 
     public function logout(){
@@ -47,9 +40,15 @@ class PageController
     }
 
     public function register(){
-        AuthHelper::checkSession();
+        if(AuthHelper::isLogged()){
+            header('Location: index.php');
+        }
         if(isset($_POST['register_form'])){
             $_DATA = filter_input_array(INPUT_POST, array(
+                'username' => array(
+                    'filter' => FILTER_UNSAFE_RAW,
+                    'flags' => FILTER_NULL_ON_FAILURE,
+                ),
                 'fullname' => array(
                     'filter' => FILTER_UNSAFE_RAW,
                     'flags' => FILTER_NULL_ON_FAILURE,
@@ -70,30 +69,39 @@ class PageController
                     'flags' => FILTER_NULL_ON_FAILURE,
                 )
             ));
-            var_dump($_DATA);
-            if ($_DATA === null || in_array(null, $_DATA, true)) {
-                $_SESSION['error_text']=T::__("Please fill the blanks!",true);
-                ViewHelper::setTitle('Minyy | Register');
-                ViewHelper::setBodyClasses('register-page');
-                ViewHelper::getView('auth','register');
+            $req=AuthHelper::registerUser($_DATA);
+            if (!$req['status']) {
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
             }
             else{
-                $req=AuthHelper::loginSystem($_POST['email'],$_POST['password']);
-                if($req){
-                    header('Location: index.php');
-                }
-                else{
-                    $_SESSION['error_text']="Email veya parola yanlış olabilir. Yada panele erişim yetkiniz bulunmamaktadır. Lütfen bilgileri kontrol ederek tekrardan giriniz. ";
-                    ViewHelper::setTitle('Minyy | Register');
-                    ViewHelper::setBodyClasses('register-page');
-                    ViewHelper::getView('auth','register');
-                }
+                MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
             }
         }
-        else{
-            ViewHelper::setTitle('Minyy | Register');
-            ViewHelper::setBodyClasses('register-page');
-            ViewHelper::getView('auth','register');
+        ViewHelper::setTitle('Minyy | Register');
+        ViewHelper::setBodyClasses('register-page');
+        ViewHelper::getView('auth','register');
+    }
+
+    public function forgotpassword(){
+        if(AuthHelper::isLogged()){
+            header('Location: index.php');
         }
+        if(isset($_POST['rcpassword_form'])){
+            $_DATA = filter_input_array(INPUT_POST, array(
+                'email' => array(
+                    'filter' => FILTER_VALIDATE_EMAIL
+                )
+            ));
+            $req=AuthHelper::recoverPassword($_DATA);
+            if (!$req['status']) {
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
+            }
+            else{
+                MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
+            }
+        }
+        ViewHelper::setTitle('Minyy | '.T::__("Recover Password",true));
+        ViewHelper::setBodyClasses('login-page');
+        ViewHelper::getView('auth','forgotpassword');
     }
 }

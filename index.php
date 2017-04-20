@@ -8,6 +8,7 @@ require_once('helpers/auth_helper.php');
 require_once('helpers/view_helper.php');
 require_once('helpers/functions_helper.php');
 require_once('helpers/translate_helper.php');
+require_once('helpers/message_helper.php');
 
 require_once('models/model_template.php');
 require_once('models/users_model.php');
