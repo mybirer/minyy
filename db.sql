@@ -272,7 +272,7 @@ CREATE TABLE `users` (
   `password` varchar(50) NOT NULL,
   `email` varchar(75) NOT NULL,
   `lastVisit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `fullname` varchar(50) DEFAULT NULL,
+  `fullName` varchar(50) DEFAULT NULL,
   `registrationDate` timestamp NULL DEFAULT NULL,
   `pkLangID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -281,7 +281,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`pkUserID`, `username`, `password`, `email`, `lastVisit`, `fullname`, `registrationDate`, `pkLangID`) VALUES
+INSERT INTO `users` (`pkUserID`, `username`, `password`, `email`, `lastVisit`, `fullName`, `registrationDate`, `pkLangID`) VALUES
 (1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-04-20 08:28:01', 'M. Yasin Birer', '2017-04-07 21:00:00', NULL),
 (7, 'aliveli', 'e10adc3949ba59abbe56e057f20f883e', 'aliveli@nuri.com', '2017-04-20 07:59:12', 'ali', '2017-04-20 07:59:12', NULL),
 (8, 'memo', '202cb962ac59075b964b07152d234b70', 'memo@cano.com', '2017-04-20 08:05:38', 'Ali', '2017-04-20 08:05:38', NULL);
