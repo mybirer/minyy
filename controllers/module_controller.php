@@ -7,4 +7,67 @@ class ModuleController
         ViewHelper::setTitle('Minyy | Dashboard');
         ViewHelper::getView('page','dashboard');
     }
+    public function users() {
+        require_once('controllers/users_controller.php');
+        $do=isset($_GET['do']) ? $_GET['do'] : "list";
+        switch($do){
+            case "add":
+            UsersController::add();
+            break;
+            case "edit":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            UsersController::edit($id);
+            break;
+            case "remove":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            UsersController::remove($id);
+            break;
+            case "list":
+            default:
+            UsersController::getList();
+            break;
+        }
+    }
+    public function user_groups() {
+        require_once('controllers/user_groups_controller.php');
+        $do=isset($_GET['do']) ? $_GET['do'] : "list";
+        switch($do){
+            case "add":
+            UserGroupsController::add();
+            break;
+            case "edit":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            UserGroupsController::edit($id);
+            break;
+            case "remove":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            UserGroupsController::remove($id);
+            break;
+            case "list":
+            default:
+            UserGroupsController::getList();
+            break;
+        }
+    }
+    public function view_levels() {
+        require_once('controllers/view_levels_controller.php');
+        $do=isset($_GET['do']) ? $_GET['do'] : "list";
+        switch($do){
+            case "add":
+            ViewLevelsController::add();
+            break;
+            case "edit":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            ViewLevelsController::edit($id);
+            break;
+            case "remove":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            ViewLevelsController::remove($id);
+            break;
+            case "list":
+            default:
+            ViewLevelsController::getList();
+            break;
+        }
+    }
 }

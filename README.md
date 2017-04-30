@@ -35,9 +35,9 @@ Veritabanı yazılımında temel şablon şu şekilde tercih edilmiştir.
 |Öğe|Kural|Örnek|
 |----|------|-------|
 |Tablo İsimleri|Bütün harfler küçük,kelimeler alt tire ile ayrılmış|user_data|
-|Primary Key|'**pk**' ile başlayıp sonraki kelimeler büyük ile başlar,sonuna '**ID**' takısı alır,kelimeler bitişik|pkUserID|
+|Primary Key|'**pk**' ile başlayıp sonraki kelimeler büyük ile başlar,sonuna '**ID**' takısı alır,kelimeler bitişik|pk_user_id|
 |Column|ilk kelime küçük sonrakiler büyük harfle başlar,kelimeler bitişik|commentContent|
-|Foreign Key|primary key ile aynı özellikleri taşır|subtitles > pkUserID|
+|Foreign Key|primary key ile aynı özellikleri taşır|subtitles > pk_user_id|
 
 > **Not**
 > - Database Relational Scheme bir tool yardımı ile otomatik oluşturulmuştur. Düzenlenmesi zaman aldığı için değiştirilmemiştir. Bu yüzden isimler ve bazı detaylar resimde güncel olarak görünmeyebilir.

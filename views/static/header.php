@@ -1,7 +1,7 @@
 <!-- Logo -->
 <a href="index2.html" class="logo">
-    <span class="logo-mini"><b>F</b>İ</span>
-    <span class="logo-lg"><b>Furkan</b> İletişim</span>
+    <span class="logo-mini"><b>M</b></span>
+    <span class="logo-lg"><b>Minyy</b></span>
 </a>
 <nav class="navbar navbar-static-top">
     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">

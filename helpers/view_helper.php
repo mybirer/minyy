@@ -20,7 +20,7 @@ class ViewHelper
     }
 
     public static function getView($viewFolder,$viewFile){
-        //todo views klasörünün içindeki bütün dosyaların listesini al
+        //views klasörünün içindeki bütün dosyaların listesini al
         //erişilmek istenen dosya var mı yok mu kontrol et
         //yoksa exception at
         Functions::requireFile('views/'.$viewFolder,$viewFile.'.php');

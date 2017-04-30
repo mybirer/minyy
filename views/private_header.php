@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" />
   <link rel="stylesheet" href="assets/css/AdminLTE.min.css" />
-  <link rel="stylesheet" href="assets/css/skins/skin-green.min.css" />
+  <link rel="stylesheet" href="assets/css/skins/skin-purple-light.min.css" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css" />
   <link rel="stylesheet" href="plugins/iCheck/flat/green.css" />
@@ -23,7 +23,7 @@
   <![endif]-->
   <?php echo ViewHelper::getAfterHeader(); ?>
 </head>
-<body class="hold-transition skin-green sidebar-mini <?php echo ViewHelper::getBodyClasses(); ?>">
+<body class="hold-transition skin-purple-light sidebar-mini <?php echo ViewHelper::getBodyClasses(); ?>">
 <?php echo ViewHelper::getBeforeBody(); ?>
 <div class="wrapper">
   <header class="main-header">

@@ -12,5 +12,7 @@ require_once('helpers/message_helper.php');
 
 require_once('models/model_template.php');
 require_once('models/users_model.php');
+require_once('models/user_groups_model.php');
+require_once('models/view_levels_model.php');
 
 require_once('routes.php');

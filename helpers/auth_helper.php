@@ -13,8 +13,8 @@ class AuthHelper
             $req->execute(array('email' => $email,'password' => $password));
             $res=$req->fetchObject();
             if($res){
-                $_SESSION['user_id']=$res->pkUserID;
-                $_SESSION['fullname']=$res->fullName;
+                $_SESSION['user_id']=$res->pk_user_id;
+                $_SESSION['fullname']=$res->fullname;
                 $_SESSION['email']=$res->email;
                 $_SESSION['logged_in']=time();
                 $return['status']=true;
@@ -35,7 +35,7 @@ class AuthHelper
     public static function updateSession(){
         try{
             $db = Db::getInstance();
-            $req = $db->prepare('UPDATE users SET lastVisit=NOW() WHERE pkUserID = :id');
+            $req = $db->prepare('UPDATE users SET last_visit=NOW() WHERE pk_user_id = :id');
             $req->execute(array('id' => $_SESSION['user_id']));
             $_SESSION['logged_in']=time();
         }
@@ -72,60 +72,6 @@ class AuthHelper
             return true;
         }
         return false;
-    }
-
-    public static function registerUser($params){
-        $return=[];
-        if ($params === null || empty($params['username']) || empty($params['fullname']) || empty($params['password']) || empty($params['repassword']) || empty($params['email'])) {
-            $return['status']=false;
-            $return['message']=T::__("Please fill the blanks",true);
-            return $return;
-        }
-        elseif(empty($params['terms'])){
-            $return['status']=false;
-            $return['message']=T::__("Please agree the terms",true);
-            return $return;
-        }
-        elseif($params['password'] != $params['repassword']){
-            $return['status']=false;
-            $return['message']=T::__("Passwords don't match!",true);
-            return $return;
-        }
-        else{
-            $params['username']=Functions::clearString($params['username']);
-            $params['fullname']=Functions::clearString($params['fullname']);
-            $params['email']=Functions::clearString($params['email']);
-            $params['password']=md5($params['password']);
-            $db = Db::getInstance();
-            //check if credentials are exists on db 
-            $req = $db->prepare('SELECT COUNT(pkUserId) FROM users WHERE username=:username OR email=:email');
-            $req->execute(array(
-                'username' => $params['username'],
-                'email' => $params['email']));
-            $req->execute(); 
-            if($req->fetchColumn()>0){
-                $return['status']=false;
-                $return['message']=T::__("This username or email already exists! You can login with your credentials!",true);
-                return $return;
-            }
-            //if not, save it
-            $req = $db->prepare('INSERT INTO users (username,password,email,fullname,registrationDate) VALUES (:username,:password,:email,:fullname,NOW())');
-            $res=$req->execute(array(
-                'username' => $params['username'],
-                'fullname' => $params['fullname'],
-                'email' => $params['email'],
-                'password' => $params['password']));
-            if($res){
-                $return['status']=true;
-                $return['message']=T::__("The account created succesfully. You can login with your account",true);
-                return $return;
-            }
-            else{
-                $return['status']=false;
-                $return['message']=T::__("An error occured. Please contact with administrators!",true);
-                return $return;
-            }
-        }
     }
 
     public static function recoverPassword($params){

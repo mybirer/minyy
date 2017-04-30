@@ -69,7 +69,7 @@ class PageController
                     'flags' => FILTER_NULL_ON_FAILURE,
                 )
             ));
-            $req=AuthHelper::registerUser($_DATA);
+            $req=Users::insert($_DATA);
             if (!$req['status']) {
                 MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
             }

@@ -7,28 +7,25 @@
     </div>
     <div class="pull-left info">
         <p><?php echo $_SESSION['fullname']; ?></p>
-        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        <a href="#"><i class="fa fa-circle text-success"></i> <?php echo T::__('Online'); ?></a>
     </div>
     </div>
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
-    <li class="header">NAVIGASYON</li>
-    <li class="<?php echo Functions::isActive('dashboard'); ?> treeview">
+    <li class="header"><?php echo T::__('NAVIGATION'); ?></li>
+    <li class="<?php echo Functions::isActive('dashboard'); ?>">
         <a href="index.php">
-        <i class="fa fa-dashboard"></i> <span>Ana Panel</span>
+        <i class="fa fa-dashboard"></i> <span><?php echo T::__('Dashboard'); ?></span>
         </a>
     </li>
-    <li class="<?php echo Functions::isActive('forms'); ?> treeview">
-        <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>İletişim Formları</span>
-        </a>
-        <ul class="treeview-menu">
-        <li><a href="index.php?controller=forms&action=show&filter=all"><i class="fa fa-circle-o"></i> Tümü</a></li>
-        <li><a href="index.php?controller=forms&action=show&filter=social"><i class="fa fa-circle-o"></i> Sosyal</a></li>
-        <li><a href="index.php?controller=forms&action=show&filter=website"><i class="fa fa-circle-o"></i> Web Site</a></li>
-        <li><a href="index.php?controller=forms&action=show&filter=direct"><i class="fa fa-circle-o"></i> Elden-Direkt</a></li>
-        </ul>
+    <li class="<?php echo Functions::isActive('users'); ?>">
+        <a href="index.php?controller=module&action=users"><i class="fa fa-user"></i> <?php echo T::__('Users'); ?></a>
+    </li>
+    <li class="<?php echo Functions::isActive('user_groups'); ?>">
+        <a href="index.php?controller=module&action=user_groups"><i class="fa fa-group"></i> <?php echo T::__('Groups'); ?></a>
+    </li>
+    <li class="<?php echo Functions::isActive('view_levels'); ?>">
+        <a href="index.php?controller=module&action=view_levels"><i class="fa fa-bars"></i> <?php echo T::__('View Levels'); ?></a>
     </li>
     </ul>
 </section>

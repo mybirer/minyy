@@ -89,7 +89,7 @@ class Functions
         if($vars){
             foreach($vars as $per){
                 $pm=explode("=",$per);
-                if($pm[0]=="controller" && $pm[1]==$route){
+                if($pm[0]=="action" && $pm[1]==$route){
                     return "active";
                 }
             }
@@ -130,7 +130,11 @@ class Functions
     public static function requireFile($folder,$file){
         $files=self::getFolderContent($folder);
         if(in_array($folder."/".$file,$files)){
+
             require_once($folder."/".$file);
         }
+    }
+    public static function replaceLiteralChars($string){
+        return str_replace(["'","`"],["''",""],$string);
     }
 }
