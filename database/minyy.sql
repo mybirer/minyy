@@ -3,69 +3,24 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2017 at 08:52 AM
+-- Generation Time: Apr 30, 2017 at 10:47 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
 -- Database: `minyy`
 --
 CREATE DATABASE IF NOT EXISTS `minyy` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `minyy`;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `authorization_access_types`
---
-
-DROP TABLE IF EXISTS `authorization_access_types`;
-CREATE TABLE `authorization_access_types` (
-  `pkAuthAccessTypeID` int(11) NOT NULL,
-  `accessTypeName` tinytext NOT NULL,
-  `accessTypeDescription` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `authorization_groups`
---
-
-DROP TABLE IF EXISTS `authorization_groups`;
-CREATE TABLE `authorization_groups` (
-  `pkAuthGroupID` int(11) NOT NULL,
-  `authGroupName` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `auth_group_access_map`
---
-
-DROP TABLE IF EXISTS `auth_group_access_map`;
-CREATE TABLE `auth_group_access_map` (
-  `pkAGAMap` int(11) NOT NULL,
-  `pkAuthGroupID` int(11) NOT NULL,
-  `pkAuthAccessTypeID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `auth_group_members`
---
-
-DROP TABLE IF EXISTS `auth_group_members`;
-CREATE TABLE `auth_group_members` (
-  `pkAGMembers` int(11) NOT NULL,
-  `pkUserID` int(11) NOT NULL,
-  `pkAuthGroupID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -267,82 +222,109 @@ CREATE TABLE `translation_media` (
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `pkUserID` int(11) NOT NULL,
+  `pk_user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(75) NOT NULL,
-  `lastVisit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `fullName` varchar(50) DEFAULT NULL,
-  `registrationDate` timestamp NULL DEFAULT NULL,
-  `pkLangID` int(11) DEFAULT NULL
+  `last_visit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `fullname` varchar(50) DEFAULT NULL,
+  `registration_date` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`pkUserID`, `username`, `password`, `email`, `lastVisit`, `fullName`, `registrationDate`, `pkLangID`) VALUES
-(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-04-20 08:28:01', 'M. Yasin Birer', '2017-04-07 21:00:00', NULL),
-(7, 'aliveli', 'e10adc3949ba59abbe56e057f20f883e', 'aliveli@nuri.com', '2017-04-20 07:59:12', 'ali', '2017-04-20 07:59:12', NULL),
-(8, 'memo', '202cb962ac59075b964b07152d234b70', 'memo@cano.com', '2017-04-20 08:05:38', 'Ali', '2017-04-20 08:05:38', NULL);
+INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`, `fullname`, `registration_date`) VALUES
+(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-04-30 22:46:44', 'M. Yasin Birer', '2017-04-07 21:00:00'),
+(7, 'aliveli', 'e10adc3949ba59abbe56e057f20f883e', 'aliveli@nuri.com', '2017-04-30 22:45:38', 'ali23', '2017-04-20 07:59:12'),
+(8, 'memo', '202cb962ac59075b964b07152d234b70', 'memo@cano.com', '2017-04-30 12:48:28', 'MEMOCAN2', '2017-04-20 08:05:38'),
+(28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-04-30 22:41:56', 'ahmetcan2', '2017-04-30 22:22:50');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_data`
+-- Table structure for table `user_groups`
 --
 
-DROP TABLE IF EXISTS `user_data`;
-CREATE TABLE `user_data` (
-  `pkUserData` int(11) NOT NULL,
-  `pkUserID` int(11) NOT NULL,
-  `pkUserDataTypeID` int(11) NOT NULL,
-  `dataValue` text NOT NULL
+DROP TABLE IF EXISTS `user_groups`;
+CREATE TABLE `user_groups` (
+  `pk_group_id` int(11) NOT NULL,
+  `name` tinytext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user_groups`
+--
+
+INSERT INTO `user_groups` (`pk_group_id`, `name`) VALUES
+(2, 'Public'),
+(3, 'Super Users'),
+(4, 'Subscriber'),
+(5, 'Registered');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_profiles`
+--
+
+DROP TABLE IF EXISTS `user_profiles`;
+CREATE TABLE `user_profiles` (
+  `pk_user_id` int(11) NOT NULL,
+  `profile_key` varchar(100) NOT NULL,
+  `profile_value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_data_types`
+-- Table structure for table `user_usergroup_map`
 --
 
-DROP TABLE IF EXISTS `user_data_types`;
-CREATE TABLE `user_data_types` (
-  `pkUserDataTypeID` int(11) NOT NULL,
-  `dataTypeName` tinytext NOT NULL
+DROP TABLE IF EXISTS `user_usergroup_map`;
+CREATE TABLE `user_usergroup_map` (
+  `id` int(11) NOT NULL,
+  `pk_user_id` int(11) NOT NULL,
+  `pk_group_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user_usergroup_map`
+--
+
+INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
+(11, 28, 2),
+(12, 28, 5),
+(13, 28, 3),
+(14, 8, 2),
+(15, 7, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `view_levels`
+--
+
+DROP TABLE IF EXISTS `view_levels`;
+CREATE TABLE `view_levels` (
+  `pk_view_level_id` int(11) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `groups` varchar(5120) DEFAULT NULL COMMENT 'JSON encoded access control.'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `view_levels`
+--
+
+INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`) VALUES
+(2, 'Genel alan herkes girebilir', '[2,4]'),
+(4, 'Yönetici Alanı', '[3]'),
+(5, 'Editörlere özel alan', '[2]');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `authorization_access_types`
---
-ALTER TABLE `authorization_access_types`
-  ADD PRIMARY KEY (`pkAuthAccessTypeID`);
-
---
--- Indexes for table `authorization_groups`
---
-ALTER TABLE `authorization_groups`
-  ADD PRIMARY KEY (`pkAuthGroupID`);
-
---
--- Indexes for table `auth_group_access_map`
---
-ALTER TABLE `auth_group_access_map`
-  ADD PRIMARY KEY (`pkAGAMap`),
-  ADD KEY `pkAuthGroupID` (`pkAuthGroupID`),
-  ADD KEY `pkAuthAccessTypeID` (`pkAuthAccessTypeID`);
-
---
--- Indexes for table `auth_group_members`
---
-ALTER TABLE `auth_group_members`
-  ADD PRIMARY KEY (`pkAGMembers`),
-  ADD KEY `pkUserID` (`pkUserID`),
-  ADD KEY `pkAuthGroupID` (`pkAuthGroupID`);
 
 --
 -- Indexes for table `languages`
@@ -448,47 +430,38 @@ ALTER TABLE `translation_media`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`pkUserID`),
-  ADD KEY `pkLangID` (`pkLangID`);
+  ADD PRIMARY KEY (`pk_user_id`);
 
 --
--- Indexes for table `user_data`
+-- Indexes for table `user_groups`
 --
-ALTER TABLE `user_data`
-  ADD PRIMARY KEY (`pkUserData`),
-  ADD KEY `pkUserID` (`pkUserID`),
-  ADD KEY `pkUserDataTypeID` (`pkUserDataTypeID`);
+ALTER TABLE `user_groups`
+  ADD PRIMARY KEY (`pk_group_id`);
 
 --
--- Indexes for table `user_data_types`
+-- Indexes for table `user_profiles`
 --
-ALTER TABLE `user_data_types`
-  ADD PRIMARY KEY (`pkUserDataTypeID`);
+ALTER TABLE `user_profiles`
+  ADD KEY `pk_user_id` (`pk_user_id`);
+
+--
+-- Indexes for table `user_usergroup_map`
+--
+ALTER TABLE `user_usergroup_map`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pkUserID` (`pk_user_id`),
+  ADD KEY `pkAuthGroupID` (`pk_group_id`);
+
+--
+-- Indexes for table `view_levels`
+--
+ALTER TABLE `view_levels`
+  ADD PRIMARY KEY (`pk_view_level_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `authorization_access_types`
---
-ALTER TABLE `authorization_access_types`
-  MODIFY `pkAuthAccessTypeID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `authorization_groups`
---
-ALTER TABLE `authorization_groups`
-  MODIFY `pkAuthGroupID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `auth_group_access_map`
---
-ALTER TABLE `auth_group_access_map`
-  MODIFY `pkAGAMap` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `auth_group_members`
---
-ALTER TABLE `auth_group_members`
-  MODIFY `pkAGMembers` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `languages`
 --
@@ -558,34 +531,25 @@ ALTER TABLE `translation_media`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `pkUserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `pk_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
--- AUTO_INCREMENT for table `user_data`
+-- AUTO_INCREMENT for table `user_groups`
 --
-ALTER TABLE `user_data`
-  MODIFY `pkUserData` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `user_groups`
+  MODIFY `pk_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
--- AUTO_INCREMENT for table `user_data_types`
+-- AUTO_INCREMENT for table `user_usergroup_map`
 --
-ALTER TABLE `user_data_types`
-  MODIFY `pkUserDataTypeID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `user_usergroup_map`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- AUTO_INCREMENT for table `view_levels`
+--
+ALTER TABLE `view_levels`
+  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `auth_group_access_map`
---
-ALTER TABLE `auth_group_access_map`
-  ADD CONSTRAINT `auth_group_access_map_ibfk_1` FOREIGN KEY (`pkAuthGroupID`) REFERENCES `authorization_groups` (`pkAuthGroupID`),
-  ADD CONSTRAINT `auth_group_access_map_ibfk_2` FOREIGN KEY (`pkAuthAccessTypeID`) REFERENCES `authorization_access_types` (`pkAuthAccessTypeID`);
-
---
--- Constraints for table `auth_group_members`
---
-ALTER TABLE `auth_group_members`
-  ADD CONSTRAINT `auth_group_members_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`),
-  ADD CONSTRAINT `auth_group_members_ibfk_2` FOREIGN KEY (`pkAuthGroupID`) REFERENCES `authorization_groups` (`pkAuthGroupID`);
 
 --
 -- Constraints for table `sentences`
@@ -607,42 +571,42 @@ ALTER TABLE `sentence_translations`
 ALTER TABLE `subtitles`
   ADD CONSTRAINT `subtitles_ibfk_1` FOREIGN KEY (`pkTmID`) REFERENCES `translation_media` (`pkTmID`),
   ADD CONSTRAINT `subtitles_ibfk_2` FOREIGN KEY (`pkSubtitleTypeID`) REFERENCES `subtitle_types` (`pkSubtitleTypeID`),
-  ADD CONSTRAINT `subtitles_ibfk_3` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`),
+  ADD CONSTRAINT `subtitles_ibfk_3` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`),
   ADD CONSTRAINT `subtitles_ibfk_4` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pkLangID`);
 
 --
 -- Constraints for table `teams`
 --
 ALTER TABLE `teams`
-  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`);
+  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`);
 
 --
 -- Constraints for table `team_chat_comments`
 --
 ALTER TABLE `team_chat_comments`
   ADD CONSTRAINT `team_chat_comments_ibfk_1` FOREIGN KEY (`pkTopicID`) REFERENCES `team_chat_topics` (`pkTopicID`),
-  ADD CONSTRAINT `team_chat_comments_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`);
+  ADD CONSTRAINT `team_chat_comments_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`);
 
 --
 -- Constraints for table `team_chat_topics`
 --
 ALTER TABLE `team_chat_topics`
   ADD CONSTRAINT `team_chat_topics_ibfk_1` FOREIGN KEY (`pkTeamID`) REFERENCES `teams` (`pkTeamID`),
-  ADD CONSTRAINT `team_chat_topics_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`);
+  ADD CONSTRAINT `team_chat_topics_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`);
 
 --
 -- Constraints for table `team_members`
 --
 ALTER TABLE `team_members`
   ADD CONSTRAINT `team_members_ibfk_1` FOREIGN KEY (`pkTeamID`) REFERENCES `teams` (`pkTeamID`),
-  ADD CONSTRAINT `team_members_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`),
+  ADD CONSTRAINT `team_members_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`),
   ADD CONSTRAINT `team_members_ibfk_3` FOREIGN KEY (`pkMemTypeID`) REFERENCES `team_member_types` (`pkMemTypeID`);
 
 --
 -- Constraints for table `translation_media`
 --
 ALTER TABLE `translation_media`
-  ADD CONSTRAINT `translation_media_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`),
+  ADD CONSTRAINT `translation_media_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`),
   ADD CONSTRAINT `translation_media_ibfk_2` FOREIGN KEY (`pkSMediaSourceID`) REFERENCES `support_media_sources` (`pkSMediaSourceID`),
   ADD CONSTRAINT `translation_media_ibfk_3` FOREIGN KEY (`pkSupMediaTypeID`) REFERENCES `supported_media_types` (`pkSupMediaTypeID`),
   ADD CONSTRAINT `translation_media_ibfk_4` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pkLangID`),
@@ -650,14 +614,18 @@ ALTER TABLE `translation_media`
   ADD CONSTRAINT `translation_media_ibfk_6` FOREIGN KEY (`nativeLangTranslationID`) REFERENCES `subtitles` (`pkSubtitleID`);
 
 --
--- Constraints for table `users`
+-- Constraints for table `user_profiles`
 --
-ALTER TABLE `users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pkLangID`);
+ALTER TABLE `user_profiles`
+  ADD CONSTRAINT `user_profiles_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`);
 
 --
--- Constraints for table `user_data`
+-- Constraints for table `user_usergroup_map`
 --
-ALTER TABLE `user_data`
-  ADD CONSTRAINT `user_data_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pkUserID`),
-  ADD CONSTRAINT `user_data_ibfk_2` FOREIGN KEY (`pkUserDataTypeID`) REFERENCES `user_data_types` (`pkUserDataTypeID`);
+ALTER TABLE `user_usergroup_map`
+  ADD CONSTRAINT `user_usergroup_map_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`),
+  ADD CONSTRAINT `user_usergroup_map_ibfk_2` FOREIGN KEY (`pk_group_id`) REFERENCES `user_groups` (`pk_group_id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
