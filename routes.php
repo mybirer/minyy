@@ -19,6 +19,7 @@ if (isset($_GET['controller']) && isset($_GET['action'])) {
  * Bu kısımda sistemde yer alan controllerlar, bu controllerların public olup olmadığı tutulur. Eğer public ise true, değilse false değerini alır
  * Aynı zamanda sistemde yer alan action parametreleri de bu kısımda tanımlanır
  */
+global $controllers;
 $controllers = array( 'page' => ['home'=>true, 'error'=>true, 'login'=>true, 'register'=>true, 'forgotpassword'=>true, 'logout'=>false],
                       'module' => ['dashboard'=>false, 'users'=>false, 'user_groups'=>false, 'view_levels'=>false, 'pages'=>false, 'posts'=>false, 'forms'=>false, 'medias'=>false, 'teams'=>false, 'languages'=>false]);
 
@@ -31,7 +32,7 @@ if(array_key_exists($controller, $controllers)) {
             call($controller, $action);
         }
         else{ 
-            if(AuthHelper::isLogged()){ //eğer belirtilen action public değilse logine bakılır: login varsa çağrılır, yoksa error verilir
+            if(AuthHelper::isLogged()){ //eğer belirtilen action public değilse logine bakılır: login varsa çağrılır, yoksa error verilir. todo bu kısma kullanıcıların access levellarına göre erişim seviyeleri de eklenecek. mesela super userlar nereyi görecek, 
                 ViewHelper::setLayout("private"); //görünüm private görünüme çevrilir
                 call($controller,$action);
             }

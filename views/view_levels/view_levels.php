@@ -42,6 +42,7 @@
                     <th>#</th>
                     <th><?php T::__("Title"); ?></th>
                     <th><?php T::__("Groups"); ?></th>
+                    <th><?php T::__("Allowed Modules"); ?></th>
                     <th><?php T::__("ID"); ?></th>
                 </tr>
             </thead>
@@ -60,6 +61,16 @@
                             }
                         }
                         echo implode(", ",$grpstr);
+                    ?>
+                </td>
+                <td class="has-link">
+                    <?php
+                        $modulestr=[];
+                        $userModules=json_decode($user->modules);
+                        foreach($userModules as $moduleObj){
+                            $modulestr[]=$moduleObj;
+                        }
+                        echo implode(", ",$modulestr);
                     ?>
                 </td>
                 <td class="has-link"><?php echo $user->pk_view_level_id; ?></td>

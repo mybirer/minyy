@@ -10,6 +10,10 @@ class ViewLevelsController implements ModuleInterface
         global $paginationHTML;
         global $params;
         global $groupList;
+        global $modules;
+        global $controllers;
+        $modules=$controllers["module"];
+
         $search_term=isset($_GET['search_term']) ? Functions::clearString($_GET['search_term']) : "";
         $order_by=isset($_GET['order_by']) && !empty($_GET['order_by']) ? strtolower(Functions::clearString($_GET['order_by'])) : "id";
         $order_dir=isset($_GET['order_dir']) && !empty($_GET['order_dir']) ? strtolower(Functions::clearString($_GET['order_dir'])) : "desc";
@@ -47,7 +51,8 @@ class ViewLevelsController implements ModuleInterface
     public static function add() {
         if(isset($_POST['addViewLevelForm'])){
             $_DATA=array('title'=>$_POST['addViewLevelFormTitle'],
-                            'groups'=>isset($_POST['addViewLevelFormGroups']) ? $_POST['addViewLevelFormGroups'] : []);
+                            'groups'=>isset($_POST['addViewLevelFormGroups']) ? $_POST['addViewLevelFormGroups'] : [],
+                            'modules'=>isset($_POST['addViewLevelFormModules']) ? $_POST['addViewLevelFormModules'] : []);
             $req=ViewLevels::insert($_DATA);
             if (!$req['status']) {
                 MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
@@ -62,7 +67,8 @@ class ViewLevelsController implements ModuleInterface
         if(isset($_POST['editViewLevelForm'])){
             $id=$_POST['editViewLevelFormId'];
             $_DATA=array('title'=>$_POST['editViewLevelFormTitle'],
-                            'groups'=>isset($_POST['editViewLevelFormGroups']) ? $_POST['editViewLevelFormGroups'] : []);
+                            'groups'=>isset($_POST['editViewLevelFormGroups']) ? $_POST['editViewLevelFormGroups'] : [],
+                            'modules'=>isset($_POST['editViewLevelFormModules']) ? $_POST['editViewLevelFormModules'] : []);
             $req=ViewLevels::update($id,$_DATA);
             if (!$req['status']) {
                 MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);

@@ -3,11 +3,13 @@ class ViewLevels implements DatabaseObject {
     public $pk_view_level_id;
     public $title;
     public $groups;
+    public $modules;
 
-    public function __construct($pk_view_level_id,$title,$groups){
+    public function __construct($pk_view_level_id,$title,$groups,$modules){
         $this->pk_view_level_id=$pk_view_level_id;
         $this->title=$title;
         $this->groups=$groups;
+        $this->modules=$modules;
     }
     public static function insert($params){
         $return=[];
@@ -22,6 +24,11 @@ class ViewLevels implements DatabaseObject {
             $tempArray[]=(int) Functions::clearString($gObj);
         }
         $params['groups']=json_encode($tempArray);
+        $tempArray=[];
+        foreach($params['modules'] as $gObj){
+            $tempArray[]=Functions::clearString($gObj);
+        }
+        $params['modules']=json_encode($tempArray);
         $db = Db::getInstance();
         //check if credentials are exists on db 
         $req = $db->prepare('SELECT COUNT(pk_view_level_id) FROM view_levels WHERE title=:title');
@@ -33,9 +40,10 @@ class ViewLevels implements DatabaseObject {
             return $return;
         }
         //if not, save it
-        $req = $db->prepare('INSERT INTO view_levels (title,groups) VALUES (:title,:groups)');
+        $req = $db->prepare('INSERT INTO view_levels (title,groups,modules) VALUES (:title,:groups,:modules)');
         $res=$req->execute(array('title' => $params['title'],
-                                'groups' => $params['groups']));
+                                'groups' => $params['groups'],
+                                'modules' => $params['modules']));
         if($res){
             $return['status']=true;
             $return['message']=T::__("The view level created succesfully",true);
@@ -59,6 +67,11 @@ class ViewLevels implements DatabaseObject {
             $tempArray[]=(int) Functions::clearString($gObj);
         }
         $params['groups']=json_encode($tempArray);
+        $tempArray=[];
+        foreach($params['modules'] as $gObj){
+            $tempArray[]=Functions::clearString($gObj);
+        }
+        $params['modules']=json_encode($tempArray);
         $db = Db::getInstance();
         //check if credentials are exists on db 
         $req = $db->prepare('SELECT COUNT(pk_view_level_id) FROM view_levels WHERE pk_view_level_id=:id');
@@ -68,10 +81,11 @@ class ViewLevels implements DatabaseObject {
             $return['message']=T::__("View level not found!",true);
             return $return;
         }
-        $req = $db->prepare('UPDATE view_levels SET title=:title, groups=:groups WHERE pk_view_level_id=:id ');
+        $req = $db->prepare('UPDATE view_levels SET title=:title, groups=:groups, modules=:modules WHERE pk_view_level_id=:id ');
         $res=$req->execute(array('id' => $id,
                                 'title' => $params['title'],
-                                'groups' => $params['groups']));
+                                'groups' => $params['groups'],
+                                'modules' => $params['modules']));
         if($res){
             $return['status']=true;
             $return['message']=T::__(sprintf("View Level: %s The view level updated succesfully!",$params['title']),true);
@@ -134,7 +148,8 @@ class ViewLevels implements DatabaseObject {
         foreach($req->fetchAll() as $obj) {
             $list[] = new ViewLevels( $obj['pk_view_level_id'],
                                 $obj['title'],
-                                $obj['groups']);
+                                $obj['groups'],
+                                $obj['modules']);
         }
         return $list;
     }
@@ -148,7 +163,8 @@ class ViewLevels implements DatabaseObject {
             if($obj){
                 return new ViewLevels( $obj['pk_view_level_id'],
                                 $obj['title'],
-                                $obj['groups']);
+                                $obj['groups'],
+                                $obj['modules']);
             }
             else{
                 return [];

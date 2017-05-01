@@ -77,8 +77,8 @@ class UserGroups implements DatabaseObject {
             $return['message']=T::__("Group not found!",true);
             return $return;
         }    
-        $req = $db->prepare('DELETE FROM user_groups WHERE pk_group_id=:id');
-        $res=$req->execute(array('id'=>$id));
+        $req = $db->prepare('DELETE FROM user_usergroup_map WHERE pk_group_id=:id; DELETE FROM user_groups WHERE pk_group_id=:id2');
+        $res=$req->execute(array('id'=>$id,'id2'=>$id));
         if($res){
             $return['status']=true;
             $return['message']=T::__(sprintf("ID: %s The group deleted succesfully!",$id),true);

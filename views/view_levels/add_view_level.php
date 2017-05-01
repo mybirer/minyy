@@ -1,5 +1,6 @@
 <?php 
     global $groupList;
+    global $modules;
 ?>
 <div class="modal fade" id="addViewLevelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -20,6 +21,14 @@
                 <div class="form-group">
                   <?php foreach($groupList as $groupObj): ?>
                   <div class="checkbox"><label><input type="checkbox" name="addViewLevelFormGroups[]" value="<?php echo $groupObj->pk_group_id; ?>"><?php echo $groupObj->name; ?></label></div>
+                  <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <label><?php T::__('Modules'); ?></label>
+                <div class="form-group">
+                  <?php foreach($modules as $moduleObj=>$moduleVal): ?>
+                  <div class="checkbox"><label><input type="checkbox" name="addViewLevelFormModules[]" value="<?php echo $moduleObj; ?>"><?php echo $moduleObj; ?></label></div>
                   <?php endforeach; ?>
                 </div>
             </div>

@@ -1,7 +1,9 @@
 <?php 
     global $obj;
     global $groupList;
+    global $modules;
     $objGroups=json_decode($obj->groups);
+    $objModules=json_decode($obj->modules);
 ?>
 <div class="modal fade" id="editViewLevelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -22,6 +24,14 @@
                 <div class="form-group">
                   <?php foreach($groupList as $groupObj): ?>
                   <div class="checkbox"><label><input type="checkbox" name="editViewLevelFormGroups[]" value="<?php echo $groupObj->pk_group_id; ?>" <?php echo in_array($groupObj->pk_group_id,$objGroups) ? "checked" : "" ?>><?php echo $groupObj->name; ?></label></div>
+                  <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                <label><?php T::__('Modules'); ?></label>
+                <div class="form-group">
+                  <?php foreach($modules as $moduleObj=>$moduleVal): ?>
+                  <div class="checkbox"><label><input type="checkbox" name="editViewLevelFormModules[]" value="<?php echo $moduleObj; ?>" <?php echo in_array($moduleObj,$objModules) ? "checked" : "" ?>><?php echo $moduleObj; ?></label></div>
                   <?php endforeach; ?>
                 </div>
             </div>
