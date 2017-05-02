@@ -8,6 +8,7 @@ class Users implements DatabaseObject {
     public $fullname;
     public $registration_date;
     public $groups;
+    public $modules;
 
     public function __construct($pk_user_id,$username,$password,$email,$last_visit,$fullname,$registration_date){
         $this->pk_user_id=$pk_user_id;
@@ -18,6 +19,7 @@ class Users implements DatabaseObject {
         $this->fullname=$fullname;
         $this->registration_date=$registration_date;
         $this->groups=$this->getUserGroups($pk_user_id);
+        $this->modules=$this->getUserModules($pk_user_id);
     }
     public static function insert($params){
         $return=[];
@@ -277,7 +279,7 @@ class Users implements DatabaseObject {
       $res=$req->fetch();
       return (int) $res[0];
     }
-    public static function getUserGroups($id){
+    public function getUserGroups($id){
         try{
             $db = Db::getInstance();
             $id = intval($id);
@@ -293,5 +295,32 @@ class Users implements DatabaseObject {
         catch (PDOException $e){
             return $e->getMessage();
         }
+    }
+    public function getUserModules($id){
+        $modules=[];
+        $params=[
+            "search_term"=>"",
+            "order_by"=>"name",
+            "order_dir"=>"asc",
+            "limit"=>"1000",
+            "offset"=>"0"
+        ];
+        $viewLevels=ViewLevels::getObjList($params);
+        foreach($viewLevels as $viewObj){
+            $voGroups=json_decode($viewObj->groups);
+            $voModules=json_decode($viewObj->modules);
+            foreach($this->groups as $uoGroup){
+                if(in_array($uoGroup,$voGroups)){
+                    $modules=array_merge($modules,$voModules);
+                }
+            }
+        }
+        $modules=array_merge(array_unique($modules));
+        asort($modules);
+        global $controllers;
+        foreach($modules as $kmodule=>$vmodule){
+            $modules[$kmodule]=$controllers['module'][$vmodule];
+        }
+        return $modules;
     }
 }

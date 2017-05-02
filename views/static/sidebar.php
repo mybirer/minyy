@@ -1,3 +1,6 @@
+<?php
+global $currentUser;
+?>
 <!-- sidebar: style can be found in sidebar.less -->
 <section class="sidebar">
     <!-- Sidebar user panel -->
@@ -13,20 +16,13 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
     <li class="header"><?php echo T::__('NAVIGATION'); ?></li>
-    <li class="<?php echo Functions::isActive('dashboard'); ?>">
-        <a href="index.php">
-        <i class="fa fa-dashboard"></i> <span><?php echo T::__('Dashboard'); ?></span>
-        </a>
+    <?php
+    foreach($currentUser->modules as $module=>$moduleProps):
+    ?>
+    <li class="<?php echo Functions::isActive($moduleProps["key"]); ?>">
+        <a href="index.php?controller=module&action=<?php echo $moduleProps["key"]; ?>"><i class="fa <?php echo $moduleProps["icon"]; ?>"></i> <?php echo $moduleProps["name"]; ?></a>
     </li>
-    <li class="<?php echo Functions::isActive('users'); ?>">
-        <a href="index.php?controller=module&action=users"><i class="fa fa-user"></i> <?php echo T::__('Users'); ?></a>
-    </li>
-    <li class="<?php echo Functions::isActive('user_groups'); ?>">
-        <a href="index.php?controller=module&action=user_groups"><i class="fa fa-group"></i> <?php echo T::__('Groups'); ?></a>
-    </li>
-    <li class="<?php echo Functions::isActive('view_levels'); ?>">
-        <a href="index.php?controller=module&action=view_levels"><i class="fa fa-bars"></i> <?php echo T::__('View Levels'); ?></a>
-    </li>
+    <?php endforeach; ?>
     </ul>
 </section>
 <!-- /.sidebar -->

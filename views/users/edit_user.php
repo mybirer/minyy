@@ -100,5 +100,5 @@
     </div>
 </div>
 <script type='text/javascript'>
-    setTimeout(function(){ $('#editUserModal').modal('show');},0);
+    setTimeout(function(){ $('#editUserModal').modal('show');},250);
 </script>

@@ -28,7 +28,7 @@
                 <label><?php T::__('Modules'); ?></label>
                 <div class="form-group">
                   <?php foreach($modules as $moduleObj=>$moduleVal): ?>
-                  <div class="checkbox"><label><input type="checkbox" name="addViewLevelFormModules[]" value="<?php echo $moduleObj; ?>"><?php echo $moduleObj; ?></label></div>
+                  <div class="checkbox"><label><input type="checkbox" name="addViewLevelFormModules[]" value="<?php echo $moduleVal["key"]; ?>"><?php echo $moduleVal["name"]; ?></label></div>
                   <?php endforeach; ?>
                 </div>
             </div>

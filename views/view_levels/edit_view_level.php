@@ -31,7 +31,7 @@
                 <label><?php T::__('Modules'); ?></label>
                 <div class="form-group">
                   <?php foreach($modules as $moduleObj=>$moduleVal): ?>
-                  <div class="checkbox"><label><input type="checkbox" name="editViewLevelFormModules[]" value="<?php echo $moduleObj; ?>" <?php echo in_array($moduleObj,$objModules) ? "checked" : "" ?>><?php echo $moduleObj; ?></label></div>
+                  <div class="checkbox"><label><input type="checkbox" name="editViewLevelFormModules[]" value="<?php echo $moduleVal["key"]; ?>" <?php echo in_array($moduleObj,$objModules) ? "checked" : "" ?>><?php echo $moduleVal["name"]; ?></label></div>
                   <?php endforeach; ?>
                 </div>
             </div>
@@ -51,5 +51,5 @@
     </div>
 </div>
 <script type='text/javascript'>
-    setTimeout(function(){ $('#editViewLevelModal').modal('show');},0);
+    setTimeout(function(){ $('#editViewLevelModal').modal('show');},250);
 </script>

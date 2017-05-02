@@ -14,9 +14,8 @@ class AuthHelper
             $res=$req->fetchObject();
             if($res){
                 $_SESSION['user_id']=$res->pk_user_id;
-                $_SESSION['fullname']=$res->fullname;
-                $_SESSION['email']=$res->email;
                 $_SESSION['logged_in']=time();
+                
                 $return['status']=true;
                 $return['message']="";
                 return $return;
@@ -48,8 +47,6 @@ class AuthHelper
     public static function logoutSystem(){
         $_SESSION = array();
         unset($_SESSION['user_id']);
-        unset($_SESSION['fullname']);
-        unset($_SESSION['email']);
         unset($_SESSION['logged_in']);
         session_destroy();
     }
@@ -98,6 +95,33 @@ class AuthHelper
         $return['status']=false;
         $return['message']=T::__("Please fill the blanks!",true);
         return $return;
+    }
+
+    public static function userHasAccess($pk_user_id,$controller,$action){
+        if($controller!="module"){ //todo şimdilik sadece module düzeyinde view level sorguluyoruz...
+            return true;
+        }
+        $userObj=Users::getObj($pk_user_id);
+        $params=[
+            "search_term"=>"",
+            "order_by"=>"name",
+            "order_dir"=>"asc",
+            "limit"=>"1000",
+            "offset"=>"0"
+        ];
+        $viewLevels=ViewLevels::getObjList($params);
+        foreach($viewLevels as $viewObj){
+            $voGroups=json_decode($viewObj->groups);
+            $voModules=json_decode($viewObj->modules);
+            if(in_array($action,$voModules)){
+                foreach($userObj->groups as $uoGroup){
+                    if(in_array($uoGroup,$voGroups)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
 ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2017 at 10:47 PM
+-- Generation Time: May 02, 2017 at 05:55 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -236,10 +236,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`, `fullname`, `registration_date`) VALUES
-(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-04-30 22:46:44', 'M. Yasin Birer', '2017-04-07 21:00:00'),
-(7, 'aliveli', 'e10adc3949ba59abbe56e057f20f883e', 'aliveli@nuri.com', '2017-04-30 22:45:38', 'ali23', '2017-04-20 07:59:12'),
-(8, 'memo', '202cb962ac59075b964b07152d234b70', 'memo@cano.com', '2017-04-30 12:48:28', 'MEMOCAN2', '2017-04-20 08:05:38'),
-(28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-04-30 22:41:56', 'ahmetcan2', '2017-04-30 22:22:50');
+(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-05-02 17:54:42', 'M. Yasin Birer', '2017-04-07 21:00:00'),
+(7, 'moderator', 'e10adc3949ba59abbe56e057f20f883e', 'moderator@localhost.com', '2017-05-02 16:27:47', 'Moderatör Kardeş', '2017-04-20 07:59:12'),
+(8, 'cevirmen', 'e10adc3949ba59abbe56e057f20f883e', 'cevirmen@localhost.com', '2017-05-02 17:51:24', 'Çevirmen Kardeşimiz', '2017-04-20 08:05:38'),
+(28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-05-01 13:03:04', 'ahmetcan23', '2017-04-30 22:22:50');
 
 -- --------------------------------------------------------
 
@@ -258,10 +258,9 @@ CREATE TABLE `user_groups` (
 --
 
 INSERT INTO `user_groups` (`pk_group_id`, `name`) VALUES
-(2, 'Public'),
 (3, 'Super Users'),
-(4, 'Subscriber'),
-(5, 'Registered');
+(4, 'Translators'),
+(7, 'Moderators');
 
 -- --------------------------------------------------------
 
@@ -294,11 +293,12 @@ CREATE TABLE `user_usergroup_map` (
 --
 
 INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
-(11, 28, 2),
-(12, 28, 5),
-(13, 28, 3),
-(14, 8, 2),
-(15, 7, 3);
+(19, 7, 7),
+(23, 28, 3),
+(24, 28, 4),
+(25, 8, 7),
+(26, 8, 4),
+(29, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -310,17 +310,19 @@ DROP TABLE IF EXISTS `view_levels`;
 CREATE TABLE `view_levels` (
   `pk_view_level_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
-  `groups` varchar(5120) DEFAULT NULL COMMENT 'JSON encoded access control.'
+  `groups` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded group id list',
+  `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `view_levels`
 --
 
-INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`) VALUES
-(2, 'Genel alan herkes girebilir', '[2,4]'),
-(4, 'Yönetici Alanı', '[3]'),
-(5, 'Editörlere özel alan', '[2]');
+INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`, `modules`) VALUES
+(2, 'Public Area', '[7,3,4]', '["posts"]'),
+(4, 'Manager Area', '[3]', '["dashboard","users","user_groups","view_levels","pages","posts","forms","medias","teams","languages"]'),
+(5, 'Translator Area', '[4]', '["dashboard"]'),
+(6, 'Moderator Area', '[7]', '[]');
 
 --
 -- Indexes for dumped tables
@@ -536,17 +538,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_groups`
 --
 ALTER TABLE `user_groups`
-  MODIFY `pk_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `pk_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `user_usergroup_map`
 --
 ALTER TABLE `user_usergroup_map`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `view_levels`
 --
 ALTER TABLE `view_levels`
-  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --

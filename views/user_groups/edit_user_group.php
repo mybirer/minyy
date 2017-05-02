@@ -31,5 +31,5 @@
     </div>
 </div>
 <script type='text/javascript'>
-    setTimeout(function(){ $('#editUserGroupModal').modal('show');},0);
+    setTimeout(function(){ $('#editUserGroupModal').modal('show');},250);
 </script>

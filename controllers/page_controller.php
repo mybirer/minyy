@@ -13,6 +13,11 @@ class PageController
         ViewHelper::getView('page','error');
     }
 
+    public function forbidden() {
+        ViewHelper::setTitle('Minyy | Hata');
+        ViewHelper::getView('page','forbidden');
+    }
+
     public function dashboard() {
         ViewHelper::setTitle('Minyy | Dashboard');
         ViewHelper::getView('page','dashboard');
