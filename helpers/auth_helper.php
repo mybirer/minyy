@@ -15,7 +15,8 @@ class AuthHelper
             if($res){
                 $_SESSION['user_id']=$res->pk_user_id;
                 $_SESSION['logged_in']=time();
-                
+                $_SESSION['fullname']=$res->fullname;
+
                 $return['status']=true;
                 $return['message']="";
                 return $return;
@@ -47,6 +48,7 @@ class AuthHelper
     public static function logoutSystem(){
         $_SESSION = array();
         unset($_SESSION['user_id']);
+        unset($_SESSION['fullname']);
         unset($_SESSION['logged_in']);
         session_destroy();
     }
