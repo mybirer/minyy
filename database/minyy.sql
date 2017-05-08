@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2017 at 05:55 PM
+-- Generation Time: May 06, 2017 at 10:27 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -29,10 +29,43 @@ USE `minyy`;
 --
 
 DROP TABLE IF EXISTS `languages`;
-CREATE TABLE `languages` (
-  `pkLangID` int(11) NOT NULL,
-  `langName` tinytext NOT NULL
+CREATE TABLE IF NOT EXISTS `languages` (
+  `pkLangID` int(11) NOT NULL AUTO_INCREMENT,
+  `langName` tinytext NOT NULL,
+  PRIMARY KEY (`pkLangID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+CREATE TABLE IF NOT EXISTS `posts` (
+  `pk_post_id` int(11) NOT NULL AUTO_INCREMENT,
+  `author_id` int(11) NOT NULL,
+  `post_date` timestamp NULL DEFAULT NULL,
+  `post_title` text,
+  `post_alias` text,
+  `post_content` longtext,
+  `post_status` varchar(20) DEFAULT NULL,
+  `comment_status` varchar(20) DEFAULT NULL,
+  `modified_by` int(11) DEFAULT NULL,
+  `modified_date` timestamp NULL DEFAULT NULL,
+  `guid` varchar(255) DEFAULT NULL,
+  `post_type` varchar(20) DEFAULT NULL,
+  `comment_count` bigint(20) DEFAULT NULL,
+  `post_params` json DEFAULT NULL,
+  PRIMARY KEY (`pk_post_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`pk_post_id`, `author_id`, `post_date`, `post_title`, `post_alias`, `post_content`, `post_status`, `comment_status`, `modified_by`, `modified_date`, `guid`, `post_type`, `comment_count`, `post_params`) VALUES
+(1, 29, '2017-05-02 17:54:42', 'başlık', 'asdas', 'kjhasdfgsadofgb', 'status', 'status', 1, '2017-05-03 18:07:37', 'asdasd', 'type', 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -41,11 +74,13 @@ CREATE TABLE `languages` (
 --
 
 DROP TABLE IF EXISTS `sentences`;
-CREATE TABLE `sentences` (
-  `pkSentenceID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sentences` (
+  `pkSentenceID` int(11) NOT NULL AUTO_INCREMENT,
   `sentence` text NOT NULL,
   `creationDate` datetime DEFAULT NULL,
-  `pkLangID` int(11) DEFAULT NULL
+  `pkLangID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pkSentenceID`),
+  KEY `pkLangID` (`pkLangID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -55,14 +90,18 @@ CREATE TABLE `sentences` (
 --
 
 DROP TABLE IF EXISTS `sentence_translations`;
-CREATE TABLE `sentence_translations` (
-  `pkSentenceTranslationID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sentence_translations` (
+  `pkSentenceTranslationID` int(11) NOT NULL AUTO_INCREMENT,
   `StartTime` time DEFAULT NULL,
   `FinishTime` time DEFAULT NULL,
   `OrderNumber` int(11) DEFAULT NULL,
   `pkSubtitleID` int(11) NOT NULL,
   `pkSourceSentenceID` int(11) NOT NULL,
-  `pkTranslatedSentenceID` int(11) NOT NULL
+  `pkTranslatedSentenceID` int(11) NOT NULL,
+  PRIMARY KEY (`pkSentenceTranslationID`),
+  KEY `pkSourceSentenceID` (`pkSourceSentenceID`),
+  KEY `pkSubtitleID` (`pkSubtitleID`),
+  KEY `pkTranslatedSentenceID` (`pkTranslatedSentenceID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -72,14 +111,19 @@ CREATE TABLE `sentence_translations` (
 --
 
 DROP TABLE IF EXISTS `subtitles`;
-CREATE TABLE `subtitles` (
-  `pkSubtitleID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `subtitles` (
+  `pkSubtitleID` int(11) NOT NULL AUTO_INCREMENT,
   `subtitleName` tinytext,
   `subtitleDescription` text,
   `pkTmID` int(11) NOT NULL,
   `pkSubtitleTypeID` int(11) NOT NULL,
   `pkUserID` int(11) NOT NULL,
-  `pkLangID` int(11) DEFAULT NULL
+  `pkLangID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pkSubtitleID`),
+  KEY `pkTmID` (`pkTmID`),
+  KEY `pkSubtitleTypeID` (`pkSubtitleTypeID`),
+  KEY `pkUserID` (`pkUserID`),
+  KEY `pkLangID` (`pkLangID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -89,10 +133,11 @@ CREATE TABLE `subtitles` (
 --
 
 DROP TABLE IF EXISTS `subtitle_types`;
-CREATE TABLE `subtitle_types` (
-  `pkSubtitleTypeID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `subtitle_types` (
+  `pkSubtitleTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `subtitleTypeName` tinytext NOT NULL,
-  `subtitleTypeDescription` text
+  `subtitleTypeDescription` text,
+  PRIMARY KEY (`pkSubtitleTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -102,10 +147,11 @@ CREATE TABLE `subtitle_types` (
 --
 
 DROP TABLE IF EXISTS `supported_media_types`;
-CREATE TABLE `supported_media_types` (
-  `pkSupMediaTypeID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `supported_media_types` (
+  `pkSupMediaTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `supMediaTypeName` tinytext NOT NULL,
-  `supMediaTypeDescription` text
+  `supMediaTypeDescription` text,
+  PRIMARY KEY (`pkSupMediaTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -115,10 +161,11 @@ CREATE TABLE `supported_media_types` (
 --
 
 DROP TABLE IF EXISTS `support_media_sources`;
-CREATE TABLE `support_media_sources` (
-  `pkSMediaSourceID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `support_media_sources` (
+  `pkSMediaSourceID` int(11) NOT NULL AUTO_INCREMENT,
   `sMediaSourceName` tinytext NOT NULL,
-  `sMediaSourceDescription` text
+  `sMediaSourceDescription` text,
+  PRIMARY KEY (`pkSMediaSourceID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -128,12 +175,14 @@ CREATE TABLE `support_media_sources` (
 --
 
 DROP TABLE IF EXISTS `teams`;
-CREATE TABLE `teams` (
-  `pkTeamID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `teams` (
+  `pkTeamID` int(11) NOT NULL AUTO_INCREMENT,
   `teamName` tinytext,
   `teamDescription` text,
   `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `pkUserID` int(11) NOT NULL
+  `pkUserID` int(11) NOT NULL,
+  PRIMARY KEY (`pkTeamID`),
+  KEY `pkUserID` (`pkUserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -143,12 +192,15 @@ CREATE TABLE `teams` (
 --
 
 DROP TABLE IF EXISTS `team_chat_comments`;
-CREATE TABLE `team_chat_comments` (
-  `pkCommentID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `team_chat_comments` (
+  `pkCommentID` int(11) NOT NULL AUTO_INCREMENT,
   `pkTopicID` int(11) NOT NULL,
   `pkUserID` int(11) NOT NULL,
   `commentContent` mediumtext NOT NULL,
-  `commentDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `commentDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`pkCommentID`),
+  KEY `pkTopicID` (`pkTopicID`),
+  KEY `pkUserID` (`pkUserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -158,12 +210,15 @@ CREATE TABLE `team_chat_comments` (
 --
 
 DROP TABLE IF EXISTS `team_chat_topics`;
-CREATE TABLE `team_chat_topics` (
-  `pkTopicID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `team_chat_topics` (
+  `pkTopicID` int(11) NOT NULL AUTO_INCREMENT,
   `topicTitle` tinytext NOT NULL,
   `topicContent` longtext NOT NULL,
   `pkTeamID` int(11) NOT NULL,
-  `pkUserID` int(11) NOT NULL
+  `pkUserID` int(11) NOT NULL,
+  PRIMARY KEY (`pkTopicID`),
+  KEY `pkTeamID` (`pkTeamID`),
+  KEY `pkUserID` (`pkUserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -173,12 +228,16 @@ CREATE TABLE `team_chat_topics` (
 --
 
 DROP TABLE IF EXISTS `team_members`;
-CREATE TABLE `team_members` (
-  `pkTeamMemberID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `team_members` (
+  `pkTeamMemberID` int(11) NOT NULL AUTO_INCREMENT,
   `since` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `pkTeamID` int(11) NOT NULL,
   `pkUserID` int(11) NOT NULL,
-  `pkMemTypeID` int(11) NOT NULL
+  `pkMemTypeID` int(11) NOT NULL,
+  PRIMARY KEY (`pkTeamMemberID`),
+  KEY `pkTeamID` (`pkTeamID`),
+  KEY `pkUserID` (`pkUserID`),
+  KEY `pkMemTypeID` (`pkMemTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -188,10 +247,11 @@ CREATE TABLE `team_members` (
 --
 
 DROP TABLE IF EXISTS `team_member_types`;
-CREATE TABLE `team_member_types` (
-  `pkMemTypeID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `team_member_types` (
+  `pkMemTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `memTypeName` tinytext NOT NULL,
-  `memTypeDescription` text
+  `memTypeDescription` text,
+  PRIMARY KEY (`pkMemTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -201,8 +261,8 @@ CREATE TABLE `team_member_types` (
 --
 
 DROP TABLE IF EXISTS `translation_media`;
-CREATE TABLE `translation_media` (
-  `pkTmID` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `translation_media` (
+  `pkTmID` int(11) NOT NULL AUTO_INCREMENT,
   `tmName` tinytext,
   `tmDescription` text,
   `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -211,7 +271,14 @@ CREATE TABLE `translation_media` (
   `pkSupMediaTypeID` int(11) NOT NULL,
   `pkLangID` int(11) DEFAULT NULL,
   `pkTeamID` int(11) DEFAULT NULL,
-  `nativeLangTranslationID` int(11) DEFAULT NULL
+  `nativeLangTranslationID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pkTmID`),
+  KEY `pkUserID` (`pkUserID`),
+  KEY `pkSMediaSourceID` (`pkSMediaSourceID`),
+  KEY `pkSupMediaTypeID` (`pkSupMediaTypeID`),
+  KEY `pkLangID` (`pkLangID`),
+  KEY `pkTeamID` (`pkTeamID`),
+  KEY `nativeLangTranslationID` (`nativeLangTranslationID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -221,15 +288,16 @@ CREATE TABLE `translation_media` (
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `pk_user_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `pk_user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(75) NOT NULL,
   `last_visit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `fullname` varchar(50) DEFAULT NULL,
-  `registration_date` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `registration_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`pk_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -239,7 +307,8 @@ INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`
 (1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-05-02 17:54:42', 'M. Yasin Birer', '2017-04-07 21:00:00'),
 (7, 'moderator', 'e10adc3949ba59abbe56e057f20f883e', 'moderator@localhost.com', '2017-05-02 16:27:47', 'Moderatör Kardeş', '2017-04-20 07:59:12'),
 (8, 'cevirmen', 'e10adc3949ba59abbe56e057f20f883e', 'cevirmen@localhost.com', '2017-05-02 17:51:24', 'Çevirmen Kardeşimiz', '2017-04-20 08:05:38'),
-(28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-05-01 13:03:04', 'ahmetcan23', '2017-04-30 22:22:50');
+(28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-05-01 13:03:04', 'ahmetcan23', '2017-04-30 22:22:50'),
+(29, 'erden', '8619d248219882ab72aaa3b44474bd5d', 'cwyusef@gmail.com', '2017-05-06 22:22:11', 'Muhammed Yusuf ERDEN', '2017-05-03 18:07:37');
 
 -- --------------------------------------------------------
 
@@ -248,10 +317,11 @@ INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`
 --
 
 DROP TABLE IF EXISTS `user_groups`;
-CREATE TABLE `user_groups` (
-  `pk_group_id` int(11) NOT NULL,
-  `name` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_groups` (
+  `pk_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` tinytext NOT NULL,
+  PRIMARY KEY (`pk_group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_groups`
@@ -269,10 +339,11 @@ INSERT INTO `user_groups` (`pk_group_id`, `name`) VALUES
 --
 
 DROP TABLE IF EXISTS `user_profiles`;
-CREATE TABLE `user_profiles` (
+CREATE TABLE IF NOT EXISTS `user_profiles` (
   `pk_user_id` int(11) NOT NULL,
   `profile_key` varchar(100) NOT NULL,
-  `profile_value` text NOT NULL
+  `profile_value` text NOT NULL,
+  KEY `pk_user_id` (`pk_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -282,11 +353,14 @@ CREATE TABLE `user_profiles` (
 --
 
 DROP TABLE IF EXISTS `user_usergroup_map`;
-CREATE TABLE `user_usergroup_map` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `user_usergroup_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `pk_user_id` int(11) NOT NULL,
-  `pk_group_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `pk_group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pkUserID` (`pk_user_id`),
+  KEY `pkAuthGroupID` (`pk_group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_usergroup_map`
@@ -298,7 +372,8 @@ INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
 (24, 28, 4),
 (25, 8, 7),
 (26, 8, 4),
-(29, 1, 3);
+(29, 1, 3),
+(30, 29, 3);
 
 -- --------------------------------------------------------
 
@@ -307,12 +382,13 @@ INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
 --
 
 DROP TABLE IF EXISTS `view_levels`;
-CREATE TABLE `view_levels` (
-  `pk_view_level_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `view_levels` (
+  `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
   `groups` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded group id list',
-  `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list',
+  PRIMARY KEY (`pk_view_level_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `view_levels`
@@ -324,231 +400,6 @@ INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`, `modules`) VAL
 (5, 'Translator Area', '[4]', '["dashboard"]'),
 (6, 'Moderator Area', '[7]', '[]');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `languages`
---
-ALTER TABLE `languages`
-  ADD PRIMARY KEY (`pkLangID`);
-
---
--- Indexes for table `sentences`
---
-ALTER TABLE `sentences`
-  ADD PRIMARY KEY (`pkSentenceID`),
-  ADD KEY `pkLangID` (`pkLangID`);
-
---
--- Indexes for table `sentence_translations`
---
-ALTER TABLE `sentence_translations`
-  ADD PRIMARY KEY (`pkSentenceTranslationID`),
-  ADD KEY `pkSourceSentenceID` (`pkSourceSentenceID`),
-  ADD KEY `pkSubtitleID` (`pkSubtitleID`),
-  ADD KEY `pkTranslatedSentenceID` (`pkTranslatedSentenceID`);
-
---
--- Indexes for table `subtitles`
---
-ALTER TABLE `subtitles`
-  ADD PRIMARY KEY (`pkSubtitleID`),
-  ADD KEY `pkTmID` (`pkTmID`),
-  ADD KEY `pkSubtitleTypeID` (`pkSubtitleTypeID`),
-  ADD KEY `pkUserID` (`pkUserID`),
-  ADD KEY `pkLangID` (`pkLangID`);
-
---
--- Indexes for table `subtitle_types`
---
-ALTER TABLE `subtitle_types`
-  ADD PRIMARY KEY (`pkSubtitleTypeID`);
-
---
--- Indexes for table `supported_media_types`
---
-ALTER TABLE `supported_media_types`
-  ADD PRIMARY KEY (`pkSupMediaTypeID`);
-
---
--- Indexes for table `support_media_sources`
---
-ALTER TABLE `support_media_sources`
-  ADD PRIMARY KEY (`pkSMediaSourceID`);
-
---
--- Indexes for table `teams`
---
-ALTER TABLE `teams`
-  ADD PRIMARY KEY (`pkTeamID`),
-  ADD KEY `pkUserID` (`pkUserID`);
-
---
--- Indexes for table `team_chat_comments`
---
-ALTER TABLE `team_chat_comments`
-  ADD PRIMARY KEY (`pkCommentID`),
-  ADD KEY `pkTopicID` (`pkTopicID`),
-  ADD KEY `pkUserID` (`pkUserID`);
-
---
--- Indexes for table `team_chat_topics`
---
-ALTER TABLE `team_chat_topics`
-  ADD PRIMARY KEY (`pkTopicID`),
-  ADD KEY `pkTeamID` (`pkTeamID`),
-  ADD KEY `pkUserID` (`pkUserID`);
-
---
--- Indexes for table `team_members`
---
-ALTER TABLE `team_members`
-  ADD PRIMARY KEY (`pkTeamMemberID`),
-  ADD KEY `pkTeamID` (`pkTeamID`),
-  ADD KEY `pkUserID` (`pkUserID`),
-  ADD KEY `pkMemTypeID` (`pkMemTypeID`);
-
---
--- Indexes for table `team_member_types`
---
-ALTER TABLE `team_member_types`
-  ADD PRIMARY KEY (`pkMemTypeID`);
-
---
--- Indexes for table `translation_media`
---
-ALTER TABLE `translation_media`
-  ADD PRIMARY KEY (`pkTmID`),
-  ADD KEY `pkUserID` (`pkUserID`),
-  ADD KEY `pkSMediaSourceID` (`pkSMediaSourceID`),
-  ADD KEY `pkSupMediaTypeID` (`pkSupMediaTypeID`),
-  ADD KEY `pkLangID` (`pkLangID`),
-  ADD KEY `pkTeamID` (`pkTeamID`),
-  ADD KEY `nativeLangTranslationID` (`nativeLangTranslationID`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`pk_user_id`);
-
---
--- Indexes for table `user_groups`
---
-ALTER TABLE `user_groups`
-  ADD PRIMARY KEY (`pk_group_id`);
-
---
--- Indexes for table `user_profiles`
---
-ALTER TABLE `user_profiles`
-  ADD KEY `pk_user_id` (`pk_user_id`);
-
---
--- Indexes for table `user_usergroup_map`
---
-ALTER TABLE `user_usergroup_map`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pkUserID` (`pk_user_id`),
-  ADD KEY `pkAuthGroupID` (`pk_group_id`);
-
---
--- Indexes for table `view_levels`
---
-ALTER TABLE `view_levels`
-  ADD PRIMARY KEY (`pk_view_level_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `languages`
---
-ALTER TABLE `languages`
-  MODIFY `pkLangID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `sentences`
---
-ALTER TABLE `sentences`
-  MODIFY `pkSentenceID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `sentence_translations`
---
-ALTER TABLE `sentence_translations`
-  MODIFY `pkSentenceTranslationID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `subtitles`
---
-ALTER TABLE `subtitles`
-  MODIFY `pkSubtitleID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `subtitle_types`
---
-ALTER TABLE `subtitle_types`
-  MODIFY `pkSubtitleTypeID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `supported_media_types`
---
-ALTER TABLE `supported_media_types`
-  MODIFY `pkSupMediaTypeID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `support_media_sources`
---
-ALTER TABLE `support_media_sources`
-  MODIFY `pkSMediaSourceID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `teams`
---
-ALTER TABLE `teams`
-  MODIFY `pkTeamID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `team_chat_comments`
---
-ALTER TABLE `team_chat_comments`
-  MODIFY `pkCommentID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `team_chat_topics`
---
-ALTER TABLE `team_chat_topics`
-  MODIFY `pkTopicID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `team_members`
---
-ALTER TABLE `team_members`
-  MODIFY `pkTeamMemberID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `team_member_types`
---
-ALTER TABLE `team_member_types`
-  MODIFY `pkMemTypeID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `translation_media`
---
-ALTER TABLE `translation_media`
-  MODIFY `pkTmID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `pk_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
---
--- AUTO_INCREMENT for table `user_groups`
---
-ALTER TABLE `user_groups`
-  MODIFY `pk_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `user_usergroup_map`
---
-ALTER TABLE `user_usergroup_map`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `view_levels`
---
-ALTER TABLE `view_levels`
-  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --

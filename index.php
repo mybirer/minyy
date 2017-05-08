@@ -15,4 +15,6 @@ require_once('models/users_model.php');
 require_once('models/user_groups_model.php');
 require_once('models/view_levels_model.php');
 
+require_once('models/posts_model.php');
+
 require_once('routes.php');
