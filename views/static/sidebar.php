@@ -9,7 +9,7 @@ global $currentUser;
         <img src="assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
     </div>
     <div class="pull-left info">
-        <p><?php echo $_SESSION['fullname']; ?></p>
+        <p><?php echo $currentUser->fullname; ?></p>
         <a href="#"><i class="fa fa-circle text-success"></i> <?php echo T::__('Online'); ?></a>
     </div>
     </div>

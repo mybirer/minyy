@@ -1,3 +1,6 @@
+<?php
+global $currentUser;
+?>
 <!-- Logo -->
 <a href="index2.html" class="logo">
     <span class="logo-mini"><b>M</b></span>
@@ -205,14 +208,14 @@
         <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="assets/img/user2-160x160.jpg" class="user-image" alt="User Image">
-            <span class="hidden-xs"><?php echo $_SESSION['fullname']; ?></span>
+            <span class="hidden-xs"><?php echo $currentUser->fullname; ?></span>
         </a>
         <ul class="dropdown-menu">
             <li class="user-header">
             <img src="assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
             <p>
-                <?php echo $_SESSION['fullname']; ?>
+                <?php echo $currentUser->fullname; ?>
                 <small>2017</small>
             </p>
             </li>
