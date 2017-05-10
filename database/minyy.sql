@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2017 at 10:27 PM
+-- Generation Time: May 10, 2017 at 03:41 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -30,9 +31,38 @@ USE `minyy`;
 
 DROP TABLE IF EXISTS `languages`;
 CREATE TABLE IF NOT EXISTS `languages` (
-  `pkLangID` int(11) NOT NULL AUTO_INCREMENT,
-  `langName` tinytext NOT NULL,
-  PRIMARY KEY (`pkLangID`)
+  `pk_lang_id` int(11) NOT NULL AUTO_INCREMENT,
+  `lang_name` tinytext,
+  `lang_short_expression` tinytext,
+  PRIMARY KEY (`pk_lang_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `media_sources`
+--
+
+DROP TABLE IF EXISTS `media_sources`;
+CREATE TABLE IF NOT EXISTS `media_sources` (
+  `pk_media_source_id` int(11) NOT NULL AUTO_INCREMENT,
+  `media_source_name` tinytext NOT NULL,
+  `media_source_description` text,
+  PRIMARY KEY (`pk_media_source_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `media_types`
+--
+
+DROP TABLE IF EXISTS `media_types`;
+CREATE TABLE IF NOT EXISTS `media_types` (
+  `pk_media_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `media_type_name` tinytext NOT NULL,
+  `media_type_description` text,
+  PRIMARY KEY (`pk_media_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -143,46 +173,18 @@ CREATE TABLE IF NOT EXISTS `subtitle_types` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `supported_media_types`
---
-
-DROP TABLE IF EXISTS `supported_media_types`;
-CREATE TABLE IF NOT EXISTS `supported_media_types` (
-  `pkSupMediaTypeID` int(11) NOT NULL AUTO_INCREMENT,
-  `supMediaTypeName` tinytext NOT NULL,
-  `supMediaTypeDescription` text,
-  PRIMARY KEY (`pkSupMediaTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `support_media_sources`
---
-
-DROP TABLE IF EXISTS `support_media_sources`;
-CREATE TABLE IF NOT EXISTS `support_media_sources` (
-  `pkSMediaSourceID` int(11) NOT NULL AUTO_INCREMENT,
-  `sMediaSourceName` tinytext NOT NULL,
-  `sMediaSourceDescription` text,
-  PRIMARY KEY (`pkSMediaSourceID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `teams`
 --
 
 DROP TABLE IF EXISTS `teams`;
 CREATE TABLE IF NOT EXISTS `teams` (
-  `pkTeamID` int(11) NOT NULL AUTO_INCREMENT,
-  `teamName` tinytext,
-  `teamDescription` text,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `pkUserID` int(11) NOT NULL,
-  PRIMARY KEY (`pkTeamID`),
-  KEY `pkUserID` (`pkUserID`)
+  `pk_team_id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_name` tinytext,
+  `team_description` text,
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `pk_user_id` int(11) NOT NULL,
+  PRIMARY KEY (`pk_team_id`),
+  KEY `pkUserID` (`pk_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -262,23 +264,24 @@ CREATE TABLE IF NOT EXISTS `team_member_types` (
 
 DROP TABLE IF EXISTS `translation_media`;
 CREATE TABLE IF NOT EXISTS `translation_media` (
-  `pkTmID` int(11) NOT NULL AUTO_INCREMENT,
-  `tmName` tinytext,
-  `tmDescription` text,
-  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `pkUserID` int(11) NOT NULL,
-  `pkSMediaSourceID` int(11) NOT NULL,
-  `pkSupMediaTypeID` int(11) NOT NULL,
-  `pkLangID` int(11) DEFAULT NULL,
-  `pkTeamID` int(11) DEFAULT NULL,
-  `nativeLangTranslationID` int(11) DEFAULT NULL,
-  PRIMARY KEY (`pkTmID`),
-  KEY `pkUserID` (`pkUserID`),
-  KEY `pkSMediaSourceID` (`pkSMediaSourceID`),
-  KEY `pkSupMediaTypeID` (`pkSupMediaTypeID`),
-  KEY `pkLangID` (`pkLangID`),
-  KEY `pkTeamID` (`pkTeamID`),
-  KEY `nativeLangTranslationID` (`nativeLangTranslationID`)
+  `pk_tm_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tm_name` tinytext,
+  `tm_description` text,
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `pk_user_id` int(11) NOT NULL,
+  `pk_media_source_id` int(11) NOT NULL,
+  `pk_media_type_id` int(11) NOT NULL,
+  `tm_url` text NOT NULL,
+  `pk_lang_id` int(11) DEFAULT NULL,
+  `pk_team_id` int(11) DEFAULT NULL,
+  `native_translation_id` int(11) DEFAULT NULL COMMENT 'Ana dilde yazılmış olan altyazıyı işaret eder.',
+  PRIMARY KEY (`pk_tm_id`),
+  KEY `pkUserID` (`pk_user_id`),
+  KEY `pkSMediaSourceID` (`pk_media_source_id`),
+  KEY `pkSupMediaTypeID` (`pk_media_type_id`),
+  KEY `pkLangID` (`pk_lang_id`),
+  KEY `pkTeamID` (`pk_team_id`),
+  KEY `nativeLangTranslationID` (`native_translation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -308,7 +311,7 @@ INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`
 (7, 'moderator', 'e10adc3949ba59abbe56e057f20f883e', 'moderator@localhost.com', '2017-05-02 16:27:47', 'Moderatör Kardeş', '2017-04-20 07:59:12'),
 (8, 'cevirmen', 'e10adc3949ba59abbe56e057f20f883e', 'cevirmen@localhost.com', '2017-05-02 17:51:24', 'Çevirmen Kardeşimiz', '2017-04-20 08:05:38'),
 (28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-05-01 13:03:04', 'ahmetcan23', '2017-04-30 22:22:50'),
-(29, 'erden', '8619d248219882ab72aaa3b44474bd5d', 'cwyusef@gmail.com', '2017-05-06 22:22:11', 'Muhammed Yusuf ERDEN', '2017-05-03 18:07:37');
+(29, 'erden', '8619d248219882ab72aaa3b44474bd5d', 'cwyusef@gmail.com', '2017-05-10 01:13:38', 'Muhammed Yusuf ERDEN', '2017-05-03 18:07:37');
 
 -- --------------------------------------------------------
 
@@ -321,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `user_groups` (
   `pk_group_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   PRIMARY KEY (`pk_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_groups`
@@ -388,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `view_levels` (
   `groups` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded group id list',
   `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list',
   PRIMARY KEY (`pk_view_level_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `view_levels`
@@ -408,7 +411,7 @@ INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`, `modules`) VAL
 -- Constraints for table `sentences`
 --
 ALTER TABLE `sentences`
-  ADD CONSTRAINT `sentences_ibfk_1` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pkLangID`);
+  ADD CONSTRAINT `sentences_ibfk_1` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pk_lang_id`);
 
 --
 -- Constraints for table `sentence_translations`
@@ -422,16 +425,16 @@ ALTER TABLE `sentence_translations`
 -- Constraints for table `subtitles`
 --
 ALTER TABLE `subtitles`
-  ADD CONSTRAINT `subtitles_ibfk_1` FOREIGN KEY (`pkTmID`) REFERENCES `translation_media` (`pkTmID`),
+  ADD CONSTRAINT `subtitles_ibfk_1` FOREIGN KEY (`pkTmID`) REFERENCES `translation_media` (`pk_tm_id`),
   ADD CONSTRAINT `subtitles_ibfk_2` FOREIGN KEY (`pkSubtitleTypeID`) REFERENCES `subtitle_types` (`pkSubtitleTypeID`),
   ADD CONSTRAINT `subtitles_ibfk_3` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`),
-  ADD CONSTRAINT `subtitles_ibfk_4` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pkLangID`);
+  ADD CONSTRAINT `subtitles_ibfk_4` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pk_lang_id`);
 
 --
 -- Constraints for table `teams`
 --
 ALTER TABLE `teams`
-  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`);
+  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`);
 
 --
 -- Constraints for table `team_chat_comments`
@@ -444,14 +447,14 @@ ALTER TABLE `team_chat_comments`
 -- Constraints for table `team_chat_topics`
 --
 ALTER TABLE `team_chat_topics`
-  ADD CONSTRAINT `team_chat_topics_ibfk_1` FOREIGN KEY (`pkTeamID`) REFERENCES `teams` (`pkTeamID`),
+  ADD CONSTRAINT `team_chat_topics_ibfk_1` FOREIGN KEY (`pkTeamID`) REFERENCES `teams` (`pk_team_id`),
   ADD CONSTRAINT `team_chat_topics_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`);
 
 --
 -- Constraints for table `team_members`
 --
 ALTER TABLE `team_members`
-  ADD CONSTRAINT `team_members_ibfk_1` FOREIGN KEY (`pkTeamID`) REFERENCES `teams` (`pkTeamID`),
+  ADD CONSTRAINT `team_members_ibfk_1` FOREIGN KEY (`pkTeamID`) REFERENCES `teams` (`pk_team_id`),
   ADD CONSTRAINT `team_members_ibfk_2` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`),
   ADD CONSTRAINT `team_members_ibfk_3` FOREIGN KEY (`pkMemTypeID`) REFERENCES `team_member_types` (`pkMemTypeID`);
 
@@ -459,12 +462,12 @@ ALTER TABLE `team_members`
 -- Constraints for table `translation_media`
 --
 ALTER TABLE `translation_media`
-  ADD CONSTRAINT `translation_media_ibfk_1` FOREIGN KEY (`pkUserID`) REFERENCES `users` (`pk_user_id`),
-  ADD CONSTRAINT `translation_media_ibfk_2` FOREIGN KEY (`pkSMediaSourceID`) REFERENCES `support_media_sources` (`pkSMediaSourceID`),
-  ADD CONSTRAINT `translation_media_ibfk_3` FOREIGN KEY (`pkSupMediaTypeID`) REFERENCES `supported_media_types` (`pkSupMediaTypeID`),
-  ADD CONSTRAINT `translation_media_ibfk_4` FOREIGN KEY (`pkLangID`) REFERENCES `languages` (`pkLangID`),
-  ADD CONSTRAINT `translation_media_ibfk_5` FOREIGN KEY (`pkTeamID`) REFERENCES `teams` (`pkTeamID`),
-  ADD CONSTRAINT `translation_media_ibfk_6` FOREIGN KEY (`nativeLangTranslationID`) REFERENCES `subtitles` (`pkSubtitleID`);
+  ADD CONSTRAINT `translation_media_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`),
+  ADD CONSTRAINT `translation_media_ibfk_2` FOREIGN KEY (`pk_media_source_id`) REFERENCES `media_sources` (`pk_media_source_id`),
+  ADD CONSTRAINT `translation_media_ibfk_3` FOREIGN KEY (`pk_media_type_id`) REFERENCES `media_types` (`pk_media_type_id`),
+  ADD CONSTRAINT `translation_media_ibfk_4` FOREIGN KEY (`pk_lang_id`) REFERENCES `languages` (`pk_lang_id`),
+  ADD CONSTRAINT `translation_media_ibfk_5` FOREIGN KEY (`pk_team_id`) REFERENCES `teams` (`pk_team_id`),
+  ADD CONSTRAINT `translation_media_ibfk_6` FOREIGN KEY (`native_translation_id`) REFERENCES `subtitles` (`pkSubtitleID`);
 
 --
 -- Constraints for table `user_profiles`
@@ -478,6 +481,7 @@ ALTER TABLE `user_profiles`
 ALTER TABLE `user_usergroup_map`
   ADD CONSTRAINT `user_usergroup_map_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`),
   ADD CONSTRAINT `user_usergroup_map_ibfk_2` FOREIGN KEY (`pk_group_id`) REFERENCES `user_groups` (`pk_group_id`);
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
