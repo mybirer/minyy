@@ -3,7 +3,7 @@
       <?php require_once('static/footer.php'); ?>
   </footer>
 </div>
-<script src="/assets/js/jquery-ui.min.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
