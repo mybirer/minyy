@@ -112,4 +112,26 @@ class ModuleController
             break;
         }
     }
+
+    public function teams() {
+        require_once('controllers/teams_controller.php');
+        $do=isset($_GET['do']) ? $_GET['do'] : "list";
+        switch($do){
+            case "add":
+            TeamsController::add();
+            break;
+            case "edit":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            TeamsController::edit($id);
+            break;
+            case "remove":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            TeamsController::remove($id);
+            break;
+            case "list":
+            default:
+            TeamsController::getList();
+            break;
+        }
+    }
 }
