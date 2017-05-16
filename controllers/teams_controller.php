@@ -42,9 +42,9 @@ class TeamsController implements ModuleInterface
             "offset"=>"0"
         ];
 
-        $groupList = array(0 => [0=> 'team_manager' , 1 => 'Team Manager'] , 
-                           1 => [0=> 'moderator', 1 => 'Moderator'] , 
-                           2 => [0=> 'member', 1 => 'Member']);
+        $groupList = array(['value'=>'team_manager','name'=>'Team Manager'] , 
+                           ['value'=>'moderator', 'name'=>'Moderator'] , 
+                           ['value'=>'member','name'=>'Member']);
 
         ViewHelper::setTitle('Minyy | Teams');
         ViewHelper::getView('teams','teams');
@@ -66,6 +66,47 @@ class TeamsController implements ModuleInterface
     }
 
     public static function edit($id) {
+        if(isset($_POST['editTeamForm'])){
+            $id=$_POST['editTeamFormId'];
+            $_DATA=array('name'=>$_POST['editTeamFormName'],
+                        'description'=>$_POST['editTeamFormDescription'],
+                        'members'=>isset($_POST['editTeamFormMemberNameList']) ? $_POST['editTeamFormMemberNameList'] : [],
+                        'types'=>isset($_POST['editTeamFormMemberTypeList']) ? $_POST['editTeamFormMemberTypeList'] : []);
+            $req=Teams::update($id,$_DATA);
+            if (!$req['status']) {
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
+            }
+            else{
+                MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
+            }
+            if(isset($req['status2'])){
+                if (!$req['status2']) {
+                    MessageHelper::setMessage2(T::__("Error",true),"danger","ban",$req['message2']);
+                }
+                else{
+                    MessageHelper::setMessage2(T::__("Success",true),"success","check",$req['message2']);
+                }
+            }
+        }
+        else{
+            global $obj;
+            $obj=Teams::getObj($id);
+            if(empty($obj)){
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban",T::__("Team not found! Please select from the list!",true));
+            }
+            else{
+                $params2=[
+                    "search_term"=>"",
+                    "order_by"=>"name",
+                    "order_dir"=>"asc",
+                    "limit"=>"1000",
+                    "offset"=>"0"
+                ];
+                $members=TeamMembers::getTeamMembers($obj->pk_team_id,$params2);
+                $obj->members=$members;
+            }
+        }
+        TeamsController::getList();
         
     }
     public static function remove($id) {

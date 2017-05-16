@@ -29,3 +29,23 @@ td.edit-link {
     background-color: #ffe4c4;
     padding: 0 !important;
 }
+
+ul.ui-autocomplete.ui-widget-content {
+    z-index: 1100;
+    max-width: 450px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    list-style: none;
+    padding: 0;
+    /* display: block !important; */
+    background-color: #fff;
+}
+
+ul.ui-autocomplete.ui-widget-content .ui-menu-item {
+    padding: 10px;
+    list-style: none;
+}
+
+ul.ui-autocomplete.ui-widget-content .ui-menu-item.ui-state-focus {
+    background-color: #ddd;
+}

@@ -20,7 +20,7 @@
 
         public static function insert($params){
             $return=[];
-            if ($params === null || empty($params['created_by']) ) {
+            if ($params === null || empty($params['name']) || empty($params['created_by']) ) {
                 $return['status']=false;
                 $return['message']=T::__('Please fill all required fields!',true);
                 return $return;
@@ -28,14 +28,14 @@
             else{
                 $db = Db::getInstance();
 
-                $req = $db->prepare('INSERT INTO minyy.teams (name, description, created_at, created_by) VALUES (:name, :description, NOW(), :created_by)');
+                $req = $db->prepare('INSERT INTO teams (name, description, created_at, created_by) VALUES (:name, :description, NOW(), :created_by)');
                 $res=$req->execute(array(
                     'name' => $params['name'],
                     'description' => $params['description'],
                     'created_by' => $params['created_by']));
                 if($res){
                     $return['status']=true;
-                    $return['message']=T::__('Your team created succesfully.',true);
+                    $return['message']=T::__('Team created succesfully.',true);
                     return $return;
                 }
                 else{
@@ -47,7 +47,7 @@
         }
         public static function update($id,$params){
             $return=[];
-            if ($id === null || $params === null || empty($params['created_by']) ) {
+            if ($id === null || $params === null || empty($params['name']) ) {
                 $return['status']=false;
                 $return['message']=T::__('Please fill all required fields!',true);
                 return $return;
@@ -64,15 +64,38 @@
                     return $return;
                 }
 
-                $req = $db->prepare('UPDATE minyy.teams SET name = :name, description = :description, created_by = :created_by WHERE  pk_team_id = :id');
+                $req = $db->prepare('UPDATE minyy.teams SET name = :name, description = :description WHERE  pk_team_id = :id');
                 $res=$req->execute(array(
                     'name' => $params['name'],
                     'description' => $params['description'],
-                    'created_by' => $params['created_by'],
                     'id' => $id));
-                if($res){
+                if($res){ //eğer temel bilgileri güncellemede başarılı olduysa bundan sonraki kısımda memberleri dbye ekliyor. member eklemeden önce daha önceki memberları siliyor sonrasında da yeni memberları listeye ekliyor. herhangi bir sorun olursa member listesine eklediği kayıtları da siliyor
+                //todo burada veri kaybı olabilir.
                     $return['status']=true;
                     $return['message']=T::__('Team updated succesfully.',true);
+                    if(!empty($params['members']) && !empty($params['types'])){
+                        $groupSqlArr=[];
+                        foreach($params['members'] as $gKey=>$gObj){
+                            $groupSqlArr[]=sprintf("(NOW(),%s,%s,'%s')",$id,Functions::clearString($gObj),Functions::clearString($params['types'][$gKey]));
+                        }
+                        $groupSql=implode(",",$groupSqlArr);
+                        try{
+                            $req4=$db->prepare('DELETE FROM team_members WHERE team_id=:id');
+                            $req4->execute(array('id' => $id));
+                            $req2 = $db->prepare(sprintf('INSERT INTO team_members (since,team_id,user_id,type) VALUES %s',$groupSql));
+                            $res2 = $req2->execute();
+                            $return['status2']=true;
+                            $return['message2']=T::__("Members updated successfully.",true);
+                        }
+                        catch(Exception $e){
+                            //delete yarım kalmış öğeleri
+                            $req3=$db->prepare('DELETE FROM team_members WHERE team_id=:id');
+                            $req3->execute(array('id' => $id));
+                            
+                            $return['status2']=false;
+                            $return['message2']=T::__("Members cannot updated. Please try again!",true);
+                        }
+                    }
                     return $return;
                 }
                 else{

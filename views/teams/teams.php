@@ -40,7 +40,6 @@
                     <tr>
                         <th>#</th>
                         <th><?php T::__("Team Name"); ?></th>
-                        <th><?php T::__("Description"); ?></th>
                         <th><?php T::__("Created At"); ?></th>
                         <th><?php T::__("Created By"); ?></th>
                         <th><?php T::__("Total Member"); ?></th>
@@ -52,7 +51,6 @@
                 <tr data-id="<?php echo $team->pk_team_id; ?>">
                     <td><a data-toggle="tooltip" title="Düzenle" class="text-red" href="index.php?controller=module&action=teams&do=edit&id=<?php echo $team->pk_team_id; ?>"><i class="fa fa-edit"></i></a></td>
                     <td class="has-link"><?php echo $team->name; ?></td>
-                    <td class="has-link"><?php echo $team->description; ?></td>
                     <td class="has-link"><?php echo $team->created_at; ?></td>
                     <td class="has-link"><?php echo $team->created_by_username; ?></td>
                     <td class="has-link"><?php echo $team->member_count; ?></td>
@@ -117,5 +115,9 @@ $('button[data-toggle="openModal"]').on('click',function(){
 </script>
 <?php
 ViewHelper::getView('teams','add_team');
+global $obj;
+if(!empty($obj)){
+    ViewHelper::getView('teams','edit_team');
+}
 ViewHelper::getFooter();
 ?>

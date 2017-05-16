@@ -9,6 +9,7 @@ require_once('helpers/view_helper.php');
 require_once('helpers/functions_helper.php');
 require_once('helpers/translate_helper.php');
 require_once('helpers/message_helper.php');
+require_once('helpers/module_helper.php');
 
 require_once('models/model_template.php');
 require_once('models/users_model.php');
@@ -17,6 +18,7 @@ require_once('models/view_levels_model.php');
 
 require_once('models/posts_model.php');
 require_once('models/teams_model.php');
+require_once('models/team_members_model.php');
 require_once('models/medias_model.php');
 
 require_once('routes.php');

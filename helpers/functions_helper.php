@@ -137,4 +137,18 @@ class Functions
     public static function replaceLiteralChars($string){
         return str_replace(["'","`"],["''",""],$string);
     }
+    public static function getToken($userid){
+        $currentUser=Users::getObj($userid);
+        if(!empty($currentUser)){
+            return hash("sha256",md5($currentUser->pk_user_id.$currentUser->username));
+        }
+        return hash("sha256",md5($userid.$userid.$userid));
+    }
+    public static function checkToken($userid,$token){
+        $currentUser=Users::getObj($userid);
+        if(!empty($currentUser)){
+            return $token==hash("sha256",md5($currentUser->pk_user_id.$currentUser->username));
+        }
+        return $token==hash("sha256",md5($userid.$userid.$userid));
+    }
 }
