@@ -43,9 +43,9 @@
                     <th>#</th>
                     <th><?php T::__("Author"); ?></th>
                     <th><?php T::__("Title"); ?></th>
+                    <th><?php T::__("Alias"); ?></th>
                     <th><?php T::__("Post Date"); ?></th>
                     <th><?php T::__("Comments"); ?></th>
-                    <th><?php T::__("Alias"); ?></th>
                     <th><?php T::__("ID"); ?></th>
                 </tr>
             </thead>
@@ -55,9 +55,9 @@
                 <td><a data-toggle="tooltip" title="Düzenle" class="text-red" href="index.php?controller=module&action=posts&do=edit&id=<?php echo $post->pk_post_id; ?>"><i class="fa fa-edit"></i></a></td>
                 <td class="has-link"><?php echo $post->author_name; ?></td>
                 <td class="has-link"><?php echo $post->post_title; ?></td>
+                <td class="has-link"><?php echo $post->post_alias; ?></td>
                 <td class="has-link"><?php echo $post->post_date; ?></td>
                 <td class="has-link"><?php echo $post->comment_count; ?></td>
-                <td class="has-link"><?php echo $post->post_alias; ?></td>
                 <td class="has-link"><?php echo $post->pk_post_id; ?></td>
             </tr>
             <?php endforeach; ?>

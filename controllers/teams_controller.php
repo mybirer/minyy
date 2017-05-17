@@ -120,5 +120,19 @@ class TeamsController implements ModuleInterface
         }
         TeamsController::getList();
     }
+
+    public static function show($id){
+        require_once('helpers/pagination_helper.php');
+        global $team;
+        global $paginationHTML;
+
+        $team=Teams::getObj($id);
+        $team->media_count=Medias::getTotal($id,'team',null);
+        $team->topic_count=Topics::getTotal($id,'team',null);
+        $team->subtitle_count=Subtitles::getTotal($id,'team',null);
+
+        ViewHelper::setTitle('Minyy | Team');
+        ViewHelper::getView('teams','team_dashboard');
+    }
 }
 ?>

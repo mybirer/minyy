@@ -118,20 +118,24 @@ class ModuleController
         $do=isset($_GET['do']) ? $_GET['do'] : "list";
         switch($do){
             case "add":
-            TeamsController::add();
-            break;
+                TeamsController::add();
+                break;
             case "edit":
-            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
-            TeamsController::edit($id);
-            break;
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                TeamsController::edit($id);
+                break;
             case "remove":
-            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
-            TeamsController::remove($id);
-            break;
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                TeamsController::remove($id);
+                break;
+            case 'show':
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                TeamsController::show($id);
+                break;
             case "list":
             default:
-            TeamsController::getList();
-            break;
+                TeamsController::getList();
+                break;
         }
     }
 }

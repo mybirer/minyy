@@ -1,5 +1,11 @@
 <?php
 define('_MYINC','minyy');
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true");
+header('Access-Control-Allow-Methods: GET, POST');
+header("Access-Control-Allow-Headers: XMLHttpRequest ");
+header('Content-Type: application/json');
+
 require_once('../config.php');
 require_once('../connection.php');
 

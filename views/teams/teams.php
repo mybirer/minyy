@@ -46,7 +46,7 @@
                         <th><?php T::__("ID"); ?></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="cursor: pointer;">
                 <?php $i=$params['offset']+1; foreach($objList as $team): ?>
                 <tr data-id="<?php echo $team->pk_team_id; ?>">
                     <td><a data-toggle="tooltip" title="Düzenle" class="text-red" href="index.php?controller=module&action=teams&do=edit&id=<?php echo $team->pk_team_id; ?>"><i class="fa fa-edit"></i></a></td>
@@ -110,6 +110,10 @@ $('#search-form').on("submit",function(){
 });
 $('button[data-toggle="openModal"]').on('click',function(){
     $($(this).data("target")).modal('show');
+    return false;
+});
+$('td.has-link').on('click',function(){
+    window.location.href = "index.php?controller=module&action=teams&do=show&id=" + $(this).parent().data("id");
     return false;
 });
 </script>

@@ -44,7 +44,30 @@ class PostsController implements ModuleInterface
         ViewHelper::getView('posts','posts');
     }
     public static function add() {
-        
+        if(isset($_POST['addPostForm'])){
+            $_DATA=array('post_title'=>$_POST['title'],
+                        'post_alias'=>$_POST['title'],
+                        'author_id'=>$_SESSION['user_id'],
+                        'post_content'=>$_POST['content'],
+                        'post_status'=>$_POST['status'],
+                        'comment_status'=>$_POST['addUserFormCountry'],
+                        'guid'=>$_POST['addUserFormPhone'],
+                        'post_type'=>$_POST['addUserFormPicture'],
+                        'post_params'=>$_POST['addUserFormAbout'],
+                        'terms'=>'on',
+                        'groups'=>isset($_POST['addUserFormGroups']) ? $_POST['addUserFormGroups'] : []);
+            $req=Users::insert($_DATA);
+            if (!$req['status']) {
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
+            }
+            else{
+                MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
+            }
+            header('Location: index.php?controller=module&action=posts');
+        }else{
+
+        }
+
         ViewHelper::setTitle('Minyy | Posts');
         ViewHelper::getView('posts','add_post');
         

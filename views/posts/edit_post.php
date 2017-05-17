@@ -28,7 +28,8 @@
                     </form>
                 </div>
                 <div class="box-body pad form-group">
-                    <button type="button" class="btn btn-danger pull-right"><?php T::__("Move Trash"); ?></button>
+                    <a type="button" class="btn btn-danger pull-right"><?php T::__("Delete Post"); ?></a>
+                    <a type="button" class="btn btn-default pull-left"><?php T::__("Discard Changes"); ?></a>
                 </div>
             </div>
         </div>
