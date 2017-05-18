@@ -12,19 +12,19 @@ class ModuleController
         $do=isset($_GET['do']) ? $_GET['do'] : "list";
         switch($do){
             case "add":
-            UsersController::add();
-            break;
+                UsersController::add();
+                break;
             case "edit":
-            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
-            UsersController::edit($id);
-            break;
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                UsersController::edit($id);
+                break;
             case "remove":
-            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
-            UsersController::remove($id);
-            break;
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                UsersController::remove($id);
+                break;
             case "list":
-            default:
-            UsersController::getList();
+                default:
+                UsersController::getList();
             break;
         }
     }
@@ -96,25 +96,26 @@ class ModuleController
         $do=isset($_GET['do']) ? $_GET['do'] : "list";
         switch($do){
             case "add":
-            MediasController::add();
-            break;
+                MediasController::add();
+                break;
             case "edit":
-            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
-            MediasController::edit($id);
-            break;
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                MediasController::edit($id);
+                break;
             case "remove":
-            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
-            MediasController::remove($id);
-            break;
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                MediasController::remove($id);
+                break;
             case "list":
             default:
-            MediasController::getList();
-            break;
+                MediasController::getList();
+                break;
         }
     }
 
     public function teams() {
         require_once('controllers/teams_controller.php');
+        global $currentUser;
         $do=isset($_GET['do']) ? $_GET['do'] : "list";
         switch($do){
             case "add":
@@ -134,6 +135,7 @@ class ModuleController
                 break;
             case "list":
             default:
+                var_dump($currentUser);
                 TeamsController::getList();
                 break;
         }

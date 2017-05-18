@@ -11,7 +11,8 @@
         public $lang_code ;
         public $pk_team_id ;
         public $team_name;
-
+        public $duration;
+        
         public function __construct($pk_media_id, $name, $description , $media_url, $media_type ,$created_at , $created_by , $username , $lang_code , $pk_team_id , $team_name ){
             $this->pk_media_id = $pk_media_id;
             $this->name = $name;
@@ -157,7 +158,7 @@
             $req->execute();
             // we create a list of Post objects from the database results
             foreach($req->fetchAll() as $obj) {
-                $list[] = new TranslationMedia( $obj['pk_media_id'],
+                $list[] = new Medias( $obj['pk_media_id'],
                                     $obj['name'],
                                     $obj['description'],
                                     $obj['media_url'],
@@ -181,7 +182,7 @@
                 $req->execute(array('pk_media_id' => $id));
                 $obj = $req->fetch();
                 if($obj){
-                    return new TranslationMedia( $obj['pk_media_id'],
+                    return new Medias( $obj['pk_media_id'],
                                     $obj['name'],
                                     $obj['description'],
                                     $obj['media_url'],
@@ -289,7 +290,7 @@
             $req->execute();
             
             foreach($req->fetchAll() as $obj) {
-                $list[] = new TranslationMedia( $obj['pk_media_id'],
+                $list[] = new Medias( $obj['pk_media_id'],
                                     $obj['name'],
                                     $obj['description'],
                                     $obj['media_url'],
@@ -336,7 +337,7 @@
             $req->execute();
             
             foreach($req->fetchAll() as $obj) {
-                $list[] = new TranslationMedia( $obj['pk_media_id'],
+                $list[] = new Medias( $obj['pk_media_id'],
                                     $obj['name'],
                                     $obj['description'],
                                     $obj['media_url'],
@@ -384,7 +385,7 @@
             $req->execute();
             // we create a list of Post objects from the database results
             foreach($req->fetchAll() as $obj) {
-                $list[] = new TranslationMedia( $obj['pk_media_id'],
+                $list[] = new Medias( $obj['pk_media_id'],
                                     $obj['name'],
                                     $obj['description'],
                                     $obj['media_url'],

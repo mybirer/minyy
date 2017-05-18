@@ -1,10 +1,188 @@
 <?php
     class Topics implements DatabaseObject{
-        public static function insert($params){}
-        public static function update($id,$params){}
-        public static function delete($id){}
-        public static function getObjList($params){}
-        public static function getObj($id){}
+
+        public $pk_topic_id;
+        public $title;
+        public $content;
+        public $team_id;
+        public $created_at;
+        public $created_by;
+        public $created_by_username;
+        public $created_by_fullname;
+        public $message_count;
+        public $last_message_username;
+        public $last_message_fullname;
+
+        public function __construct($pk_topic_id,$title,$content,$team_id,$created_at,$created_by,$created_by_username,$created_by_fullname,$message_count,$last_message_username,$last_message_fullname){
+			$this->pk_topic_id = $pk_topic_id;
+			$this->title = $title;
+			$this->content = $content;
+			$this->team_id = $team_id;
+			$this->created_at = $created_at;
+			$this->created_by = $created_by;
+			$this->created_by_username = $created_by_username;
+			$this->created_by_fullname = $created_by_fullname;
+			$this->message_count = $message_count;
+			$this->last_message_username = $last_message_username;
+			$this->last_message_fullname = $last_message_fullname;
+		}
+
+        public static function insert($params){
+            $return=[];
+            if ($params === null || empty($params['title']) || empty($params['content']) || empty($params['team_id']) || empty($params['created_by']) ) {
+                $return['status']=false;
+                $return['message']=T::__('Please fill all required fields!',true);
+                return $return;
+            }
+            else{
+                $db = Db::getInstance();
+
+                $req = $db->prepare('INSERT INTO team_topics (title, content,team_id, created_at, created_by) VALUES (:title, :content,:team_id, NOW(), :created_by)');
+                $res=$req->execute(array(
+                    'title' => $params['title'],
+                    'content' => $params['content'],
+                    'team_id' => $params['team_id'],
+                    'created_by' => $params['created_by']));
+                if($res){
+                    $return['status']=true;
+                    $return['message']=T::__('Team Topic created succesfully.',true);
+                    return $return;
+                }
+                else{
+                    $return['status']=false;
+                    $return['message']=T::__('An error occured. Please contact with administrators!',true);
+                    return $return;
+                }   
+            }
+        }
+        public static function update($id,$params){
+            $return=[];
+            if ($id === null || $params === null || empty($params['title']) || empty($params['conrent']) || empty($params['created_by'])) {
+                $return['status']=false;
+                $return['message']=T::__('Please fill all required fields!',true);
+                return $return;
+            }
+            else{
+                $db = Db::getInstance();
+
+                //check if media exists on db 
+                $req = $db->prepare('SELECT COUNT(pk_topic_id) FROM minyy.team_topics WHERE pk_topic_id=:pk_topic_id');
+                $req->execute(array('pk_topic_id' => $id));
+                if($req->fetchColumn()==0){
+                    $return['status']=false;
+                    $return['message']=T::__('Team Topic not found!',true);
+                    return $return;
+                }
+
+                $req = $db->prepare('UPDATE minyy.team_topics SET title = :title, content = :content  WHERE  pk_topic_id = :pk_topic_id');
+                $res=$req->execute(array(
+                    'title' => $params['title'],
+                    'content' => $params['content'],
+                    'pk_topic_id' => $pk_topic_id));
+                if($res){
+                    $return['status']=true;
+                    $return['message']=T::__('Your topic updated succesfully.',true);
+                    return $return;
+                }
+                else{
+                    $return['status']=false;
+                    $return['message']=T::__('An error occured. Please contact with administrators!',true);
+                    return $return;
+                }   
+            }
+        }
+        public static function delete($id){
+            // TO-DO 11.05.2017 -> takım silinirken bağlı olunan bütün medya ve team_member öğeleri bununla beraber yapılan çeviriler de silinecek mi (siliniyor mu? foreign key constraints buna müsade ediyor mu)
+            $db=Db::getInstance();        
+            //check if team is exists on db 
+            $req = $db->prepare('SELECT COUNT(pk_team_id) FROM minyy.teams WHERE pk_team_id=:id');
+            $req->execute(array('id' => $id));
+            if($req->fetchColumn()==0){
+                $return['status']=false;
+                $return['message']=T::__('Team not found!',true);
+                return $return;
+            }    
+            $req = $db->prepare('DELETE FROM minyy.teams WHERE pk_team_id=:id');
+            $res=$req->execute(array('id'=>$id));
+            if($res){
+                $return['status']=true;
+                $return['message']=T::__(sprintf('ID: %s The team deleted succesfully!',$id),true);
+                return $return;
+            }
+            else{
+                $return['status']=false;
+                $return['message']=T::__('An error occured. Please contact with administrators!',true);
+                return $return;
+            }
+        }
+        public static function getObjList($params){
+            $list = [];
+
+            $order_dirs=array('desc','asc');
+            $key=array_search($params['order_dir'],$order_dirs);
+            $order_dir=$order_dirs[($key) ? $key : 0];
+
+            $order_columns=array('pk_topic_id','title','content', 'created_at', 'created_by');
+            $key=array_search($params['order_by'],$order_columns);
+            $order_by=$order_columns[($key) ? $key : 0];
+
+            $limit=$params['limit'] ? $params['limit'] : '20';
+            $offset=$params['offset'] ? $params['offset'] : '0';
+
+            $query='SELECT t.*,u.username, (SELECT COUNT(tm.pk_team_member_id) FROM minyy.team_members AS tm WHERE tm.team_id=t.pk_team_id) AS \'member_count\' FROM minyy.teams as t LEFT JOIN minyy.users as u on t.created_by=u.pk_user_id';
+            if(!empty($params['search_term'])){
+                $query.=" WHERE lower(concat(pk_team_id, '', name, '', description , '', created_at, '', created_by )) LIKE :search_term";
+            }
+            $query.=" ORDER BY $order_by $order_dir LIMIT :offset , :limit";
+
+            $db = Db::getInstance();
+            $req = $db->prepare($query);
+            $req->bindValue(':limit', intval($limit), PDO::PARAM_INT);
+            $req->bindValue(':offset', intval($offset), PDO::PARAM_INT);
+            if(!empty($params['search_term'])){
+                $req->bindValue(':search_term', '%'.Functions::replaceLiteralChars($params['search_term']).'%', PDO::PARAM_STR);
+            }
+            $req->execute();
+            // we create a list of Post objects from the database results
+            foreach($req->fetchAll() as $obj) {
+                $list[] = new Teams( $obj['pk_team_id'],
+                                    $obj['name'],
+                                    $obj['description'],
+                                    $obj['created_at'],
+                                    $obj['created_by'],
+                                    $obj['username'],
+                                    $obj['member_count']);
+
+            }
+            return $list;
+        }
+
+        public static function getObj($id){
+            try{
+                $db = Db::getInstance();
+                $id = intval($id);
+                $req = $db->prepare('SELECT t.*,u.username, (SELECT COUNT(tm.pk_team_member_id) FROM minyy.team_members AS tm WHERE tm.team_id=t.pk_team_id) AS \'member_count\'  FROM minyy.teams as t LEFT JOIN minyy.users as u on t.created_by=u.pk_user_id WHERE t.pk_team_id = :pk_team_id');
+                $req->execute(array('pk_team_id' => $id));
+                $obj = $req->fetch();
+                if($obj){
+                    return new Teams( $obj['pk_team_id'],
+                                    $obj['name'],
+                                    $obj['description'],
+                                    $obj['created_at'],
+                                    $obj['created_by'],
+                                    $obj['username'],
+                                    $obj['member_count']);
+                }
+                else{
+                    return [];
+                }
+            }
+            catch (PDOException $e){
+                return $e->getMessage();
+            }
+        }
+
+        
         
         //count döndürür. 
         //type-> 'user' 'team' 'user_and_team' 'all' değerlerini alabilir. 

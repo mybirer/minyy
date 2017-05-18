@@ -5,6 +5,7 @@ class MediasController implements ModuleInterface
 {
     public static function getList($params=array()) {
         //required libraries
+        
         require_once('helpers/pagination_helper.php');
         global $objList;
         global $paginationHTML;
@@ -28,7 +29,7 @@ class MediasController implements ModuleInterface
         $pagination = (new Pagination());
         $pagination->setCurrent($page);
         $pagination->setRPP($limit);
-        $pagination->setTotal(Medias::getTotal($search_term));
+        $pagination->setTotal(Medias::getTotal(null,'all',$search_term));
         $pagination->setClasses(array("pagination","pagination-sm","no-margin","pull-right"));
         $paginationHTML = $pagination->parse();
         

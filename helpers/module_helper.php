@@ -12,5 +12,6 @@ class ModuleHelper
         }
         return $val;
     }
+
 }
 ?>

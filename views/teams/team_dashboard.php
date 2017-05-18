@@ -146,7 +146,7 @@
             </div>
         </div>
         <div class="col-xs-7">
-            <div class="box box-info">
+            <div class="box box-warning">
                 <div class="box-header">
                     <h3 class="box-title">Topics</h3>
                     <div class="box-tools">
@@ -211,7 +211,6 @@
 <script type="text/javascript">
 $('a[data-toggle="openModal"]').on('click',function(){
     $($(this).data("target")).modal('show');
-    
     return false;
 });
 </script>
