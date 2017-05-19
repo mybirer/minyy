@@ -2,6 +2,7 @@
 define('_MYINC','minyy');
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
+header('Content-Type: application/json');
 
 require_once('../config.php');
 require_once('../connection.php');

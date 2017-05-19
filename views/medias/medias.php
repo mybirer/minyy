@@ -78,10 +78,6 @@
                         </ul>
                     </div>
                 </div>
-                <?php
-                echo $paginationHTML;
-                ?>
-
             </div>
             </div>
             <?php
@@ -92,6 +88,12 @@
     </div>
     </div>
 </section>
+<script type="text/javascript">
+$('td.has-link').on('click',function(){
+    window.location.href = "index.php?controller=module&action=medias&do=show&id=" + $(this).parent().data("id");
+    return false;
+});
+</script>
 <?php
 ViewHelper::getFooter();
 ?>
