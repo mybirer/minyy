@@ -49,3 +49,23 @@ ul.ui-autocomplete.ui-widget-content .ui-menu-item {
 ul.ui-autocomplete.ui-widget-content .ui-menu-item.ui-state-focus {
     background-color: #ddd;
 }
+
+ul.sub-list-vertical {
+    width:100%;
+    margin: 0;
+}
+ul.sub-list-vertical li {
+    float: left;
+    padding: 0;
+    margin-right: 29px;
+}
+
+ul.sub-list-vertical::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+ul.sub-list-vertical .checkbox {
+    margin: 0;
+}

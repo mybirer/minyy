@@ -296,7 +296,7 @@ class Users implements DatabaseObject {
             return $e->getMessage();
         }
     }
-    public function getUserModules($id){
+    public function getUserModules(){
         $modules=[];
         $params=[
             "search_term"=>"",
@@ -308,19 +308,24 @@ class Users implements DatabaseObject {
         $viewLevels=ViewLevels::getObjList($params);
         foreach($viewLevels as $viewObj){
             $voGroups=json_decode($viewObj->groups);
-            $voModules=json_decode($viewObj->modules);
+            $voModules=json_decode($viewObj->modules,true);
             foreach($this->groups as $uoGroup){
                 if(in_array($uoGroup,$voGroups)){
-                    $modules=array_merge($modules,$voModules);
+                    $keys = array_keys($voModules);
+                    foreach($keys as $key){
+                        if(array_key_exists($key,$modules)){
+                            $temp=array_merge($modules[$key],$voModules[$key]);
+                            $modules[$key]=array_unique($temp);
+                        }
+                        else{
+                            $modules[$key]=$voModules[$key]; //todo eğer iki tane grouptan farklı do yetkileri geliyorsa ikisini birleştir
+                        }
+                        
+                    }
                 }
             }
         }
-        $modules=array_merge(array_unique($modules));
-        asort($modules);
-        global $controllers;
-        foreach($modules as $kmodule=>$vmodule){
-            $modules[$kmodule]=$controllers['module'][$vmodule];
-        }
+        ksort($modules);
         return $modules;
     }
 }

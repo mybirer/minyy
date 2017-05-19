@@ -29,6 +29,9 @@ class Functions
 {
     private function __construct() {}
     public static function clearString($string,$replaceDash=true){
+        if(gettype($string)!='string'){
+            return $string;
+        }
         $string=preg_replace("/[;]|[\\\*]/","",$string);
         $string=str_replace("'","''",$string);
         $string=($replaceDash) ? str_replace("-","\-",$string) : $string;

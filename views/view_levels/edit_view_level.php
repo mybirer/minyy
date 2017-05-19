@@ -1,9 +1,9 @@
 <?php 
     global $obj;
     global $groupList;
-    global $modules;
+    global $MODULES;
     $objGroups=json_decode($obj->groups);
-    $objModules=json_decode($obj->modules);
+    $objModules=json_decode($obj->modules,true);
 ?>
 <div class="modal fade" id="editViewLevelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -30,8 +30,19 @@
             <div class="form-group has-feedback">
                 <label><?php T::__('Modules'); ?></label>
                 <div class="form-group">
-                  <?php foreach($modules as $moduleObj=>$moduleVal): ?>
-                  <div class="checkbox"><label><input type="checkbox" name="editViewLevelFormModules[]" value="<?php echo $moduleVal["key"]; ?>" <?php echo in_array($moduleObj,$objModules) ? "checked" : "" ?>><?php echo $moduleVal["name"]; ?></label></div>
+                  <?php foreach($MODULES as $moduleObj=>$moduleVal): ?>
+                  <div class="input-group">
+                  <div class="checkbox"><label><input data-toggle="select-change" type="checkbox" name="editViewLevelFormModules[]" value="<?php echo $moduleVal["module_key"]; ?>" <?php echo array_key_exists($moduleObj,$objModules) ? "checked" : "" ?>><?php echo $moduleVal["name"]; ?></label></div>
+                    <ul class="sub-list-vertical">
+                    <?php
+                    $does=!empty(json_decode($moduleVal['does'])) ? json_decode($moduleVal['does']) : [];
+                    foreach($does as $doe):
+                    $checkedStr=array_key_exists($moduleObj,$objModules) && in_array($doe,$objModules[$moduleObj]) ? 'checked' : '';
+                    ?>
+                    <li><div class="checkbox"><label><input type="checkbox" name="editViewLevelFormModule[<?php echo $moduleVal["module_key"]; ?>][]" value="<?php echo $doe; ?>" <?php echo $checkedStr; ?>><?php echo $doe; ?></label></div></li>
+                    <?php endforeach; ?>
+                    </ul>
+                  </div>
                   <?php endforeach; ?>
                 </div>
             </div>
@@ -50,6 +61,16 @@
     </div>
     </div>
 </div>
+<script type="text/javascript">
+$('input[data-toggle="select-change"]').on('change',function(){
+    if(this.checked==true){
+        $(this).parentsUntil('.form-group').find('input[type="checkbox"]').prop('checked',true);
+    }
+    else{
+        $(this).parentsUntil('.form-group').find('input[type="checkbox"]').prop('checked',false);
+    }
+});
+</script>
 <script type='text/javascript'>
     setTimeout(function(){ $('#editViewLevelModal').modal('show');},250);
 </script>

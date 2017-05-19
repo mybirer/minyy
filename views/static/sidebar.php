@@ -1,5 +1,6 @@
 <?php
 global $currentUser;
+global $MODULES;
 ?>
 <!-- sidebar: style can be found in sidebar.less -->
 <section class="sidebar">
@@ -19,8 +20,8 @@ global $currentUser;
     <?php
     foreach($currentUser->modules as $module=>$moduleProps):
     ?>
-    <li class="<?php echo Functions::isActive($moduleProps["key"]); ?>">
-        <a href="index.php?controller=module&action=<?php echo $moduleProps["key"]; ?>"><i class="fa <?php echo $moduleProps["icon"]; ?>"></i> <?php echo $moduleProps["name"]; ?></a>
+    <li class="<?php echo Functions::isActive($module); ?>">
+        <a href="index.php?controller=module&action=<?php echo $module; ?>"><i class="fa <?php echo $MODULES[$module]["icon"]; ?>"></i> <?php echo $MODULES[$module]["name"]; ?></a>
     </li>
     <?php endforeach; ?>
     </ul>

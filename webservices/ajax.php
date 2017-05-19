@@ -1,10 +1,7 @@
 <?php
 define('_MYINC','minyy');
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Credentials: true");
-header('Access-Control-Allow-Methods: GET, POST');
-header("Access-Control-Allow-Headers: XMLHttpRequest ");
 header('Content-Type: application/json');
+header("Access-Control-Allow-Origin: *");
 
 require_once('../config.php');
 require_once('../connection.php');
@@ -18,17 +15,16 @@ require_once('../helpers/message_helper.php');
 require_once('../models/model_template.php');
 require_once('../models/users_model.php');
 require_once('../models/view_levels_model.php');
+require_once('../models/teams_model.php');
+require_once('../models/team_members_model.php');
 
 AuthHelper::checkSession();
 // set_time_limit(0);
 
 $_OBJ=array();
 $form_data = array('success'=>false,'message'=>'Bad Query'); //Pass back the data to `form.php`
-if(isset($_GET) && !empty($_GET)){
-	$_OBJ=$_GET;
-}
-else if(isset($_POST) && !empty($_POST)){
-	$_OBJ=$_POST;
+if(isset($_REQUEST) && !empty($_REQUEST)){
+	$_OBJ=$_REQUEST;
 }
 else if(isset($GLOBALS['HTTP_RAW_POST_DATA'])){
 	$_OBJ=json_decode($GLOBALS['HTTP_RAW_POST_DATA'],TRUE);
@@ -59,8 +55,53 @@ if(isset($ot)){
 					}
 				}
 				$form_data['success']=true;
-				$form_data['message']="Success! Data fetched from twitter";
+				$form_data['message']="Success!";
 				$form_data['returnedUsers']=$returnedUsers;
+			}
+			else{
+				$form_data['message'] = 'Bad Query';
+			}
+		break;
+		case 'ltm'://ltm stands for list team members
+			if(isset($ui) && isset($token) && isset($ti) && Functions::checkToken($ui,$token)){
+	
+				$_columns = array( 
+				// datatable column index  => database column name
+					0 =>'user_id', 
+					1 => 'fullname',
+					2=> 'since',
+					3=> 'type'
+				);
+				
+				$search_term=isset($search['value']) ? $search['value'] : '';
+				$order_by=isset($order['column']) ? $order['column'] : '';
+				$order_dir=isset($order['dir']) ? $order['dir'] : '';
+				$limit=isset($length) ? $length : "10";
+				$offset=isset($start) ? $start : "0";
+
+				$gparams=[
+					"search_term"=>$search_term,
+					"order_by"=>$order_by,
+					"order_dir"=>$order_dir,
+					"limit"=>$limit,
+					"offset"=>$offset
+				];
+				$memberCount=TeamMembers::getTotal($ti,$search_term);
+				$memberList=TeamMembers::getTeamMembers($ti,$gparams);
+				$memberData=array();
+				if(!empty($memberList)){
+					foreach($memberList as $memberObj){
+						$memberData[]=[$memberObj->user_id,$memberObj->fullname,$memberObj->since,$memberObj->type];
+					}
+				}
+				$json_data = array(
+				"draw"            => intval( isset($draw) ? $draw : 1 ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+				"recordsTotal"    => intval( $memberCount ),  // total number of records
+				"recordsFiltered" => intval( $limit ), // total number of records after searching, if there is no searching then totalFiltered = totalData
+				"data"            => $memberData   // total data array
+				);
+				$form_data['success']=true;
+				$form_data['message']="Success!";
 			}
 			else{
 				$form_data['message'] = 'Bad Query';
@@ -68,6 +109,5 @@ if(isset($ot)){
 		break;
 	}
 }
-header('Content-Type: application/json');
-echo json_encode($form_data);
+echo json_encode($json_data);
 ?>

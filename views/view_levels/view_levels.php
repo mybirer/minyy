@@ -4,6 +4,7 @@
     global $paginationHTML;
     global $params;
     global $groupList;
+    global $MODULES;
 ?>
 <section class="content-header">
     <h1>
@@ -66,9 +67,9 @@
                 <td class="has-link">
                     <?php
                         $modulestr=[];
-                        $userModules=json_decode($user->modules);
-                        foreach($userModules as $moduleObj){
-                            $modulestr[]=$moduleObj;
+                        $userModules=json_decode($user->modules,true);
+                        foreach($userModules as $moduleKey=>$moduleObj){
+                            $modulestr[]=$MODULES[$moduleKey]["name"];
                         }
                         echo implode(", ",$modulestr);
                     ?>

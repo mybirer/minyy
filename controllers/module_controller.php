@@ -135,7 +135,6 @@ class ModuleController
                 break;
             case "list":
             default:
-                var_dump($currentUser);
                 TeamsController::getList();
                 break;
         }

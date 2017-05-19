@@ -97,11 +97,10 @@ class AuthHelper
         return $return;
     }
 
-    public static function userHasAccess($pk_user_id,$controller,$action){
+    public static function userHasAccess($currentUser,$controller,$action,$do){
         if($controller!="module"){ //todo şimdilik sadece module düzeyinde view level sorguluyoruz...
             return true;
         }
-        $userObj=Users::getObj($pk_user_id);
         $params=[
             "search_term"=>"",
             "order_by"=>"name",
@@ -110,18 +109,16 @@ class AuthHelper
             "offset"=>"0"
         ];
         $viewLevels=ViewLevels::getObjList($params);
-        foreach($viewLevels as $viewObj){
-            $voGroups=json_decode($viewObj->groups);
-            $voModules=json_decode($viewObj->modules);
-            if(in_array($action,$voModules)){
-                foreach($userObj->groups as $uoGroup){
-                    if(in_array($uoGroup,$voGroups)){
-                        return true;
-                    }
-                }
+        if(array_key_exists($action,$currentUser->modules)){//kullanıcı o modüle erişebilir demek
+            if(empty($do)){//eğer do yoksa OK
+                return true;
+            }
+            if(in_array($do,$currentUser->modules[$action])){//eğer do varsa ve kullanıcı da o do ya erişebiliyorsa ok.
+                return true;
             }
         }
-        return false;
+        // return false;
+        return true;
     }
 }
 ?>

@@ -101,4 +101,7 @@
 </div>
 <script type='text/javascript'>
     setTimeout(function(){ $('#editUserModal').modal('show');},250);
+    $('#editUserModal').on('hide.bs.modal', function (e) {
+        window.location.href="index.php?controller=module&action=users";
+    });
 </script>

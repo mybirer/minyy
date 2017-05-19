@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-xs-12">
             <?php echo MessageHelper::getMessageHTML(); ?>  
-            <?php echo ViewHelper::getView('teams','header_summary');//eğer yönetici ise ?>
+            <?php ViewHelper::getView('teams','header_summary'); ?>
             <div class="box  box-primary">
                 <div class="box-header">
                     <h3 class="box-title">Medias</h3>
@@ -100,47 +100,25 @@
     </div>
     <div class="row">
         <div class="col-xs-5">
-            <div class="box box-info">
+            <div class="box box-info container">
                 <div class="box-header">
                     <h3 class="box-title">Last Active Users</h3>
                     <a href="" data-toggle="openModal" data-target="#editUsersModal" class="pull-right">Edit Users</a>
                 </div>
                 <div class="box-body no-padding">
-                    <table class="table table-hover">
+                    <table id="member_table" class="display table table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
                                 <th>Name</th>
-                                <th>Last Activity</th>
-                                <th>Reputation</th>
+                                <th>Since</th>
+                                <th>Type</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1.</td>
-                                <td>M.Yasin Birer</td>
-                                <td>23:11, Yesterday</td>
-                                <td>2600</td>
-                            </tr>
-                            <tr>
-                                <td>2.</td>
-                                <td>M.Onat (Moderator)</td>
-                                <td>17.08.2017</td>
-                                <td>756</td>
-                            </tr>
-                            <tr>
-                                <td>3.</td>
-                                <td>Yusuf ERDEN</td>
-                                <td>15.08.2017</td>
-                                <td>1152</td>
-                            </tr>
-                            <tr>
-                                <td>4.</td>
-                                <td>Nesrullah</td>
-                                <td>11.08.2017</td>
-                                <td>322</td>
-                            </tr>
                         </tbody>
+                        <tfoot>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -178,29 +156,6 @@
                                 <td>yusuf</td>
                                 <td>26</td>
                             </tr>
-                            <tr>
-                                <td>İlk Topic</td>
-                                <td>Yusuf</td>
-                                <td>17.08.2017</td>
-                                <td>yusuf</td>
-                                <td>26</td>
-                            </tr>
-                            <tr>
-                                <td>İlk Topic</td>
-                                <td>Yusuf</td>
-                                <td>17.08.2017</td>
-                                <td>yusuf</td>
-                                <td>26</td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>İlk Topic</td>
-                                <td>Yusuf</td>
-                                <td>17.08.2017</td>
-                                <td>yusuf</td>
-                                <td>26</td>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -208,13 +163,31 @@
         </div>
     </div>
 </section>
-<script type="text/javascript">
-$('a[data-toggle="openModal"]').on('click',function(){
-    $($(this).data("target")).modal('show');
-    return false;
-});
-</script>
 <?php
-ViewHelper::getView('teams','edit_team_users');
+$token=Functions::getToken($_SESSION['user_id']);
+$userid=$_SESSION['user_id'];
+$teamId=$team->pk_team_id;
+// $groupStr=json_encode($groupList);
+
+$script=<<<EOT
+<script type="text/javascript" src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script>
+  $(function() {
+    $('#member_table').DataTable( {
+        
+        processing: true,
+        serverSide: true,
+        ajax: "webservices/ajax.php?ot=ltm&ui={$userid}&token={$token}&ti={$teamId}"
+    } );
+    $('a[data-toggle="openModal"]').on('click',function(){
+        $($(this).data("target")).modal('show');
+        return false;
+    });
+  });
+</script>
+EOT;
+ViewHelper::setAfterBody($script);
+ViewHelper::getView('teams','edit_team_members');
 ViewHelper::getFooter();
 ?>

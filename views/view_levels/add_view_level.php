@@ -1,6 +1,6 @@
 <?php 
     global $groupList;
-    global $modules;
+    global $MODULES;
 ?>
 <div class="modal fade" id="addViewLevelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -27,8 +27,15 @@
             <div class="form-group has-feedback">
                 <label><?php T::__('Modules'); ?></label>
                 <div class="form-group">
-                  <?php foreach($modules as $moduleObj=>$moduleVal): ?>
-                  <div class="checkbox"><label><input type="checkbox" name="addViewLevelFormModules[]" value="<?php echo $moduleVal["key"]; ?>"><?php echo $moduleVal["name"]; ?></label></div>
+                  <?php foreach($MODULES as $moduleObj=>$moduleVal): ?>
+                  <div class="input-group">
+                  <div class="checkbox"><label><input data-toggle="select-change" type="checkbox" name="addViewLevelFormModules[]" value="<?php echo $moduleVal["module_key"]; ?>"><?php echo $moduleVal["name"]; ?></label></div>
+                    <ul class="sub-list-vertical">
+                    <?php $does=!empty(json_decode($moduleVal['does'])) ? json_decode($moduleVal['does']) : []; foreach($does as $doe): ?>
+                    <li><div class="checkbox"><label><input type="checkbox" name="addViewLevelFormModule[<?php echo $moduleVal["module_key"]; ?>][]" value="<?php echo $doe; ?>"><?php echo $doe; ?></label></div></li>
+                    <?php endforeach; ?>
+                    </ul>
+                  </div>
                   <?php endforeach; ?>
                 </div>
             </div>
@@ -41,3 +48,13 @@
     </div>
     </div>
 </div>
+<script type="text/javascript">
+$('input[data-toggle="select-change"]').on('change',function(){
+    if(this.checked==true){
+        $(this).parentsUntil('.form-group').find('input[type="checkbox"]').prop('checked',true);
+    }
+    else{
+        $(this).parentsUntil('.form-group').find('input[type="checkbox"]').prop('checked',false);
+    }
+});
+</script>

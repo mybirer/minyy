@@ -24,9 +24,13 @@ class ViewLevels implements DatabaseObject {
             $tempArray[]=(int) Functions::clearString($gObj);
         }
         $params['groups']=json_encode($tempArray);
+
         $tempArray=[];
         foreach($params['modules'] as $gObj){
-            $tempArray[]=Functions::clearString($gObj);
+            $tempArray[Functions::clearString($gObj)]=[];
+        }
+        foreach($params['module'] as $gKey=>$gObj){
+            $tempArray[Functions::clearString($gKey)]=Functions::clearString($gObj);
         }
         $params['modules']=json_encode($tempArray);
         $db = Db::getInstance();
@@ -69,7 +73,10 @@ class ViewLevels implements DatabaseObject {
         $params['groups']=json_encode($tempArray);
         $tempArray=[];
         foreach($params['modules'] as $gObj){
-            $tempArray[]=Functions::clearString($gObj);
+            $tempArray[Functions::clearString($gObj)]=[];
+        }
+        foreach($params['module'] as $gKey=>$gObj){
+            $tempArray[Functions::clearString($gKey)]=Functions::clearString($gObj);
         }
         $params['modules']=json_encode($tempArray);
         $db = Db::getInstance();

@@ -176,15 +176,11 @@ class TeamMembers implements DatabaseObject{
         }
     }
 
-    public static function getTotal($search_term) {
-        $query="SELECT COUNT(pk_team_member_id) FROM minyy.team_members";
-        if(!empty($search_term))
-            $query.=" WHERE lower(concat(pk_team_member_id, '', since, '', team_id , '', user_id, '', type )) LIKE :search_term";
+    public static function getTotal($teamId) {
+        $query="SELECT COUNT(pk_team_member_id) FROM minyy.team_members WHERE team_id=:team_id";
         $db = Db::getInstance();
         $req = $db->prepare($query);
-        if(!empty($search_term))
-            $req->bindValue(':search_term', "%".$search_term."%", PDO::PARAM_STR);
-        
+        $req->bindValue(':team_id',$teamId);
         $req->execute();
         $res=$req->fetch();
         return (int) $res[0];
