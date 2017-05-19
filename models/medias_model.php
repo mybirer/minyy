@@ -8,12 +8,13 @@
         public $created_at ;
         public $created_by ;
         public $username;
+        public $user_fullname;
         public $lang_code ;
         public $pk_team_id ;
         public $team_name;
         public $duration;
         
-        public function __construct($pk_media_id, $name, $description , $media_url, $media_type ,$created_at , $created_by , $username , $lang_code , $pk_team_id , $team_name ){
+        public function __construct($pk_media_id, $name, $description , $media_url, $media_type ,$created_at , $created_by , $username , $user_fullname, $lang_code , $pk_team_id , $team_name ){
             $this->pk_media_id = $pk_media_id;
             $this->name = $name;
             $this->description  = $description;
@@ -22,6 +23,7 @@
             $this->created_at  = $created_at;
             $this->created_by  = $created_by;
             $this->username = $username; 
+            $this->user_fullname = $user_fullname; 
             $this->lang_code  = $lang_code;
             $this->pk_team_id  = $pk_team_id;
             $this->team_name = $team_name;
@@ -142,7 +144,7 @@
             $limit=$params['limit'] ? $params['limit'] : '20';
             $offset=$params['offset'] ? $params['offset'] : '0';
 
-            $query='SELECT m.*,u.username,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id ';
+            $query='SELECT m.*,u.username,u.fullname,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id ';
             if(!empty($params['search_term'])){
                 $query.=" WHERE lower(concat(pk_media_id, '', created_by, '', created_at , '', media_type, '', lang_code, '', pk_team_id, '', media_url)) LIKE :search_term";
             }
@@ -166,6 +168,7 @@
                                     $obj['created_at'],
                                     $obj['created_by'],
                                     $obj['username'],
+                                    $obj['fullname'],
                                     $obj['lang_code'],
                                     $obj['pk_team_id'],
                                     $obj['team_name']);
@@ -178,7 +181,7 @@
             try{
                 $db = Db::getInstance();
                 $id = intval($id);
-                $req = $db->prepare('SELECT m.*,u.username,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id WHERE p.pk_media_id = :pk_media_id');
+                $req = $db->prepare('SELECT m.*,u.username,u.fullname,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id WHERE m.pk_media_id = :pk_media_id');
                 $req->execute(array('pk_media_id' => $id));
                 $obj = $req->fetch();
                 if($obj){
@@ -190,6 +193,7 @@
                                     $obj['created_at'],
                                     $obj['created_by'],
                                     $obj['username'],
+                                    $obj['fullname'],
                                     $obj['lang_code'],
                                     $obj['pk_team_id'],
                                     $obj['team_name']);
@@ -273,7 +277,7 @@
             $limit=$params['limit'] ? $params['limit'] : '20';
             $offset=$params['offset'] ? $params['offset'] : '0';
 
-            $query='SELECT m.*,u.username,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id ';
+            $query='SELECT m.*,u.username,u.fullname,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id ';
             if(!empty($params['search_term'])){
                 $query.=" WHERE m.created_by=:userId AND lower(concat(pk_media_id, '', created_at , '', media_type, '', lang_code, '', pk_team_id, '', media_url)) LIKE :search_term";
             }
@@ -298,6 +302,7 @@
                                     $obj['created_at'],
                                     $obj['created_by'],
                                     $obj['username'],
+                                    $obj['fullname'],
                                     $obj['lang_code'],
                                     $obj['pk_team_id'],
                                     $obj['team_name']);
@@ -320,7 +325,7 @@
             $limit=$params['limit'] ? $params['limit'] : '20';
             $offset=$params['offset'] ? $params['offset'] : '0';
 
-            $query='SELECT m.*,u.username,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id ';
+            $query='SELECT m.*,u.username,u.fullname,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id ';
             if(!empty($params['search_term'])){
                 $query.=" WHERE m.pk_team_id=:teamId AND lower(concat(pk_media_id, '', created_by, '', created_at , '', media_type, '', lang_code, '', media_url)) LIKE :search_term";
             }
@@ -345,6 +350,7 @@
                                     $obj['created_at'],
                                     $obj['created_by'],
                                     $obj['username'],
+                                    $obj['fullname'],
                                     $obj['lang_code'],
                                     $obj['pk_team_id'],
                                     $obj['team_name']);
@@ -368,7 +374,7 @@
             $limit=$params['limit'] ? $params['limit'] : '20';
             $offset=$params['offset'] ? $params['offset'] : '0';
 
-            $query='SELECT m.* , u.fullname, t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on m.pk_team_id=t.pk_team_id LEFT JOIN minyy.team_members as tm on tm.team_id = t.pk_team_id ';
+            $query='SELECT m.* ,u.username, u.fullname, t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on m.pk_team_id=t.pk_team_id LEFT JOIN minyy.team_members as tm on tm.team_id = t.pk_team_id ';
             if(!empty($params['search_term'])){
                 $query.=" WHERE ( m.created_by=:userId or tm.user_id=:userId or t.created_by=:userId) and lower(concat(pk_media_id, '', created_by, '', created_at , '', media_type, '', lang_code, '', pk_team_id, '', media_url)) LIKE :search_term";
             }
@@ -393,6 +399,7 @@
                                     $obj['created_at'],
                                     $obj['created_by'],
                                     $obj['username'],
+                                    $obj['fullname'],
                                     $obj['lang_code'],
                                     $obj['pk_team_id'],
                                     $obj['team_name']);

@@ -106,6 +106,10 @@ class ModuleController
                 $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
                 MediasController::remove($id);
                 break;
+            case "show":
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                MediasController::show($id);
+                break;
             case "list":
             default:
                 MediasController::getList();
