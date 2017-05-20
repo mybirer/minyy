@@ -1,7 +1,7 @@
 <?php ViewHelper::getHeader(); ?>
 <?php
     global $media;
-    global $paginationHTML;
+    global $languages;
 ?>
 <section class="content-header">
     <h1>
@@ -9,7 +9,7 @@
     </h1>
     <ol class="breadcrumb">
     <li><a href="index.php"><i class="fa fa-dashboard"></i> <?php T::__("Dashboard"); ?></a></li>
-    <li><a href="index.php"><i class="fa fa-dashboard"></i> <?php T::__("Medias"); ?></a></li>
+    <li><a href="index.php?controller=module&action=medias"><i class="fa fa-dashboard"></i> <?php T::__("Medias"); ?></a></li>
     <li class="active"> <?php T::__("Media Detail"); ?></li>
     </ol>
 </section>
@@ -20,22 +20,21 @@
             <div class="box no-border">
                 <div class="media">
                     <div class="media-body">
-                        <iframe width="100%" style="min-height:360px;" src="https://www.youtube.com/embed/VwsofiGZVn8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" style="min-height:360px;" src="https://youtube.com/embed/<?php echo ModuleHelper::getYoutubeIdFromUrl($media->media_url); ?>?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="user-block box-header ">
-                        <img class="img-circle" src="assets/img/user1-128x128.jpg" alt="User Image">
-                        <button type="button" class="btn btn-danger pull-right"><?php T::__("Delete"); ?>!</button>
-                        <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-                        <span class="description"><?php if($media->team_name != null || trim($media->team_name) != '' ) echo '<b>Team:</b> <a href="index.php?controller=module&action=teams&do=show&id='.$media->pk_media_id.'">'.$media->team_name.'</a> - '; ?><?php echo $media->created_at; ?></span>
-                    </div>
                     <h3 style="margin-top: auto;"><?php echo $media->name; ?></h3>
                     <p><?php echo $media->description; ?></p>
-                    <hr style="margin-top: 10px;margin-bottom: 10px;">
-                    <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> <?php T::__("Share"); ?></button>
-                    <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> <?php T::__("Like"); ?></button>
-                    <span class="pull-right text-muted">45 <?php T::__("likes"); ?> - 2 <?php T::__("comments"); ?></span>
+                    <div class="media-meta">
+                        <a href="index.php?controller=module&action=medias&do=remove&id=<?php echo $media->pk_media_id; ?>" data-toggle="remove-button" class="btn btn-danger pull-right"><?php T::__("Delete Media"); ?></a>
+                        <p><?php T::__('Added by:'); ?> <a href="#" class="username"><?php echo $media->user_fullname; ?></a> <?php echo T::__('Added at: '); echo $media->created_at; ?></p>
+                        <?php if(!empty($media->team_name)): ?>
+                            <span class="description">
+                                <b><?php T::__('Team:'); ?></b> <a href="index.php?controller=module&action=teams&do=show&id=<?php echo $media->pk_media_id; ?>"><?php echo $media->team_name; ?></a>
+                            </span>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
             <div class="box box-primary">
@@ -148,29 +147,47 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-4">
-            <div class="box box-warning box-solid">
+            <div class="box box-primary box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Revisions</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                    </div>
+                    <h3 class="box-title"><?php T::__('Contribute') ?></h3>
                 </div>
                 <div class="box-body">
-                    <b>Translated Languages (7)</b><span style="float:right;">(<?php echo $media->lang_code; ?>)</span>
+                    <div class="alert alert-dismissible bg-gray">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-info"></i><?php T::__('Contribute This Media'); ?></h4>
+                        <p><?php T::__('You can improve this medias translations via click on language at below'); ?></p>
+                    </div>
+                    <p><?php T::__('This video is in ');?><b><?php echo $languages[$media->lang_code]['lang_name']; ?></b></p>
+                    <p><a href="#" data-toggle="openModal" data-target="#addSubtitleModal"> <i class="fa fa-pencil"></i> <?php T::__('Add a new language!'); ?></a></p>
+                    <p><?php echo count($media->subtitles)+1; ?> <?php T::__('Languages'); ?></p>
+                    <hr />
+                    <p><b><?php T::__('Languages'); ?></b></p>
                     <ul class="list-unstyled text-muted">
-                        <li>en_US (2)</li>
-                        <li>tr_TR (1)</li>
-                        <li>ch_CH (3)</li>
-                        <li>de_DE (1)</li>
+                        <li><i class="fa fa-circle text-yellow"></i> <a href="index.php?controller=module&action=medias&do=editor&id=<?php echo $media->pk_media_id; ?>&ml=<?php echo $media->lang_code; ?>"><?php echo $languages[$media->lang_code]['lang_name']; ?></a> (<?php T::__('original'); ?>) (<?php T::__('incomplete'); ?>)</li>
+                        <?php foreach($media->subtitles as $subtitle): ?>
+                        <li><i class="fa fa-circle text-yellow"></i> <a href="index.php?controller=module&action=medias&do=editor&id=<?php echo $media->pk_media_id; ?>&ml=<?php echo $subtitle['lang_code']; ?>"><?php echo $languages[$subtitle['lang_code']]['lang_name']; ?></a> (<?php T::__('incomplete'); ?>)</li>
+                        <?php endforeach; ?>
                     </ul>
-                    <hr style="margin-top: 10px;margin-bottom: 10px;">
-                    <botton type="button" class="btn btn-success pull-right">Translate</button>
-                </div><!-- /.box-body -->
+                </div>
             </div>
         </div>
     </div>
 </section>
 <?php
+$script=<<<EOT
+<script type="text/javascript">
+$(function() {
+    $('a[data-toggle="remove-button"]').on('click',function(){
+        if(confirm("Are you sure for delete this media?")){
+            return true;
+        }
+        return false;
+    });
+});
+</script>
+EOT;
+ViewHelper::setAfterBody($script);
+ViewHelper::getView('medias','add_subtitle');
+
 ViewHelper::getFooter();
 ?>

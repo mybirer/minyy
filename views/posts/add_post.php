@@ -75,20 +75,15 @@
         </div>
     </section>
 </form>
-<!-- iCheck 1.0.1 -->
+<?php
+$script=<<<EOT
 <script src="plugins/iCheck/icheck.min.js"></script>
 <script type="text/javascript">
   $(function () {
-    //Flat red color scheme for iCheck
-    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-      checkboxClass: 'icheckbox_flat-green',
-      radioClass: 'iradio_flat-green'
-    });
-    //bootstrap WYSIHTML5 - text editor
     $("#content").wysihtml5();
   });
 </script>
-<?php
-//ViewHelper::getView('posts','select_image');
+EOT;
+ViewHelper::setAfterBody($script);
 ViewHelper::getFooter();
 ?>

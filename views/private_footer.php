@@ -11,7 +11,9 @@
 <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="plugins/fastclick/fastclick.js"></script>
+<script src="plugins/iCheck/iCheck.min.js"></script>
 <script src="assets/js/app.min.js"></script>
+<script src="assets/js/custom.js"></script>
 <?php echo ViewHelper::getAfterBody(); ?>
 </body>
 </html>

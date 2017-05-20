@@ -175,7 +175,6 @@ $script=<<<EOT
 <script>
   $(function() {
     $('#member_table').DataTable( {
-        
         processing: true,
         serverSide: true,
         ajax: "webservices/ajax.php?ot=ltm&ui={$userid}&token={$token}&ti={$teamId}"

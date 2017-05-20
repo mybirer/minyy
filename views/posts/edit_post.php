@@ -79,12 +79,7 @@
     </div>
 </section>
 <script type="text/javascript">
-$('button[data-toggle="openModal"]').on('click',function(){
-    $($(this).data("target")).modal('show');
-    return false;
-});
   $(function () {
-    //bootstrap WYSIHTML5 - text editor
     $("#content").wysihtml5();
   });
 </script>

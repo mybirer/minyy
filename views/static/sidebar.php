@@ -2,9 +2,7 @@
 global $currentUser;
 global $MODULES;
 ?>
-<!-- sidebar: style can be found in sidebar.less -->
 <section class="sidebar">
-    <!-- Sidebar user panel -->
     <div class="user-panel">
     <div class="pull-left image">
         <img src="assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
@@ -14,7 +12,6 @@ global $MODULES;
         <a href="#"><i class="fa fa-circle text-success"></i> <?php echo T::__('Online'); ?></a>
     </div>
     </div>
-    <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
     <li class="header"><?php echo T::__('NAVIGATION'); ?></li>
     <?php
@@ -26,4 +23,3 @@ global $MODULES;
     <?php endforeach; ?>
     </ul>
 </section>
-<!-- /.sidebar -->

@@ -31,7 +31,49 @@ class ModuleHelper
         }
         return $val;
     }
-
-
+    public static function getYoutubeSnippet($video_id){
+        $apiKey="AIzaSyACE4Mdr43S_p8zqRtFyjuc1g-N69OcIGo";
+        $html = "https://www.googleapis.com/youtube/v3/videos?id={$video_id}&key={$apiKey}&part=snippet";
+        $response = file_get_contents($html);
+        if(!empty($response)){
+            $decoded = json_decode($response, true);
+            if($decoded['pageInfo']['totalResults']==0){
+                return [];
+            }
+            foreach ($decoded['items'] as $item) {
+                return $item['snippet'];
+            }
+        }
+        return [];
+    }
+    public static function getYoutubeIdFromUrl($url){
+        $result = array();
+        //string must contain at least one = and cannot be in first position
+        if(strpos($url,'youtu.be')!==false) {
+            if(preg_match("/^.*\/(.*)$/",$url,$matched)){
+                if(strpos($matched[1],'?')!==false) {
+                    $q = parse_url($matched[1]);
+                    return $q['path'];
+                }
+                return $matched[1];
+            }
+            return false;
+        }
+        elseif(strpos($url,'=')) {
+            if(strpos($url,'?')!==false) {
+                $q = parse_url($url);
+                $url = $q['query'];
+            }
+            foreach (explode('&', $url) as $couple) {
+                if(!empty($couple)){
+                    list ($key, $val) = explode('=', $couple);
+                    if($key=="v"){
+                        return $val;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
 ?>

@@ -99,39 +99,6 @@
     </div>
     </div>
 </section>
-<script type="text/javascript">
-$('select[name="limit"]').on("change",function(){
-    var hash = window.location.search;
-    var tt=hash.split("&");
-    var route="";
-    $.each(tt,function(i,t){
-        var q=t.split("=");
-        if(q[0]!="limit" && q[0]!="page"){
-            route+=t+"&";
-        }
-    });
-    route+="limit="+encodeURIComponent($(this).val());
-    location.href=route;
-})
-$('#search-form').on("submit",function(){
-    var hash = window.location.search;
-    var tt=hash.split("&");
-    var route="";
-    $.each(tt,function(i,t){
-        var q=t.split("=");
-        if(q[0]!="search_term" && q[0]!="page"){
-            route+=t+"&";
-        }
-    });
-    route+="search_term="+encodeURIComponent($('input[name="table_search"]').val());
-    location.href=route;
-    return false;
-});
-$('button[data-toggle="openModal"]').on('click',function(){
-    $($(this).data("target")).modal('show');
-    return false;
-});
-</script>
 <?php
 ViewHelper::getView('view_levels','add_view_level');
 global $obj;

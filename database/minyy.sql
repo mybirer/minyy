@@ -2,10 +2,10 @@
 -- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Anamakine: 127.0.0.1
--- Üretim Zamanı: 18 May 2017, 20:23:53
--- Sunucu sürümü: 5.7.14
--- PHP Sürümü: 5.6.25
+-- Host: 127.0.0.1
+-- Generation Time: May 19, 2017 at 12:14 PM
+-- Server version: 5.7.14
+-- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,15 +17,18 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Veritabanı: `minyy`
+-- Database: `minyy`
 --
+CREATE DATABASE IF NOT EXISTS `minyy` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `minyy`;
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `languages`
+-- Table structure for table `languages`
 --
 
+DROP TABLE IF EXISTS `languages`;
 CREATE TABLE `languages` (
   `pk_lang_id` int(11) NOT NULL,
   `lang_name` tinytext NOT NULL,
@@ -33,7 +36,7 @@ CREATE TABLE `languages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `languages`
+-- Dumping data for table `languages`
 --
 
 INSERT INTO `languages` (`pk_lang_id`, `lang_name`, `lang_code`) VALUES
@@ -43,9 +46,10 @@ INSERT INTO `languages` (`pk_lang_id`, `lang_name`, `lang_code`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `medias`
+-- Table structure for table `medias`
 --
 
+DROP TABLE IF EXISTS `medias`;
 CREATE TABLE `medias` (
   `pk_media_id` int(11) NOT NULL,
   `name` tinytext,
@@ -60,7 +64,7 @@ CREATE TABLE `medias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `medias`
+-- Dumping data for table `medias`
 --
 
 INSERT INTO `medias` (`pk_media_id`, `name`, `description`, `media_url`, `media_type`, `created_at`, `created_by`, `lang_code`, `pk_team_id`, `translated_langs`) VALUES
@@ -70,9 +74,10 @@ INSERT INTO `medias` (`pk_media_id`, `name`, `description`, `media_url`, `media_
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `modules`
+-- Table structure for table `modules`
 --
 
+DROP TABLE IF EXISTS `modules`;
 CREATE TABLE `modules` (
   `pk_module_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
@@ -83,7 +88,7 @@ CREATE TABLE `modules` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `modules`
+-- Dumping data for table `modules`
 --
 
 INSERT INTO `modules` (`pk_module_id`, `name`, `icon`, `module_key`, `does`, `params`) VALUES
@@ -92,20 +97,21 @@ INSERT INTO `modules` (`pk_module_id`, `name`, `icon`, `module_key`, `does`, `pa
 (3, 'User Groups', 'fa-users', 'user_groups', '["add","edit","remove","list_all"]', NULL),
 (4, 'View Levels', 'fa-bars', 'view_levels', '["add","edit","remove","list_all"]', NULL),
 (5, 'Pages', 'fa-file', 'pages', '["add","edit","remove","list_all"]', NULL),
-(6, 'Posts', 'fa-file', 'posts', '["add","edit","remove","list_all"]', NULL),
-(7, 'Forms', 'fa-dashboard', 'forms', '["add","edit","remove","list_all","show"]', NULL),
-(8, 'Medias', NULL, 'medias', '["add","edit","remove","list","list_all","show"]', NULL),
-(9, 'Teams', NULL, 'teams', '["add","edit","remove","list","list_all","show"]', NULL),
-(10, 'Languages', NULL, 'languages', '["add","edit","remove","list"]', NULL),
-(11, 'Topics', NULL, 'topics', '["add","edit","remove","list","list_all","show"]', NULL),
-(12, 'Translations', NULL, 'translations', '["add","remove","list","list_all","show"]', NULL);
+(6, 'Posts', 'fa-files-o', 'posts', '["add","edit","remove","list_all"]', NULL),
+(7, 'Forms', 'fa-file-text-o', 'forms', '["add","edit","remove","list_all","show"]', NULL),
+(8, 'Medias', 'fa-file-video-o', 'medias', '["add","edit","remove","list","list_all","show"]', NULL),
+(9, 'Teams', 'fa-ge', 'teams', '["add","edit","remove","list","list_all","show"]', NULL),
+(10, 'Languages', 'fa-language', 'languages', '["add","edit","remove","list"]', NULL),
+(11, 'Topics', 'fa-commenting-o', 'topics', '["add","edit","remove","list","list_all","show"]', NULL),
+(12, 'Translations', 'fa-code', 'translations', '["add","remove","list","list_all","show"]', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `posts`
+-- Table structure for table `posts`
 --
 
+DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `pk_post_id` int(11) NOT NULL,
   `author_id` int(11) NOT NULL,
@@ -124,7 +130,7 @@ CREATE TABLE `posts` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `posts`
+-- Dumping data for table `posts`
 --
 
 INSERT INTO `posts` (`pk_post_id`, `author_id`, `post_date`, `post_title`, `post_alias`, `post_content`, `post_status`, `comment_status`, `modified_by`, `modified_date`, `guid`, `post_type`, `comment_count`, `post_params`) VALUES
@@ -133,9 +139,10 @@ INSERT INTO `posts` (`pk_post_id`, `author_id`, `post_date`, `post_title`, `post
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `sentences`
+-- Table structure for table `sentences`
 --
 
+DROP TABLE IF EXISTS `sentences`;
 CREATE TABLE `sentences` (
   `pk_sentence_id` int(11) NOT NULL,
   `subtitle_id` int(11) NOT NULL,
@@ -148,9 +155,10 @@ CREATE TABLE `sentences` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `subtitles`
+-- Table structure for table `subtitles`
 --
 
+DROP TABLE IF EXISTS `subtitles`;
 CREATE TABLE `subtitles` (
   `pk_subtitle_id` int(11) NOT NULL,
   `media_id` int(11) NOT NULL,
@@ -160,7 +168,7 @@ CREATE TABLE `subtitles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `subtitles`
+-- Dumping data for table `subtitles`
 --
 
 INSERT INTO `subtitles` (`pk_subtitle_id`, `media_id`, `created_by`, `created_at`, `lang_code`) VALUES
@@ -169,9 +177,10 @@ INSERT INTO `subtitles` (`pk_subtitle_id`, `media_id`, `created_by`, `created_at
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `teams`
+-- Table structure for table `teams`
 --
 
+DROP TABLE IF EXISTS `teams`;
 CREATE TABLE `teams` (
   `pk_team_id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -182,7 +191,7 @@ CREATE TABLE `teams` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `teams`
+-- Dumping data for table `teams`
 --
 
 INSERT INTO `teams` (`pk_team_id`, `name`, `description`, `created_at`, `created_by`, `params`) VALUES
@@ -194,9 +203,10 @@ INSERT INTO `teams` (`pk_team_id`, `name`, `description`, `created_at`, `created
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `team_members`
+-- Table structure for table `team_members`
 --
 
+DROP TABLE IF EXISTS `team_members`;
 CREATE TABLE `team_members` (
   `pk_team_member_id` int(11) NOT NULL,
   `since` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -207,7 +217,7 @@ CREATE TABLE `team_members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `team_members`
+-- Dumping data for table `team_members`
 --
 
 INSERT INTO `team_members` (`pk_team_member_id`, `since`, `team_id`, `user_id`, `type`, `params`) VALUES
@@ -217,9 +227,10 @@ INSERT INTO `team_members` (`pk_team_member_id`, `since`, `team_id`, `user_id`, 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `team_topics`
+-- Table structure for table `team_topics`
 --
 
+DROP TABLE IF EXISTS `team_topics`;
 CREATE TABLE `team_topics` (
   `pk_topic_id` int(11) NOT NULL,
   `title` tinytext NOT NULL,
@@ -230,7 +241,7 @@ CREATE TABLE `team_topics` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `team_topics`
+-- Dumping data for table `team_topics`
 --
 
 INSERT INTO `team_topics` (`pk_topic_id`, `title`, `content`, `team_id`, `created_at`, `created_by`) VALUES
@@ -239,9 +250,10 @@ INSERT INTO `team_topics` (`pk_topic_id`, `title`, `content`, `team_id`, `create
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `team_topic_messages`
+-- Table structure for table `team_topic_messages`
 --
 
+DROP TABLE IF EXISTS `team_topic_messages`;
 CREATE TABLE `team_topic_messages` (
   `pk_tt_message_id` int(11) NOT NULL,
   `topic_id` int(11) NOT NULL,
@@ -253,9 +265,10 @@ CREATE TABLE `team_topic_messages` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `users`
+-- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `pk_user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
@@ -267,30 +280,30 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`, `fullname`, `registration_date`) VALUES
-(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-05-18 20:21:31', 'M. Yasin Birer', '2017-04-07 21:00:00'),
+(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-05-19 07:00:06', 'M. Yasin Birer', '2017-04-07 21:00:00'),
 (7, 'moderator', 'e10adc3949ba59abbe56e057f20f883e', 'moderator@localhost.com', '2017-05-02 16:27:47', 'Moderatör Kardeş', '2017-04-20 07:59:12'),
 (8, 'cevirmen', 'e10adc3949ba59abbe56e057f20f883e', 'cevirmen@localhost.com', '2017-05-10 19:32:07', 'Çevirmen Kardeşimiz', '2017-04-20 08:05:38'),
 (28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-05-01 13:03:04', 'ahmetcan23', '2017-04-30 22:22:50'),
-(29, 'erden', '8619d248219882ab72aaa3b44474bd5d', 'cwyusef@gmail.com', '2017-05-18 08:27:01', 'Muhammed Yusuf ERDEN', '2017-05-03 18:07:37'),
-(30, 'Mehmet', '827ccb0eea8a706c4c34a16891f84e7b', 'mehmetonatce@gmail.com', '2017-05-18 20:22:37', 'Mehmet ONAT', '2017-05-18 20:19:51');
+(29, 'erden', '8619d248219882ab72aaa3b44474bd5d', 'cwyusef@gmail.com', '2017-05-18 08:27:01', 'Muhammed Yusuf ERDEN', '2017-05-03 18:07:37');
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `user_groups`
+-- Table structure for table `user_groups`
 --
 
+DROP TABLE IF EXISTS `user_groups`;
 CREATE TABLE `user_groups` (
   `pk_group_id` int(11) NOT NULL,
   `name` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `user_groups`
+-- Dumping data for table `user_groups`
 --
 
 INSERT INTO `user_groups` (`pk_group_id`, `name`) VALUES
@@ -301,9 +314,10 @@ INSERT INTO `user_groups` (`pk_group_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `user_profiles`
+-- Table structure for table `user_profiles`
 --
 
+DROP TABLE IF EXISTS `user_profiles`;
 CREATE TABLE `user_profiles` (
   `pk_user_id` int(11) NOT NULL,
   `profile_key` varchar(100) NOT NULL,
@@ -313,9 +327,10 @@ CREATE TABLE `user_profiles` (
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `user_usergroup_map`
+-- Table structure for table `user_usergroup_map`
 --
 
+DROP TABLE IF EXISTS `user_usergroup_map`;
 CREATE TABLE `user_usergroup_map` (
   `id` int(11) NOT NULL,
   `pk_user_id` int(11) NOT NULL,
@@ -323,7 +338,7 @@ CREATE TABLE `user_usergroup_map` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `user_usergroup_map`
+-- Dumping data for table `user_usergroup_map`
 --
 
 INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
@@ -333,15 +348,15 @@ INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
 (25, 8, 7),
 (26, 8, 4),
 (29, 1, 3),
-(30, 29, 3),
-(32, 30, 3);
+(30, 29, 3);
 
 -- --------------------------------------------------------
 
 --
--- Tablo için tablo yapısı `view_levels`
+-- Table structure for table `view_levels`
 --
 
+DROP TABLE IF EXISTS `view_levels`;
 CREATE TABLE `view_levels` (
   `pk_view_level_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
@@ -350,28 +365,28 @@ CREATE TABLE `view_levels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Tablo döküm verisi `view_levels`
+-- Dumping data for table `view_levels`
 --
 
 INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`, `modules`) VALUES
-(2, 'Public Area', '[7,3,4]', '["posts"]'),
-(4, 'Manager Area', '[3]', '["dashboard","users","user_groups","view_levels","pages","posts","forms","medias","teams","languages"]'),
-(5, 'Translator Area', '[4]', '["dashboard","medias"]'),
-(6, 'Moderator Area', '[7]', '[]');
+(2, 'Public Area', '[7,3,4]', '{"posts":["add","edit","show"]}'),
+(4, 'Manager Area', '[3]', '{"dashboard":[],"users":["add","edit","remove","list_all"],"user_groups":["add","edit","remove","list_all"],"view_levels":["add","edit","remove","list_all"],"pages":["add","edit","remove","list_all"],"posts":["add","edit","remove","list_all"],"forms":["add","edit","remove","list_all","show"],"medias":["add","edit","remove","list","list_all","show"],"teams":["add","edit","remove","list","list_all","show"],"languages":["add","edit","remove","list"],"topics":["add","edit","remove","list","list_all","show"],"translations":["add","remove","list","list_all","show"]}'),
+(5, 'Translator Area', '[4]', '{"dashboard":["add","edit"],"medias":["add","edit"]}'),
+(6, 'Moderator Area', '[7]', '{}');
 
 --
--- Dökümü yapılmış tablolar için indeksler
+-- Indexes for dumped tables
 --
 
 --
--- Tablo için indeksler `languages`
+-- Indexes for table `languages`
 --
 ALTER TABLE `languages`
   ADD PRIMARY KEY (`pk_lang_id`),
   ADD KEY `lang_code` (`lang_code`) USING BTREE;
 
 --
--- Tablo için indeksler `medias`
+-- Indexes for table `medias`
 --
 ALTER TABLE `medias`
   ADD PRIMARY KEY (`pk_media_id`),
@@ -380,26 +395,26 @@ ALTER TABLE `medias`
   ADD KEY `lang_code` (`lang_code`) USING BTREE;
 
 --
--- Tablo için indeksler `modules`
+-- Indexes for table `modules`
 --
 ALTER TABLE `modules`
   ADD PRIMARY KEY (`pk_module_id`);
 
 --
--- Tablo için indeksler `posts`
+-- Indexes for table `posts`
 --
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`pk_post_id`);
 
 --
--- Tablo için indeksler `sentences`
+-- Indexes for table `sentences`
 --
 ALTER TABLE `sentences`
   ADD PRIMARY KEY (`pk_sentence_id`),
   ADD KEY `subtitle_id` (`subtitle_id`);
 
 --
--- Tablo için indeksler `subtitles`
+-- Indexes for table `subtitles`
 --
 ALTER TABLE `subtitles`
   ADD PRIMARY KEY (`pk_subtitle_id`),
@@ -408,14 +423,14 @@ ALTER TABLE `subtitles`
   ADD KEY `lang_code` (`lang_code`) USING BTREE;
 
 --
--- Tablo için indeksler `teams`
+-- Indexes for table `teams`
 --
 ALTER TABLE `teams`
   ADD PRIMARY KEY (`pk_team_id`),
   ADD KEY `created_by` (`created_by`) USING BTREE;
 
 --
--- Tablo için indeksler `team_members`
+-- Indexes for table `team_members`
 --
 ALTER TABLE `team_members`
   ADD PRIMARY KEY (`pk_team_member_id`),
@@ -423,7 +438,7 @@ ALTER TABLE `team_members`
   ADD KEY `user_id` (`user_id`) USING BTREE;
 
 --
--- Tablo için indeksler `team_topics`
+-- Indexes for table `team_topics`
 --
 ALTER TABLE `team_topics`
   ADD PRIMARY KEY (`pk_topic_id`),
@@ -431,7 +446,7 @@ ALTER TABLE `team_topics`
   ADD KEY `created_by` (`created_by`) USING BTREE;
 
 --
--- Tablo için indeksler `team_topic_messages`
+-- Indexes for table `team_topic_messages`
 --
 ALTER TABLE `team_topic_messages`
   ADD PRIMARY KEY (`pk_tt_message_id`),
@@ -439,25 +454,25 @@ ALTER TABLE `team_topic_messages`
   ADD KEY `user_id` (`created_by`) USING BTREE;
 
 --
--- Tablo için indeksler `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`pk_user_id`);
 
 --
--- Tablo için indeksler `user_groups`
+-- Indexes for table `user_groups`
 --
 ALTER TABLE `user_groups`
   ADD PRIMARY KEY (`pk_group_id`);
 
 --
--- Tablo için indeksler `user_profiles`
+-- Indexes for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
   ADD KEY `pk_user_id` (`pk_user_id`);
 
 --
--- Tablo için indeksler `user_usergroup_map`
+-- Indexes for table `user_usergroup_map`
 --
 ALTER TABLE `user_usergroup_map`
   ADD PRIMARY KEY (`id`),
@@ -465,91 +480,91 @@ ALTER TABLE `user_usergroup_map`
   ADD KEY `pkAuthGroupID` (`pk_group_id`);
 
 --
--- Tablo için indeksler `view_levels`
+-- Indexes for table `view_levels`
 --
 ALTER TABLE `view_levels`
   ADD PRIMARY KEY (`pk_view_level_id`);
 
 --
--- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- Tablo için AUTO_INCREMENT değeri `languages`
+-- AUTO_INCREMENT for table `languages`
 --
 ALTER TABLE `languages`
   MODIFY `pk_lang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- Tablo için AUTO_INCREMENT değeri `medias`
+-- AUTO_INCREMENT for table `medias`
 --
 ALTER TABLE `medias`
   MODIFY `pk_media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- Tablo için AUTO_INCREMENT değeri `modules`
+-- AUTO_INCREMENT for table `modules`
 --
 ALTER TABLE `modules`
   MODIFY `pk_module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
--- Tablo için AUTO_INCREMENT değeri `posts`
+-- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
   MODIFY `pk_post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- Tablo için AUTO_INCREMENT değeri `sentences`
+-- AUTO_INCREMENT for table `sentences`
 --
 ALTER TABLE `sentences`
   MODIFY `pk_sentence_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- Tablo için AUTO_INCREMENT değeri `subtitles`
+-- AUTO_INCREMENT for table `subtitles`
 --
 ALTER TABLE `subtitles`
   MODIFY `pk_subtitle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- Tablo için AUTO_INCREMENT değeri `teams`
+-- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
   MODIFY `pk_team_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
--- Tablo için AUTO_INCREMENT değeri `team_members`
+-- AUTO_INCREMENT for table `team_members`
 --
 ALTER TABLE `team_members`
   MODIFY `pk_team_member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
--- Tablo için AUTO_INCREMENT değeri `team_topics`
+-- AUTO_INCREMENT for table `team_topics`
 --
 ALTER TABLE `team_topics`
   MODIFY `pk_topic_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- Tablo için AUTO_INCREMENT değeri `team_topic_messages`
+-- AUTO_INCREMENT for table `team_topic_messages`
 --
 ALTER TABLE `team_topic_messages`
   MODIFY `pk_tt_message_id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- Tablo için AUTO_INCREMENT değeri `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `pk_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `pk_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
--- Tablo için AUTO_INCREMENT değeri `user_groups`
+-- AUTO_INCREMENT for table `user_groups`
 --
 ALTER TABLE `user_groups`
   MODIFY `pk_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
--- Tablo için AUTO_INCREMENT değeri `user_usergroup_map`
+-- AUTO_INCREMENT for table `user_usergroup_map`
 --
 ALTER TABLE `user_usergroup_map`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
--- Tablo için AUTO_INCREMENT değeri `view_levels`
+-- AUTO_INCREMENT for table `view_levels`
 --
 ALTER TABLE `view_levels`
-  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
--- Dökümü yapılmış tablolar için kısıtlamalar
+-- Constraints for dumped tables
 --
 
 --
--- Tablo kısıtlamaları `medias`
+-- Constraints for table `medias`
 --
 ALTER TABLE `medias`
   ADD CONSTRAINT `medias_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`),
@@ -557,13 +572,13 @@ ALTER TABLE `medias`
   ADD CONSTRAINT `medias_ibfk_5` FOREIGN KEY (`pk_team_id`) REFERENCES `teams` (`pk_team_id`);
 
 --
--- Tablo kısıtlamaları `sentences`
+-- Constraints for table `sentences`
 --
 ALTER TABLE `sentences`
   ADD CONSTRAINT `sentences_ibfk_1` FOREIGN KEY (`subtitle_id`) REFERENCES `subtitles` (`pk_subtitle_id`);
 
 --
--- Tablo kısıtlamaları `subtitles`
+-- Constraints for table `subtitles`
 --
 ALTER TABLE `subtitles`
   ADD CONSTRAINT `subtitles_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `languages` (`lang_code`),
@@ -571,40 +586,40 @@ ALTER TABLE `subtitles`
   ADD CONSTRAINT `subtitles_ibfk_3` FOREIGN KEY (`media_id`) REFERENCES `medias` (`pk_media_id`);
 
 --
--- Tablo kısıtlamaları `teams`
+-- Constraints for table `teams`
 --
 ALTER TABLE `teams`
   ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`);
 
 --
--- Tablo kısıtlamaları `team_members`
+-- Constraints for table `team_members`
 --
 ALTER TABLE `team_members`
   ADD CONSTRAINT `team_members_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`pk_team_id`),
   ADD CONSTRAINT `team_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`pk_user_id`);
 
 --
--- Tablo kısıtlamaları `team_topics`
+-- Constraints for table `team_topics`
 --
 ALTER TABLE `team_topics`
   ADD CONSTRAINT `team_topics_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`pk_team_id`),
   ADD CONSTRAINT `team_topics_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`);
 
 --
--- Tablo kısıtlamaları `team_topic_messages`
+-- Constraints for table `team_topic_messages`
 --
 ALTER TABLE `team_topic_messages`
   ADD CONSTRAINT `tt_messages_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `team_topics` (`pk_topic_id`),
   ADD CONSTRAINT `tt_messages_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`);
 
 --
--- Tablo kısıtlamaları `user_profiles`
+-- Constraints for table `user_profiles`
 --
 ALTER TABLE `user_profiles`
   ADD CONSTRAINT `user_profiles_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`);
 
 --
--- Tablo kısıtlamaları `user_usergroup_map`
+-- Constraints for table `user_usergroup_map`
 --
 ALTER TABLE `user_usergroup_map`
   ADD CONSTRAINT `user_usergroup_map_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`),

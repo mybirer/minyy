@@ -73,4 +73,7 @@ $('input[data-toggle="select-change"]').on('change',function(){
 </script>
 <script type='text/javascript'>
     setTimeout(function(){ $('#editViewLevelModal').modal('show');},250);
+    $('#editViewLevelModal').on('hide.bs.modal', function (e) {
+        window.location.href="index.php?controller=module&action=view_levels";
+    });
 </script>

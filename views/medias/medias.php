@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         </form>
-                        <button type="button" data-toggle="openModal" data-target="#addTeamModal" class="btn btn-success pull-right">
+                        <button type="button" data-toggle="openModal" data-target="#addMediaModal" class="btn btn-success pull-right">
                             <i class="fa fa-plus"></i> <?php T::__("New Media"); ?>
                         </button>
                     </div>
@@ -38,21 +38,21 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Media Name</th>
                                 <th>Team</th>
                                 <th>Date</th>
                                 <th>Language</th>
-                                <th>Duration</th>
                             </tr>
                         </thead>
                         <tbody style="cursor: pointer;">
                             <?php $i=$params['offset']+1; foreach($objList as $media): ?>
                             <tr data-id="<?php echo $media->pk_media_id; ?>">
+                                <td><a data-toggle="tooltip" title="Düzenle" class="text-red" href="index.php?controller=module&action=medias&do=edit&id=<?php echo $media->pk_media_id; ?>"><i class="fa fa-edit"></i></a></td>
                                 <td class="has-link"><?php echo $media->name; ?></td>
-                                <td class="has-link"><?php echo ($media->pk_team_id == null)?'-':$media->team_name; ?></td>
+                                <td class="has-link"><?php echo empty($media->pk_team_id) ? '-' : $media->team_name; ?></td>
                                 <td class="has-link"><?php echo $media->created_at; ?></td>
                                 <td class="has-link"><?php echo $media->lang_code; ?></td>
-                                <td class="has-link"><?php echo 'Duration'; ?></td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -88,12 +88,16 @@
     </div>
     </div>
 </section>
-<script type="text/javascript">
-$('td.has-link').on('click',function(){
-    window.location.href = "index.php?controller=module&action=medias&do=show&id=" + $(this).parent().data("id");
-    return false;
-});
-</script>
 <?php
+$script=<<<EOT
+<script type="text/javascript">
+</script>
+EOT;
+ViewHelper::setAfterBody($script);
+ViewHelper::getView('medias','add_media');
+global $obj;
+if(!empty($obj)){
+    ViewHelper::getView('medias','edit_media');
+}
 ViewHelper::getFooter();
 ?>

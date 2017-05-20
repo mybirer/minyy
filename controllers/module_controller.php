@@ -92,11 +92,30 @@ class ModuleController
         }
     }
     public function medias() {
+        global $languages;
+        $gparams=[
+            "search_term"=>"",
+            "order_by"=>"lang_name",
+            "order_dir"=>"asc",
+            "limit"=>"1000",
+            "offset"=>"0",
+            "return_as_array"=>"true"
+        ];
+        $languages=Languages::getObjList($gparams);
         require_once('controllers/medias_controller.php');
         $do=isset($_GET['do']) ? $_GET['do'] : "list";
         switch($do){
             case "add":
                 MediasController::add();
+                break;
+            case "add_subtitle":
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                MediasController::addSubtitle($id);
+                break;
+            case "editor":
+                $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+                $ml=isset($_GET['ml']) && !empty($_GET['ml']) ? Functions::clearString($_GET['ml']) : "";
+                MediasController::editor($id,$ml);
                 break;
             case "edit":
                 $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;

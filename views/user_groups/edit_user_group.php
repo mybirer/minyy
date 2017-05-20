@@ -32,4 +32,7 @@
 </div>
 <script type='text/javascript'>
     setTimeout(function(){ $('#editUserGroupModal').modal('show');},250);
+    $('#editUserGroupModal').on('hide.bs.modal', function (e) {
+        window.location.href="index.php?controller=module&action=user_groups";
+    });
 </script>

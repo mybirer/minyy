@@ -27,30 +27,42 @@
             $this->lang_code  = $lang_code;
             $this->pk_team_id  = $pk_team_id;
             $this->team_name = $team_name;
+            $this->subtitles=$this->getMediaSubtitles($pk_media_id);
         }
 
         public static function insert($params){
+            global $currentUser;
             $return=[];
-            if ($params === null || empty($params['created_by']) || empty($params['lang_code']) || empty($params['media_type']) || empty($params['media_url']) ) {
+            if ($params === null || empty($params['url']) || empty($params['language']) ) {
                 $return['status']=false;
                 $return['message']=T::__('Please fill all required fields!',true);
                 return $return;
             }
             else{
-                $db = Db::getInstance();
+                $params['name']=Functions::clearString($params['name']);
+                $params['description']=Functions::clearString($params['description']);
+                $params['url']=Functions::clearString($params['url']);
+                $params['type']=Functions::clearString($params['type']);
+                $params['thumbnail']=Functions::clearString($params['thumbnail']);
+                $params['language']=Functions::clearString($params['language']);
+                $params['team']=Functions::clearString($params['team']);
 
-                $req = $db->prepare('INSERT INTO medias (name, description, media_url, media_type , created_at, created_by, lang_code , pk_team_id) VALUES (:name, :description,:media_url, :media_type, DATE() , :created_by, :lang_code, :pk_team_id)');
+                $db = Db::getInstance();
+                $req = $db->prepare('INSERT INTO medias (name, description, media_url, media_type, thumbnail, created_at, created_by, lang_code , pk_team_id) VALUES (:name, :description,:media_url, :media_type,:thumbnail, NOW() , :created_by, :lang_code, :pk_team_id)');
+                var_dump($params);
                 $res=$req->execute(array(
                     'name' => $params['name'],
                     'description' => $params['description'],
-                    'media_url' => $params['media_url'],
-                    'media_type' => $params['media_type'],
-                    'created_by' => $params['created_by'],
-                    'lang_code' => $params['lang_code'],
-                    'pk_team_id' => $params['pk_team_id']));
+                    'media_url' => $params['url'],
+                    'media_type' => $params['type'],
+                    'thumbnail' => $params['thumbnail'],
+                    'created_by' => $currentUser->pk_user_id,
+                    'lang_code' => $params['language'],
+                    'pk_team_id' => !empty($params['team']) ? $params['team'] : null));
+
                 if($res){
                     $return['status']=true;
-                    $return['message']=T::__('Your post created succesfully.',true);
+                    $return['message']=T::__('Media added succesfully.',true);
                     return $return;
                 }
                 else{
@@ -408,5 +420,63 @@
             return $list;
         }
 
+        public static function insertSubtitle($mediaId,$params){
+            global $currentUser;
+            $return=[];
+            if ($params === null || empty($params['language']) ) {
+                $return['status']=false;
+                $return['message']=T::__('Please fill all required fields!',true);
+                return $return;
+            }
+            else{
+                $db = Db::getInstance();
+
+                //check if media exists on db 
+                $req = $db->prepare('SELECT COUNT(pk_media_id) FROM medias WHERE pk_media_id=:pk_media_id');
+                $req->execute(array('pk_media_id' => $mediaId));
+                if($req->fetchColumn()==0){
+                    $return['status']=false;
+                    $return['message']=T::__('Media not found!',true);
+                    return $return;
+                }
+
+                $params['language']=Functions::clearString($params['language']);
+
+                $req = $db->prepare('INSERT INTO subtitles (media_id, created_by, created_at, lang_code) VALUES (:media_id, :created_by, NOW(), :lang_code)');
+                $res=$req->execute(array(
+                    'media_id' => $mediaId,
+                    'created_by' => $currentUser->pk_user_id,
+                    'lang_code' => $params['language']));
+
+                if($res){
+                    $return['status']=true;
+                    $return['message']=T::__('Subtitle added succesfully. You will redirecting edit panel',true);
+                    return $return;
+                }
+                else{
+                    $return['status']=false;
+                    $return['message']=T::__('An error occured. Please contact with administrators!',true);
+                    return $return;
+                }   
+            }
+        }
+
+        public function getMediaSubtitles($mediaId){
+            try{
+                $db = Db::getInstance();
+                $mediaId = intval($mediaId);
+                $req = $db->prepare('SELECT * FROM subtitles WHERE media_id = :media_id');
+                $req->execute(array('media_id' => $mediaId));
+                // we create a list of Post objects from the database results
+                $list=[];
+                foreach($req->fetchAll(PDO::FETCH_ASSOC) as $obj) {
+                    $list[$obj['lang_code']]= $obj;
+                }
+                return $list;
+            }
+            catch (PDOException $e){
+                return $e->getMessage();
+            }
+        }
     }
 ?>

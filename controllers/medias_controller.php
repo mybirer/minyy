@@ -33,18 +33,47 @@ class MediasController implements ModuleInterface
         $pagination->setClasses(array("pagination","pagination-sm","no-margin","pull-right"));
         $paginationHTML = $pagination->parse();
         
+        global $teamList;
+        $gparams=[
+            "search_term"=>"",
+            "order_by"=>"name",
+            "order_dir"=>"asc",
+            "limit"=>"1000",
+            "offset"=>"0"
+        ];
+        $teamList= Teams::getObjList($gparams);
+
         ViewHelper::setTitle('Minyy | Medias');
         ViewHelper::getView('medias','medias');
     }
     public static function add() {
-        if(isset($_POST['addMediaForm'])){
-            $_DATA=array('name'=>$_POST['addMediaFormName']);
-            $req=Medias::insert($_DATA);
-            if (!$req['status']) {
-                MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
+        if(isset($_POST['addMediaForm']) && isset($_POST['addMediaFormUrl'])){
+            $youtube_id=ModuleHelper::getYoutubeIdFromUrl($_POST['addMediaFormUrl']);
+            if(!$youtube_id){
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban","The URL can't parsed! Please type correct Youtube video url.");
             }
             else{
-                MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
+                $url="https://youtube.com/watch?v=".$youtube_id;
+                $snippet=ModuleHelper::getYoutubeSnippet($youtube_id);
+                if(empty($snippet)){
+                    MessageHelper::setMessage(T::__("Error",true),"danger","ban","Video not found on Youtube! Please try another video. Video:".$url);
+                }
+                else{
+                    $_DATA=array('name'=>!empty($_POST['addMediaFormName']) ? $_POST['addMediaFormName'] : $snippet['title'],
+                                    'description'=>!empty($_POST['addMediaFormDescription']) ? $_POST['addMediaFormDescription'] : $snippet['description'],
+                                    'url'=>$url,
+                                    'type'=>"video",
+                                    'thumbnail'=>$snippet['thumbnails']['default']['url'],
+                                    'language'=>$_POST['addMediaFormLanguage'],
+                                    'team'=>$_POST['addMediaFormTeam']);
+                    $req=Medias::insert($_DATA);
+                    if (!$req['status']) {
+                        MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
+                    }
+                    else{
+                        MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
+                    }
+                }
             }
         }
         MediasController::getList();
@@ -81,20 +110,48 @@ class MediasController implements ModuleInterface
         }
         MediasController::getList();
     }
-
     public static function show($id){
-        require_once('helpers/pagination_helper.php');
         global $media;
-        global $paginationHTML;
-
         $media=Medias::getObj($id);
-        //$team->media_count=Medias::getTotal($id,'team',null);
-        //$team->topic_count=Topics::getTotal($id,'team',null);
-        //$team->subtitle_count=Subtitles::getTotal($id,'team',null);
-
-        ViewHelper::setTitle('Minyy | Medias');
-        ViewHelper::getView('medias','show_media');
+        if(empty($media)){
+            MessageHelper::setMessage(T::__("Error",true),"danger","ban",T::__("Media not found! Please select from the list!",true));
+            MediasController::getList();
+        }
+        else{
+            ViewHelper::setTitle('Minyy | Medias');
+            ViewHelper::getView('medias','show_media');
+        }
     }
-
+    public static function addSubtitle($id) {
+        if(isset($_POST['addSubtitleForm'])){
+            $_DATA=array('language'=>$_POST['addSubtitleFormLanguage']);
+            $req=Medias::insertSubtitle($id,$_DATA);
+            if (!$req['status']) {
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
+            }
+            else{
+                MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
+            }
+        }
+        MediasController::show($id);
+    }
+    public static function editor($mediaId,$langCode) {
+        global $media;
+        $media=Medias::getObj($mediaId);
+        if(empty($media)){
+            MessageHelper::setMessage(T::__("Error",true),"danger","ban",T::__("Media not found! Please select from the list!",true));
+            MediasController::getList();
+        }
+        if(!($langCode==$media->lang_code || array_key_exists($langCode,$media->subtitles))){
+            MessageHelper::setMessage(T::__("Error",true),"danger","ban",T::__("Subtitle not found! Please click from the list!",true));
+            ViewHelper::setTitle('Minyy | Medias');
+            ViewHelper::getView('medias','show_media');
+        }
+        else{
+            ViewHelper::setTitle('Minyy | Editor');
+            ViewHelper::getView('medias','editor');
+        }
+    }
+    
 }
 ?>

@@ -2,7 +2,7 @@
 global $currentUser;
 ?>
 <!-- Logo -->
-<a href="index2.html" class="logo">
+<a href="index.php" class="logo">
     <span class="logo-mini"><b>M</b></span>
     <span class="logo-lg"><b>Minyy</b></span>
 </a>
