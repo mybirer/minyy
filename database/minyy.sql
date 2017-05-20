@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 19, 2017 at 12:14 PM
+-- Generation Time: May 20, 2017 at 08:32 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -25,15 +26,40 @@ USE `minyy`;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+
+CREATE TABLE IF NOT EXISTS `comments` (
+  `pk_comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `content` text NOT NULL,
+  `comment_status` varchar(20) NOT NULL,
+  `modified_by` int(11) DEFAULT NULL,
+  `modified_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `guid` varchar(255) DEFAULT NULL,
+  `comment_type` varchar(20) NOT NULL,
+  `comment_params` text,
+  PRIMARY KEY (`pk_comment_id`),
+  KEY `parent_id` (`parent_id`) USING BTREE,
+  KEY `created_by` (`created_by`) USING BTREE,
+  KEY `modified_by` (`modified_by`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `languages`
 --
 
-DROP TABLE IF EXISTS `languages`;
-CREATE TABLE `languages` (
-  `pk_lang_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `languages` (
+  `pk_lang_id` int(11) NOT NULL AUTO_INCREMENT,
   `lang_name` tinytext NOT NULL,
-  `lang_code` varchar(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `lang_code` varchar(8) NOT NULL,
+  PRIMARY KEY (`pk_lang_id`),
+  KEY `lang_code` (`lang_code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `languages`
@@ -49,27 +75,29 @@ INSERT INTO `languages` (`pk_lang_id`, `lang_name`, `lang_code`) VALUES
 -- Table structure for table `medias`
 --
 
-DROP TABLE IF EXISTS `medias`;
-CREATE TABLE `medias` (
-  `pk_media_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `medias` (
+  `pk_media_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` tinytext,
   `description` text,
   `media_url` text NOT NULL,
   `media_type` varchar(12) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_by` int(11) NOT NULL,
+  `thumbnail` varchar(300) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) DEFAULT NULL,
   `lang_code` varchar(8) NOT NULL,
   `pk_team_id` int(11) DEFAULT NULL,
-  `translated_langs` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`pk_media_id`),
+  KEY `pk_team_id` (`pk_team_id`) USING BTREE,
+  KEY `created_by` (`created_by`) USING BTREE,
+  KEY `lang_code` (`lang_code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `medias`
 --
 
-INSERT INTO `medias` (`pk_media_id`, `name`, `description`, `media_url`, `media_type`, `created_at`, `created_by`, `lang_code`, `pk_team_id`, `translated_langs`) VALUES
-(2, 'medya ismi', 'medya ile ilgili açıklama', 'https://www.youtube.com/watch?v=zzhzzhzh', 'VID', '2017-05-01 01:22:50', 29, 'tr', 3, NULL),
-(3, 'medya', 'herhangi bir açıklama girilebilir', 'www.google.com', 'MP3', '2017-05-05 04:11:50', 29, 'en', NULL, NULL);
+INSERT INTO `medias` (`pk_media_id`, `name`, `description`, `media_url`, `media_type`, `thumbnail`, `created_at`, `created_by`, `lang_code`, `pk_team_id`) VALUES
+(3, 'medya', 'herhangi bir açıklama girilebilir', 'www.google.com', 'MP3', NULL, '2017-05-05 04:11:50', 29, 'en', NULL);
 
 -- --------------------------------------------------------
 
@@ -77,15 +105,15 @@ INSERT INTO `medias` (`pk_media_id`, `name`, `description`, `media_url`, `media_
 -- Table structure for table `modules`
 --
 
-DROP TABLE IF EXISTS `modules`;
-CREATE TABLE `modules` (
-  `pk_module_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `modules` (
+  `pk_module_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `icon` varchar(30) DEFAULT NULL,
   `module_key` varchar(20) NOT NULL,
   `does` text,
-  `params` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `params` text,
+  PRIMARY KEY (`pk_module_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `modules`
@@ -111,29 +139,31 @@ INSERT INTO `modules` (`pk_module_id`, `name`, `icon`, `module_key`, `does`, `pa
 -- Table structure for table `posts`
 --
 
-DROP TABLE IF EXISTS `posts`;
-CREATE TABLE `posts` (
-  `pk_post_id` int(11) NOT NULL,
-  `author_id` int(11) NOT NULL,
-  `post_date` timestamp NULL DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `posts` (
+  `pk_post_id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `post_title` text,
   `post_alias` text,
   `post_content` longtext,
-  `post_status` varchar(20) DEFAULT NULL,
-  `comment_status` varchar(20) DEFAULT NULL,
+  `post_status` varchar(20) NOT NULL,
+  `comment_status` varchar(20) NOT NULL,
   `modified_by` int(11) DEFAULT NULL,
-  `modified_date` timestamp NULL DEFAULT NULL,
+  `modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `guid` varchar(255) DEFAULT NULL,
-  `post_type` varchar(20) DEFAULT NULL,
+  `post_type` varchar(20) NOT NULL,
   `comment_count` bigint(20) DEFAULT NULL,
-  `post_params` json DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `post_params` text,
+  PRIMARY KEY (`pk_post_id`),
+  KEY `created_by` (`created_by`) USING BTREE,
+  KEY `modified_by` (`modified_by`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`pk_post_id`, `author_id`, `post_date`, `post_title`, `post_alias`, `post_content`, `post_status`, `comment_status`, `modified_by`, `modified_date`, `guid`, `post_type`, `comment_count`, `post_params`) VALUES
+INSERT INTO `posts` (`pk_post_id`, `created_by`, `created_at`, `post_title`, `post_alias`, `post_content`, `post_status`, `comment_status`, `modified_by`, `modified_date`, `guid`, `post_type`, `comment_count`, `post_params`) VALUES
 (1, 29, '2017-05-02 17:54:42', 'başlık', 'asdas', 'kjhasdfgsadofgb', 'status', 'status', 1, '2017-05-03 18:07:37', 'asdasd', 'type', 5, NULL);
 
 -- --------------------------------------------------------
@@ -142,15 +172,16 @@ INSERT INTO `posts` (`pk_post_id`, `author_id`, `post_date`, `post_title`, `post
 -- Table structure for table `sentences`
 --
 
-DROP TABLE IF EXISTS `sentences`;
-CREATE TABLE `sentences` (
-  `pk_sentence_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sentences` (
+  `pk_sentence_id` int(11) NOT NULL AUTO_INCREMENT,
   `subtitle_id` int(11) NOT NULL,
   `text` text NOT NULL,
-  `start_time` int(11) NOT NULL,
-  `end_time` int(11) NOT NULL,
-  `order_number` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `start_time` int(11) DEFAULT NULL,
+  `end_time` int(11) DEFAULT NULL,
+  `order_number` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pk_sentence_id`),
+  KEY `subtitle_id` (`subtitle_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -158,21 +189,17 @@ CREATE TABLE `sentences` (
 -- Table structure for table `subtitles`
 --
 
-DROP TABLE IF EXISTS `subtitles`;
-CREATE TABLE `subtitles` (
-  `pk_subtitle_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `subtitles` (
+  `pk_subtitle_id` int(11) NOT NULL AUTO_INCREMENT,
   `media_id` int(11) NOT NULL,
-  `created_by` int(11) NOT NULL,
+  `created_by` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `lang_code` varchar(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `subtitles`
---
-
-INSERT INTO `subtitles` (`pk_subtitle_id`, `media_id`, `created_by`, `created_at`, `lang_code`) VALUES
-(1, 2, 29, '2017-04-30 22:22:50', 'en');
+  `lang_code` varchar(8) NOT NULL,
+  PRIMARY KEY (`pk_subtitle_id`),
+  KEY `media_id` (`media_id`),
+  KEY `created_by` (`created_by`) USING BTREE,
+  KEY `lang_code` (`lang_code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -180,15 +207,16 @@ INSERT INTO `subtitles` (`pk_subtitle_id`, `media_id`, `created_by`, `created_at
 -- Table structure for table `teams`
 --
 
-DROP TABLE IF EXISTS `teams`;
-CREATE TABLE `teams` (
-  `pk_team_id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `teams` (
+  `pk_team_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
   `description` text,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_by` int(11) NOT NULL,
-  `params` json DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) DEFAULT NULL,
+  `params` json DEFAULT NULL,
+  PRIMARY KEY (`pk_team_id`),
+  KEY `created_by` (`created_by`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `teams`
@@ -206,15 +234,18 @@ INSERT INTO `teams` (`pk_team_id`, `name`, `description`, `created_at`, `created
 -- Table structure for table `team_members`
 --
 
-DROP TABLE IF EXISTS `team_members`;
-CREATE TABLE `team_members` (
-  `pk_team_member_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `team_members` (
+  `pk_team_member_id` int(11) NOT NULL AUTO_INCREMENT,
   `since` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `team_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `type` varchar(15) NOT NULL,
-  `params` json DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `params` json DEFAULT NULL,
+  PRIMARY KEY (`pk_team_member_id`),
+  UNIQUE KEY `unique_team_member` (`team_id`,`user_id`),
+  KEY `team_id` (`team_id`) USING BTREE,
+  KEY `user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `team_members`
@@ -230,22 +261,25 @@ INSERT INTO `team_members` (`pk_team_member_id`, `since`, `team_id`, `user_id`, 
 -- Table structure for table `team_topics`
 --
 
-DROP TABLE IF EXISTS `team_topics`;
-CREATE TABLE `team_topics` (
-  `pk_topic_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `team_topics` (
+  `pk_topic_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` tinytext NOT NULL,
   `content` longtext NOT NULL,
   `team_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `created_by` int(11) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`pk_topic_id`),
+  KEY `team_id` (`team_id`) USING BTREE,
+  KEY `created_by` (`created_by`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `team_topics`
 --
 
-INSERT INTO `team_topics` (`pk_topic_id`, `title`, `content`, `team_id`, `created_at`, `created_by`) VALUES
-(1, 'Merhaba!', 'merhaba dünyalı bu benim ilk topic yayınım.', 3, '2017-04-30 22:22:50', 29);
+INSERT INTO `team_topics` (`pk_topic_id`, `title`, `content`, `team_id`, `created_at`, `created_by`, `status`) VALUES
+(1, 'Merhaba!', 'merhaba dünyalı bu benim ilk topic yayınım.', 3, '2017-04-30 22:22:50', 29, NULL);
 
 -- --------------------------------------------------------
 
@@ -253,14 +287,24 @@ INSERT INTO `team_topics` (`pk_topic_id`, `title`, `content`, `team_id`, `create
 -- Table structure for table `team_topic_messages`
 --
 
-DROP TABLE IF EXISTS `team_topic_messages`;
-CREATE TABLE `team_topic_messages` (
-  `pk_tt_message_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `team_topic_messages` (
+  `pk_tt_message_id` int(11) NOT NULL AUTO_INCREMENT,
   `topic_id` int(11) NOT NULL,
-  `message` longtext NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_by` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `message` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pk_tt_message_id`),
+  KEY `topic_id` (`topic_id`) USING BTREE,
+  KEY `user_id` (`created_by`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `team_topic_messages`
+--
+
+INSERT INTO `team_topic_messages` (`pk_tt_message_id`, `topic_id`, `message`, `created_at`, `created_by`) VALUES
+(1, 1, 'topic message response', '2017-05-01 01:22:50', 29),
+(2, 1, 'son mesajım', '2017-05-10 22:32:07', 1);
 
 -- --------------------------------------------------------
 
@@ -268,16 +312,16 @@ CREATE TABLE `team_topic_messages` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
-  `pk_user_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `pk_user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(75) NOT NULL,
-  `last_visit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `last_visit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fullname` varchar(50) DEFAULT NULL,
-  `registration_date` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `registration_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`pk_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -288,7 +332,8 @@ INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`
 (7, 'moderator', 'e10adc3949ba59abbe56e057f20f883e', 'moderator@localhost.com', '2017-05-02 16:27:47', 'Moderatör Kardeş', '2017-04-20 07:59:12'),
 (8, 'cevirmen', 'e10adc3949ba59abbe56e057f20f883e', 'cevirmen@localhost.com', '2017-05-10 19:32:07', 'Çevirmen Kardeşimiz', '2017-04-20 08:05:38'),
 (28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-05-01 13:03:04', 'ahmetcan23', '2017-04-30 22:22:50'),
-(29, 'erden', '8619d248219882ab72aaa3b44474bd5d', 'cwyusef@gmail.com', '2017-05-18 08:27:01', 'Muhammed Yusuf ERDEN', '2017-05-03 18:07:37');
+(29, 'erden', '8619d248219882ab72aaa3b44474bd5d', 'cwyusef@gmail.com', '2017-05-19 18:33:01', 'Muhammed Yusuf ERDEN', '2017-05-03 18:07:37'),
+(32, 'Mehmet', '827ccb0eea8a706c4c34a16891f84e7b', 'mehmetonatce@gmail.com', '2017-05-18 17:22:37', 'Mehmet ONAT', '2017-05-18 17:19:51');
 
 -- --------------------------------------------------------
 
@@ -296,11 +341,11 @@ INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`
 -- Table structure for table `user_groups`
 --
 
-DROP TABLE IF EXISTS `user_groups`;
-CREATE TABLE `user_groups` (
-  `pk_group_id` int(11) NOT NULL,
-  `name` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `user_groups` (
+  `pk_group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` tinytext NOT NULL,
+  PRIMARY KEY (`pk_group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_groups`
@@ -317,11 +362,11 @@ INSERT INTO `user_groups` (`pk_group_id`, `name`) VALUES
 -- Table structure for table `user_profiles`
 --
 
-DROP TABLE IF EXISTS `user_profiles`;
-CREATE TABLE `user_profiles` (
+CREATE TABLE IF NOT EXISTS `user_profiles` (
   `pk_user_id` int(11) NOT NULL,
   `profile_key` varchar(100) NOT NULL,
-  `profile_value` text NOT NULL
+  `profile_value` text NOT NULL,
+  KEY `pk_user_id` (`pk_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -330,12 +375,14 @@ CREATE TABLE `user_profiles` (
 -- Table structure for table `user_usergroup_map`
 --
 
-DROP TABLE IF EXISTS `user_usergroup_map`;
-CREATE TABLE `user_usergroup_map` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `user_usergroup_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `pk_user_id` int(11) NOT NULL,
-  `pk_group_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `pk_group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pkUserID` (`pk_user_id`),
+  KEY `pkAuthGroupID` (`pk_group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_usergroup_map`
@@ -356,13 +403,13 @@ INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
 -- Table structure for table `view_levels`
 --
 
-DROP TABLE IF EXISTS `view_levels`;
-CREATE TABLE `view_levels` (
-  `pk_view_level_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `view_levels` (
+  `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
   `groups` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded group id list',
-  `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list',
+  PRIMARY KEY (`pk_view_level_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `view_levels`
@@ -375,242 +422,72 @@ INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`, `modules`) VAL
 (6, 'Moderator Area', '[7]', '{}');
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `languages`
---
-ALTER TABLE `languages`
-  ADD PRIMARY KEY (`pk_lang_id`),
-  ADD KEY `lang_code` (`lang_code`) USING BTREE;
-
---
--- Indexes for table `medias`
---
-ALTER TABLE `medias`
-  ADD PRIMARY KEY (`pk_media_id`),
-  ADD KEY `pk_team_id` (`pk_team_id`) USING BTREE,
-  ADD KEY `created_by` (`created_by`) USING BTREE,
-  ADD KEY `lang_code` (`lang_code`) USING BTREE;
-
---
--- Indexes for table `modules`
---
-ALTER TABLE `modules`
-  ADD PRIMARY KEY (`pk_module_id`);
-
---
--- Indexes for table `posts`
---
-ALTER TABLE `posts`
-  ADD PRIMARY KEY (`pk_post_id`);
-
---
--- Indexes for table `sentences`
---
-ALTER TABLE `sentences`
-  ADD PRIMARY KEY (`pk_sentence_id`),
-  ADD KEY `subtitle_id` (`subtitle_id`);
-
---
--- Indexes for table `subtitles`
---
-ALTER TABLE `subtitles`
-  ADD PRIMARY KEY (`pk_subtitle_id`),
-  ADD KEY `media_id` (`media_id`),
-  ADD KEY `created_by` (`created_by`) USING BTREE,
-  ADD KEY `lang_code` (`lang_code`) USING BTREE;
-
---
--- Indexes for table `teams`
---
-ALTER TABLE `teams`
-  ADD PRIMARY KEY (`pk_team_id`),
-  ADD KEY `created_by` (`created_by`) USING BTREE;
-
---
--- Indexes for table `team_members`
---
-ALTER TABLE `team_members`
-  ADD PRIMARY KEY (`pk_team_member_id`),
-  ADD KEY `team_id` (`team_id`) USING BTREE,
-  ADD KEY `user_id` (`user_id`) USING BTREE;
-
---
--- Indexes for table `team_topics`
---
-ALTER TABLE `team_topics`
-  ADD PRIMARY KEY (`pk_topic_id`),
-  ADD KEY `team_id` (`team_id`) USING BTREE,
-  ADD KEY `created_by` (`created_by`) USING BTREE;
-
---
--- Indexes for table `team_topic_messages`
---
-ALTER TABLE `team_topic_messages`
-  ADD PRIMARY KEY (`pk_tt_message_id`),
-  ADD KEY `topic_id` (`topic_id`) USING BTREE,
-  ADD KEY `user_id` (`created_by`) USING BTREE;
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`pk_user_id`);
-
---
--- Indexes for table `user_groups`
---
-ALTER TABLE `user_groups`
-  ADD PRIMARY KEY (`pk_group_id`);
-
---
--- Indexes for table `user_profiles`
---
-ALTER TABLE `user_profiles`
-  ADD KEY `pk_user_id` (`pk_user_id`);
-
---
--- Indexes for table `user_usergroup_map`
---
-ALTER TABLE `user_usergroup_map`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `pkUserID` (`pk_user_id`),
-  ADD KEY `pkAuthGroupID` (`pk_group_id`);
-
---
--- Indexes for table `view_levels`
---
-ALTER TABLE `view_levels`
-  ADD PRIMARY KEY (`pk_view_level_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `languages`
---
-ALTER TABLE `languages`
-  MODIFY `pk_lang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `medias`
---
-ALTER TABLE `medias`
-  MODIFY `pk_media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `modules`
---
-ALTER TABLE `modules`
-  MODIFY `pk_module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
---
--- AUTO_INCREMENT for table `posts`
---
-ALTER TABLE `posts`
-  MODIFY `pk_post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `sentences`
---
-ALTER TABLE `sentences`
-  MODIFY `pk_sentence_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `subtitles`
---
-ALTER TABLE `subtitles`
-  MODIFY `pk_subtitle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `teams`
---
-ALTER TABLE `teams`
-  MODIFY `pk_team_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- AUTO_INCREMENT for table `team_members`
---
-ALTER TABLE `team_members`
-  MODIFY `pk_team_member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `team_topics`
---
-ALTER TABLE `team_topics`
-  MODIFY `pk_topic_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `team_topic_messages`
---
-ALTER TABLE `team_topic_messages`
-  MODIFY `pk_tt_message_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `pk_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `user_groups`
---
-ALTER TABLE `user_groups`
-  MODIFY `pk_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `user_usergroup_map`
---
-ALTER TABLE `user_usergroup_map`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
---
--- AUTO_INCREMENT for table `view_levels`
---
-ALTER TABLE `view_levels`
-  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `comments` (`pk_comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_3` FOREIGN KEY (`modified_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `medias`
 --
 ALTER TABLE `medias`
-  ADD CONSTRAINT `medias_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`),
-  ADD CONSTRAINT `medias_ibfk_2` FOREIGN KEY (`lang_code`) REFERENCES `languages` (`lang_code`),
-  ADD CONSTRAINT `medias_ibfk_5` FOREIGN KEY (`pk_team_id`) REFERENCES `teams` (`pk_team_id`);
+  ADD CONSTRAINT `medias_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `medias_ibfk_2` FOREIGN KEY (`lang_code`) REFERENCES `languages` (`lang_code`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `medias_ibfk_5` FOREIGN KEY (`pk_team_id`) REFERENCES `teams` (`pk_team_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`modified_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `posts_ibfk_22` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `sentences`
 --
 ALTER TABLE `sentences`
-  ADD CONSTRAINT `sentences_ibfk_1` FOREIGN KEY (`subtitle_id`) REFERENCES `subtitles` (`pk_subtitle_id`);
+  ADD CONSTRAINT `sentences_ibfk_1` FOREIGN KEY (`subtitle_id`) REFERENCES `subtitles` (`pk_subtitle_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `subtitles`
 --
 ALTER TABLE `subtitles`
-  ADD CONSTRAINT `subtitles_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `languages` (`lang_code`),
-  ADD CONSTRAINT `subtitles_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`),
-  ADD CONSTRAINT `subtitles_ibfk_3` FOREIGN KEY (`media_id`) REFERENCES `medias` (`pk_media_id`);
+  ADD CONSTRAINT `subtitles_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `languages` (`lang_code`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `subtitles_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `subtitles_ibfk_3` FOREIGN KEY (`media_id`) REFERENCES `medias` (`pk_media_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `teams`
 --
 ALTER TABLE `teams`
-  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`);
+  ADD CONSTRAINT `teams_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `team_members`
 --
 ALTER TABLE `team_members`
-  ADD CONSTRAINT `team_members_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`pk_team_id`),
-  ADD CONSTRAINT `team_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`pk_user_id`);
+  ADD CONSTRAINT `team_members_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`pk_team_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `team_members_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `team_topics`
 --
 ALTER TABLE `team_topics`
-  ADD CONSTRAINT `team_topics_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`pk_team_id`),
-  ADD CONSTRAINT `team_topics_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`);
+  ADD CONSTRAINT `team_topics_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`pk_team_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `team_topics_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `team_topic_messages`
 --
 ALTER TABLE `team_topic_messages`
-  ADD CONSTRAINT `tt_messages_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `team_topics` (`pk_topic_id`),
-  ADD CONSTRAINT `tt_messages_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`);
+  ADD CONSTRAINT `tt_messages_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `team_topics` (`pk_topic_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tt_messages_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`pk_user_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_profiles`
@@ -622,8 +499,9 @@ ALTER TABLE `user_profiles`
 -- Constraints for table `user_usergroup_map`
 --
 ALTER TABLE `user_usergroup_map`
-  ADD CONSTRAINT `user_usergroup_map_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`),
-  ADD CONSTRAINT `user_usergroup_map_ibfk_2` FOREIGN KEY (`pk_group_id`) REFERENCES `user_groups` (`pk_group_id`);
+  ADD CONSTRAINT `user_usergroup_map_ibfk_1` FOREIGN KEY (`pk_user_id`) REFERENCES `users` (`pk_user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_usergroup_map_ibfk_2` FOREIGN KEY (`pk_group_id`) REFERENCES `user_groups` (`pk_group_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
