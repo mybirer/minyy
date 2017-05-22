@@ -18,7 +18,7 @@ global $MODULES;
     foreach($currentUser->modules as $module=>$moduleProps):
     ?>
     <li class="<?php echo Functions::isActive($module); ?>">
-        <a href="index.php?controller=module&action=<?php echo $module; ?>"><i class="fa <?php echo $MODULES[$module]["icon"]; ?>"></i> <?php echo $MODULES[$module]["name"]; ?></a>
+        <a href="index.php?controller=module&action=<?php echo $module; ?>"><i class="fa <?php echo $MODULES[$module]["icon"]; ?>"></i><span><?php echo $MODULES[$module]["name"]; ?></span></a>
     </li>
     <?php endforeach; ?>
     </ul>

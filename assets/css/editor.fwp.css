@@ -1,0 +1,133 @@
+nav.navbar.navbar-static-top,.main-footer {
+    display: none;
+}
+body{
+    overflow: hidden;
+}
+.subtitle-container {
+    height: 300px;
+    overflow: auto;
+    position: relative;
+}
+.fp-controls {
+    bottom: -33px !important;
+}
+
+.fp-player {
+    height: calc(100% - 30px);
+}
+ul.subtitle-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd;
+}
+
+ul.subtitle-list span.timing {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+
+ul.subtitle-list span.subtitle-text {
+    margin: 10px 20px;
+    width: calc(100% - 40px);
+    display: block;
+    min-height: 72px;
+    overflow: hidden;
+    word-wrap: break-word;
+    resize: none;
+}
+
+ul.sub-toolbox-menu {
+    list-style: none;
+    padding: 0;
+    display: none;
+}
+
+ul.sub-toolbox-menu li {
+    float: left;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+ul.sub-toolbox-menu::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+ul.subtitle-list textarea.subtitle-edit {
+    margin: 10px 20px;
+    padding: 0;
+    display: block;
+    width: calc(100% - 40px);
+    min-height: 72px;
+    display: none;
+}
+
+ul.subtitle-list .sub-toolbox {
+    position: absolute;
+    bottom: 10px;
+    left: 4px;
+}
+
+ul.subtitle-list li.sub {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+}
+
+.instructions-container .button-wrapper {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+}
+.title-container h3 {
+    margin: 0;
+}
+.up-block {
+    height: 300px;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+.down-block {
+    height: 340px;
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border-top: 1px solid #ddd;
+}
+section.content {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.steps-container .step {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.steps-container .step:last-child {
+    border: none;
+}
+.steps-container h4 {
+    margin: 0;
+}
+
+ul.suggest-list {
+    padding: 0;
+    list-style: none;
+}
+
+ul.suggest-list li {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+ul.suggest-list li:first-child {
+    border-top: 1px solid #ddd;
+}

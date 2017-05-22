@@ -38,6 +38,8 @@
         <div class="modal-footer">
             <a class="btn btn-default pull-left" data-dismiss="modal"><?php T::__("Cancel"); ?></a>
             <button type="submit" name="addSubtitleForm" class="btn btn-primary"><?php T::__("Continue"); ?></button>
+            <input type="hidden" name="addSubtitleFormMediaName" value="<?php echo $media->name; ?>" />
+            <input type="hidden" name="addSubtitleFormMediaDescription" value="<?php echo $media->description; ?>" />
         </div>
         </form>
     </div>

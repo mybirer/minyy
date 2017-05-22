@@ -420,47 +420,6 @@
             return $list;
         }
 
-        public static function insertSubtitle($mediaId,$params){
-            global $currentUser;
-            $return=[];
-            if ($params === null || empty($params['language']) ) {
-                $return['status']=false;
-                $return['message']=T::__('Please fill all required fields!',true);
-                return $return;
-            }
-            else{
-                $db = Db::getInstance();
-
-                //check if media exists on db 
-                $req = $db->prepare('SELECT COUNT(pk_media_id) FROM medias WHERE pk_media_id=:pk_media_id');
-                $req->execute(array('pk_media_id' => $mediaId));
-                if($req->fetchColumn()==0){
-                    $return['status']=false;
-                    $return['message']=T::__('Media not found!',true);
-                    return $return;
-                }
-
-                $params['language']=Functions::clearString($params['language']);
-
-                $req = $db->prepare('INSERT INTO subtitles (media_id, created_by, created_at, lang_code) VALUES (:media_id, :created_by, NOW(), :lang_code)');
-                $res=$req->execute(array(
-                    'media_id' => $mediaId,
-                    'created_by' => $currentUser->pk_user_id,
-                    'lang_code' => $params['language']));
-
-                if($res){
-                    $return['status']=true;
-                    $return['message']=T::__('Subtitle added succesfully. You will redirecting edit panel',true);
-                    return $return;
-                }
-                else{
-                    $return['status']=false;
-                    $return['message']=T::__('An error occured. Please contact with administrators!',true);
-                    return $return;
-                }   
-            }
-        }
-
         public function getMediaSubtitles($mediaId){
             try{
                 $db = Db::getInstance();
@@ -478,5 +437,6 @@
                 return $e->getMessage();
             }
         }
+
     }
 ?>

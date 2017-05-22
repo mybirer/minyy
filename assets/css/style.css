@@ -69,3 +69,9 @@ ul.sub-list-vertical::after {
 ul.sub-list-vertical .checkbox {
     margin: 0;
 }
+.bg-white {
+    background-color: #fff;
+}
+.cursor-pointer{
+    cursor: pointer;
+}

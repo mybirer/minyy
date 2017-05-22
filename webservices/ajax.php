@@ -18,6 +18,7 @@ require_once('../models/users_model.php');
 require_once('../models/view_levels_model.php');
 require_once('../models/teams_model.php');
 require_once('../models/team_members_model.php');
+require_once('../models/subtitles_model.php');
 
 AuthHelper::checkSession();
 // set_time_limit(0);
@@ -95,7 +96,7 @@ if(isset($ot)){
 						$memberData[]=[$memberObj->user_id,$memberObj->fullname,$memberObj->since,$memberObj->type];
 					}
 				}
-				$json_data = array(
+				$form_data = array(
 				"draw"            => intval( isset($draw) ? $draw : 1 ),   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
 				"recordsTotal"    => intval( $memberCount ),  // total number of records
 				"recordsFiltered" => intval( $limit ), // total number of records after searching, if there is no searching then totalFiltered = totalData
@@ -108,7 +109,36 @@ if(isset($ot)){
 				$form_data['message'] = 'Bad Query';
 			}
 		break;
+		case 'ssb'://ssb stands for save subtitles
+			if(isset($ui) && isset($token) && isset($mi) && isset($si) && isset($texts) && isset($ends) && isset($starts) && Functions::checkToken($ui,$token)){
+				$sentences=array();
+				for($i=0;$i<count($texts);$i++){
+					$sentences[]=array(
+						'text'=>$texts[$i],
+						'start_time'=>$starts[$i],
+						'end_time'=>$ends[$i],
+						'order_number'=>$i
+					);
+				}
+				$params=array(
+					'subtitle_id'=>$si,
+					'sentences'=>$sentences
+				);
+				$req=Subtitles::insertSentences($params);
+				if (!$req['status']) {
+					$form_data['success']=false;
+					$form_data['message']=$req['message'];
+				}
+				else{
+					$form_data['success']=true;
+					$form_data['message']=$req['message'];
+				}
+			}
+			else{
+				$form_data['message'] = 'Bad Query';
+			}
+		break;
 	}
 }
-echo json_encode($json_data);
+echo json_encode($form_data);
 ?>

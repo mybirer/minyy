@@ -124,8 +124,11 @@ class MediasController implements ModuleInterface
     }
     public static function addSubtitle($id) {
         if(isset($_POST['addSubtitleForm'])){
-            $_DATA=array('language'=>$_POST['addSubtitleFormLanguage']);
-            $req=Medias::insertSubtitle($id,$_DATA);
+            $_DATA=array('media_id'=>$id,
+                            'language'=>$_POST['addSubtitleFormLanguage'],
+                            'media_name'=>$_POST['addSubtitleFormMediaName'],
+                            'media_description'=>$_POST['addSubtitleFormMediaDescription']);
+            $req=Subtitles::insert($_DATA);
             if (!$req['status']) {
                 MessageHelper::setMessage(T::__("Error",true),"danger","ban",$req['message']);
             }
@@ -148,6 +151,8 @@ class MediasController implements ModuleInterface
             ViewHelper::getView('medias','show_media');
         }
         else{
+            global $subtitle;
+            $subtitle=Subtitles::getObjByLangCode($mediaId,$langCode);
             ViewHelper::setTitle('Minyy | Editor');
             ViewHelper::getView('medias','editor');
         }

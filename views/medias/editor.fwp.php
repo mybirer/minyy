@@ -1,10 +1,11 @@
 <?php
     ViewHelper::setBodyClasses('sidebar-collapse');
-    ViewHelper::setAfterHeader('<link href="assets/videojs/video-js.min.css" rel="stylesheet" />');
+    ViewHelper::setAfterHeader('<link href="assets/flowplayer-7.0.4/skin/skin.css" rel="stylesheet" />');
     ViewHelper::setAfterHeader('<link href="assets/css/editor.css" rel="stylesheet" />');
     ViewHelper::getHeader(); 
     // global $media;
     global $subtitle;
+    var_dump($subtitle);
 ?>
 <section class="content">
     <form id="sentences-form">
@@ -31,17 +32,18 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-5 up-block">
-            <div class="video-js vjs-default-skin vjs-fluid vjs-nofull" id="player" controls width="640" height="264" data-setup='{ "inactivityTimeout": 0, "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "<?php echo $subtitle->media_url; ?>"}] }'>
+            <div class="flowplayer no-toggle" id="player" data-share="false" data-fullscreen="false">
             <video style="width:100%" id="video">
+                <source type="video/mp4" src="assets/video.MP4">
                 Your browser does not support HTML5 video.
             </video>
             </div>
         </div>
         <div class="col-xs-12 col-md-3 up-block">
             <div class="button-container">
-                <a href="index.php?controller=module&action=medias&do=show&id=<?php echo $subtitle->media_id; ?>" class="btn btn-sm bg-black exit-button"><?php T::__('Exit'); ?></a>
-                <a href="#" class="btn btn-sm btn-primary save-button"><?php T::__('Save'); ?></a>
-                <a href="index.php?controller=module&action=medias&do=show&id=<?php echo $subtitle->media_id; ?>" class="btn btn-sm btn-success save-and-exit-button"><?php T::__('Save and Exit'); ?></a>
+                <button class="btn btn-sm bg-black exit-button"><?php T::__('Exit'); ?></button>
+                <button class="btn btn-sm btn-primary save-button"><?php T::__('Save'); ?></button>
+                <button class="btn btn-sm btn-success save-and-exit-button"><?php T::__('Save and Exit'); ?></button>
             </div>
             <div class="steps-container">
                 <div class="step step-1">
@@ -50,12 +52,13 @@
                 </div>
                 <div class="step step-2">
                     <h4>2. <?php T::__('Sync Timing'); ?></h4>
-                    <small>Sync subtitles</small>
+                    <small>Is all the content subtitled?</small>
                 </div>
                 <div class="step step-3">
                     <h4>3. <?php T::__('Review and Complete'); ?></h4>
                     <small>Watch the video again and verify that the subtitles are complete and correct.<br/>
                     <a href="#" data-toggle="openModal" data-target="#editSubtitleTitleModal">Edit title and description.</a></small>
+                    
                 </div>
             </div>
         </div>
@@ -80,9 +83,7 @@
                         </ul>
                     </div>
                 </div>
-                <textarea class="subtitle-edit" name="texts[]" placeholder="<?php T::__('Type a subtitle and press Enter'); ?>"></textarea>
-                <input type="hidden" name="starts[]" value="19.191494040054323">
-                <input type="hidden" name="ends[]" value="22.881494040054656">
+                <textarea class="subtitle-edit" name="sentences[]" placeholder="<?php T::__('Type a subtitle and press Enter'); ?>"></textarea>
             </li>
             </ul>
             </div>
@@ -102,36 +103,9 @@
 </section>
 
 <?php
-$token=Functions::getToken($_SESSION['user_id']);
-$userid=$_SESSION['user_id'];
-$mediaId=$subtitle->media_id;
-$subtitleId=$subtitle->pk_subtitle_id;
-
 $script=<<<EOT
-<script src="assets/videojs/video.min.js"></script>
-<script src="assets/videojs/Youtube.js"></script>
+<script src="assets/flowplayer-7.0.4/flowplayer.min.js"></script>
 <script src="assets/js/editor.js"></script>
-<script>
-  $(function() {
-	$('#sentences-form').on('submit',function(){
-        var values = $(this).serialize();
-        $.ajax({
-            url: "webservices/ajax.php?ot=ssb&ui={$userid}&token={$token}&mi={$mediaId}&si={$subtitleId}",
-            type: "post",
-            data: values ,
-            success: function (response) {
-                console.log(response);
-                saved=true;
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                saved=false;
-                console.log(textStatus, errorThrown);
-            }
-        });
-        return false;
-	});
-  });
-</script>
 EOT;
 ViewHelper::setAfterBody($script);
 ViewHelper::getView('medias','edit_subtitle_title');
