@@ -38,7 +38,6 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Media Name</th>
                                 <th>Team</th>
                                 <th>Date</th>
@@ -48,7 +47,6 @@
                         <tbody style="cursor: pointer;">
                             <?php $i=$params['offset']+1; foreach($objList as $media): ?>
                             <tr data-action="medias" data-id="<?php echo $media->pk_media_id; ?>">
-                                <td><a data-toggle="tooltip" title="Düzenle" class="text-red" href="index.php?controller=module&action=medias&do=edit&id=<?php echo $media->pk_media_id; ?>"><i class="fa fa-edit"></i></a></td>
                                 <td class="has-link"><?php echo $media->name; ?></td>
                                 <td class="has-link"><?php echo empty($media->pk_team_id) ? '-' : $media->team_name; ?></td>
                                 <td class="has-link"><?php echo $media->created_at; ?></td>

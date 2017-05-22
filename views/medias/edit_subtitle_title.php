@@ -13,7 +13,7 @@
         <div class="modal-body">
             <div class="form-group has-feedback">
                 <label><?php T::__('Title'); ?><span class="text-red">*</span></label>
-                <input type="text" class="form-control" id="editSubtitleTitleFormName" value="<?php echo $subtitle->media_title; ?>" />
+                <input type="text" class="form-control" id="editSubtitleTitleFormName" value="<?php echo $subtitle->media_name; ?>" />
             </div>
             <div class="form-group has-feedback">
                 <label><?php T::__('Description'); ?><span class="text-red">*</span></label>

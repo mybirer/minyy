@@ -33,7 +33,7 @@ class Functions
             return $string;
         }
         $string=preg_replace("/[;]|[\\\*]/","",$string);
-        $string=str_replace("'","''",$string);
+        // $string=str_replace("'","\'",$string);
         $string=($replaceDash) ? str_replace("-","\-",$string) : $string;
         return $string;
     }

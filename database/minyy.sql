@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2017 at 12:21 AM
+-- Generation Time: May 22, 2017 at 01:16 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -29,8 +29,8 @@ USE `minyy`;
 --
 
 DROP TABLE IF EXISTS `comments`;
-CREATE TABLE IF NOT EXISTS `comments` (
-  `pk_comment_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `comments` (
+  `pk_comment_id` int(11) NOT NULL,
   `object_id` int(11) DEFAULT NULL,
   `module_name` varchar(20) NOT NULL,
   `parent_comment_id` int(11) DEFAULT NULL,
@@ -41,12 +41,8 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `modified_by` int(11) DEFAULT NULL,
   `modified_date` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `guid` varchar(255) DEFAULT NULL,
-  `comment_params` text,
-  PRIMARY KEY (`pk_comment_id`),
-  KEY `parent_id` (`parent_comment_id`) USING BTREE,
-  KEY `created_by` (`created_by`) USING BTREE,
-  KEY `modified_by` (`modified_by`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `comment_params` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `comments`
@@ -66,14 +62,12 @@ INSERT INTO `comments` (`pk_comment_id`, `object_id`, `module_name`, `parent_com
 --
 
 DROP TABLE IF EXISTS `languages`;
-CREATE TABLE IF NOT EXISTS `languages` (
-  `pk_lang_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `languages` (
+  `pk_lang_id` int(11) NOT NULL,
   `lang_name` tinytext NOT NULL,
   `lang_code` varchar(8) NOT NULL,
-  `lang_status` varchar(12) DEFAULT NULL,
-  PRIMARY KEY (`pk_lang_id`),
-  KEY `lang_code` (`lang_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=294 DEFAULT CHARSET=utf8;
+  `lang_status` varchar(12) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `languages`
@@ -381,8 +375,8 @@ INSERT INTO `languages` (`pk_lang_id`, `lang_name`, `lang_code`, `lang_status`) 
 --
 
 DROP TABLE IF EXISTS `medias`;
-CREATE TABLE IF NOT EXISTS `medias` (
-  `pk_media_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `medias` (
+  `pk_media_id` int(11) NOT NULL,
   `name` tinytext,
   `description` text,
   `media_url` text NOT NULL,
@@ -391,12 +385,8 @@ CREATE TABLE IF NOT EXISTS `medias` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `lang_code` varchar(8) NOT NULL,
-  `pk_team_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`pk_media_id`),
-  KEY `pk_team_id` (`pk_team_id`) USING BTREE,
-  KEY `created_by` (`created_by`) USING BTREE,
-  KEY `lang_code` (`lang_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `pk_team_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `medias`
@@ -405,7 +395,18 @@ CREATE TABLE IF NOT EXISTS `medias` (
 INSERT INTO `medias` (`pk_media_id`, `name`, `description`, `media_url`, `media_type`, `thumbnail`, `created_at`, `created_by`, `lang_code`, `pk_team_id`) VALUES
 (2, 'medya ismi', 'medya ile ilgili açıklama', 'https://www.youtube.com/watch?v=zzhzzhzh', 'VID', NULL, '2017-05-01 01:22:50', 29, 'tr', 3),
 (4, 'Pink Floyd Welcome to the Machine', 'Enjoy^_^ ~|Please Subscribe If you like my Videos|~', 'https://youtube.com/watch?v=L5jRewnxSBY', 'video', 'https://i.ytimg.com/vi/L5jRewnxSBY/default.jpg', '2017-05-19 18:35:06', 1, 'en', NULL),
-(5, 'sami yusuf  Allahumme salli ala seyyidina Mustafa', 'video uploaded from my mobile phone', 'https://youtube.com/watch?v=7EDh1ATNilE', 'video', 'https://i.ytimg.com/vi/7EDh1ATNilE/default.jpg', '2017-05-19 18:36:00', 1, 'en', NULL);
+(5, 'sami yusuf  Allahumme salli ala seyyidina Mustafa', 'video uploaded from my mobile phone', 'https://youtube.com/watch?v=7EDh1ATNilE', 'video', 'https://i.ytimg.com/vi/7EDh1ATNilE/default.jpg', '2017-05-19 18:36:00', 1, 'en', NULL),
+(9, '500000 aboneye 19 saniye daveti', 'VİDEO GÖNDERMEK İÇİN ► http://bit.ly/19saniye\nALTYAZI DESTEĞİ İÇİN ► http://bit.ly/youtube\\-altyazi\nSizden isteğim şu. Geçin kameranın ya da cep telefonunun karşısına. Hayatınızı değiştiren bir bilgiyi kaydedin. Ya da başkalarına faydalı olacağını düşündüğünüz bir şeyi. Çok uzun olmasın mümkünse. En fazla 19 saniyeye sığdırmaya çalışın. Sanat, tasarım, teknolojiyle ilgili bir bilgi olması tercih nedenidir. Bu konularla ilgili size ilham veren bir söz de olabilir. Yaptığınız video kaydını http://bit.ly/19saniye adresinden bana gönderin. Ben de içlerinden güzel bir seçki hazırlayıp bu kanaldan yayınlayayım. Sizlere sizin dilinizle teşekkür etmiş olayım. Yayınlayacağım bu video potporisi içerisinde verilen en güzel bilgiyi de hep birlikte seçeriz. Ne dersiniz? Peki ne zamana kadar gönderebilirsiniz? En fazla 19 saniyelik videonuzu göndermek için 19 Mayıs saat 19:19’a kadar süreniz var ve süre başladı. \n~\nSTT ► http://bit.ly/stt\\-serisi\nOKU ► http://bit.ly/oku\\-serisi\nİZLE ► http://bit.ly/izle\\-serisi\nVLOG ► http://bit.ly/barisozcan\\-VLOG\n~\nhttp://twitter.com/BarisOzcan\nhttp://google.com/+BarisOzcan\nhttp://facebook.com/BarisOzcan\nhttp://instagram.com/BarisOzcan\nhttp://www.snapchat.com/add/ozcanbaris\nhttp://BarisOzcan.com/sikca\\-sorulan\\-sorular', 'https://youtube.com/watch?v=1BM3ozlfLzo', 'video', 'https://i.ytimg.com/vi/1BM3ozlfLzo/default.jpg', '2017-05-22 03:48:27', 1, 'tr', NULL),
+(12, 'İzmir Marşı\'na küfür eden oyuncu diziden kovuldu', 'Şu sıralar Payitaht Abdülhamid dizisinde rol alan oyuncu Ebubekir Öztürk’ün bir araçta, yanındaki kişilerle birlikte söylediği küfürlü İzmir Marşı, videonun sosyal medyada yayılmasının ardından en çok konuşulan konularından biri oldu. \n\nKolpaçino filmindeki \'Ganyotçu\' karakteriyle hafızalara kazınan oyuncu Ebubekir Öztürk\'e sosyal medyadan tepkiler yağdı...\n\nTepkiler üzerine oyuncunun anlaşmalı olduğu yapım şirketi Es Film, sözleşmenin iptal edildiğini ve oyuncunun TRT\'de yayınlanan Payitaht Abdülhamit adlı diziden çıkarıldığını bildirdi. Öztürk ise avukatı aracılığıyla yaptığı açıklamada videonun kesilerek yayınlandığını iddia ederken, ilgili görüntüler nedeniyle özür diledi.\n\'\'haberler,Son dakika Haberler,Dünyadan Haberler,\nNews from World,News,last minute news\'\'', 'https://youtube.com/watch?v=UW47p3hIY7k', 'video', 'https://i.ytimg.com/vi/UW47p3hIY7k/default.jpg', '2017-05-22 04:01:30', 1, 'tr', NULL);
+
+--
+-- Triggers `medias`
+--
+DROP TRIGGER IF EXISTS `add_subtitle_when_media_insert`;
+DELIMITER $$
+CREATE TRIGGER `add_subtitle_when_media_insert` AFTER INSERT ON `medias` FOR EACH ROW INSERT INTO subtitles (media_id,media_name,media_description,created_by,lang_code) VALUES (NEW.pk_media_id,NEW.name,NEW.description,NEW.created_by,NEW.lang_code)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -414,15 +415,14 @@ INSERT INTO `medias` (`pk_media_id`, `name`, `description`, `media_url`, `media_
 --
 
 DROP TABLE IF EXISTS `modules`;
-CREATE TABLE IF NOT EXISTS `modules` (
-  `pk_module_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `modules` (
+  `pk_module_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
   `icon` varchar(30) DEFAULT NULL,
   `module_key` varchar(20) NOT NULL,
   `does` text,
-  `params` text,
-  PRIMARY KEY (`pk_module_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+  `params` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `modules`
@@ -435,10 +435,8 @@ INSERT INTO `modules` (`pk_module_id`, `name`, `icon`, `module_key`, `does`, `pa
 (4, 'View Levels', 'fa-bars', 'view_levels', '["add","edit","remove","list_all"]', NULL),
 (5, 'Pages', 'fa-file', 'pages', '["add","edit","remove","list_all"]', NULL),
 (6, 'Posts', 'fa-files-o', 'posts', '["add","edit","remove","list_all"]', NULL),
-(7, 'Forms', 'fa-file-text-o', 'forms', '["add","edit","remove","list_all","show"]', NULL),
 (8, 'Medias', 'fa-file-video-o', 'medias', '["add","edit","remove","list","list_all","show"]', NULL),
 (9, 'Teams', 'fa-ge', 'teams', '["add","edit","remove","list","list_all","show"]', NULL),
-(10, 'Languages', 'fa-language', 'languages', '["add","edit","remove","list"]', NULL),
 (11, 'Topics', 'fa-commenting-o', 'topics', '["add","edit","remove","list","list_all","show"]', NULL),
 (12, 'Translations', 'fa-code', 'translations', '["add","remove","list","list_all","show"]', NULL);
 
@@ -449,8 +447,8 @@ INSERT INTO `modules` (`pk_module_id`, `name`, `icon`, `module_key`, `does`, `pa
 --
 
 DROP TABLE IF EXISTS `posts`;
-CREATE TABLE IF NOT EXISTS `posts` (
-  `pk_post_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `posts` (
+  `pk_post_id` int(11) NOT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `post_title` text,
@@ -464,11 +462,8 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `post_type` varchar(20) NOT NULL,
   `featured_image` varchar(300) DEFAULT NULL,
   `comment_count` bigint(20) DEFAULT NULL,
-  `post_params` text,
-  PRIMARY KEY (`pk_post_id`),
-  KEY `created_by` (`created_by`) USING BTREE,
-  KEY `modified_by` (`modified_by`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  `post_params` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `posts`
@@ -491,16 +486,21 @@ INSERT INTO `posts` (`pk_post_id`, `created_by`, `created_at`, `post_title`, `po
 --
 
 DROP TABLE IF EXISTS `sentences`;
-CREATE TABLE IF NOT EXISTS `sentences` (
-  `pk_sentence_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `sentences` (
+  `pk_sentence_id` int(11) NOT NULL,
   `subtitle_id` int(11) NOT NULL,
   `text` text NOT NULL,
   `start_time` int(11) DEFAULT NULL,
   `end_time` int(11) DEFAULT NULL,
-  `order_number` int(11) DEFAULT NULL,
-  PRIMARY KEY (`pk_sentence_id`),
-  KEY `subtitle_id` (`subtitle_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `order_number` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `sentences`
+--
+
+INSERT INTO `sentences` (`pk_sentence_id`, `subtitle_id`, `text`, `start_time`, `end_time`, `order_number`) VALUES
+(11, 12, '', 19, 23, 0);
 
 -- --------------------------------------------------------
 
@@ -509,19 +509,15 @@ CREATE TABLE IF NOT EXISTS `sentences` (
 --
 
 DROP TABLE IF EXISTS `subtitles`;
-CREATE TABLE IF NOT EXISTS `subtitles` (
-  `pk_subtitle_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `subtitles` (
+  `pk_subtitle_id` int(11) NOT NULL,
   `media_id` int(11) NOT NULL,
   `media_name` tinytext,
   `media_description` text,
   `created_by` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `lang_code` varchar(8) NOT NULL,
-  PRIMARY KEY (`pk_subtitle_id`),
-  KEY `media_id` (`media_id`),
-  KEY `created_by` (`created_by`) USING BTREE,
-  KEY `lang_code` (`lang_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `lang_code` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `subtitles`
@@ -530,7 +526,9 @@ CREATE TABLE IF NOT EXISTS `subtitles` (
 INSERT INTO `subtitles` (`pk_subtitle_id`, `media_id`, `media_name`, `media_description`, `created_by`, `created_at`, `lang_code`) VALUES
 (1, 2, NULL, NULL, 29, '2017-04-30 19:22:50', 'en'),
 (2, 5, NULL, NULL, 1, '2017-05-19 17:06:52', 'ar'),
-(3, 5, NULL, NULL, 1, '2017-05-20 17:24:30', 'da');
+(3, 5, NULL, NULL, 1, '2017-05-20 17:24:30', 'da'),
+(6, 9, '500000 aboneye 19 saniye daveti', 'VİDEO GÖNDERMEK İÇİN ► http://bit.ly/19saniye\r\nALTYAZI DESTEĞİ İÇİN ► http://bit.ly/youtube\\-altyazi\r\nSizden isteğim şu. Geçin kameranın ya da cep telefonunun karşısına. Hayatınızı değiştiren bir bilgiyi kaydedin. Ya da başkalarına faydalı olacağını düşündüğünüz bir şeyi. Çok uzun olmasın mümkünse. En fazla 19 saniyeye sığdırmaya çalışın. Sanat, tasarım, teknolojiyle ilgili bir bilgi olması tercih nedenidir. Bu konularla ilgili size ilham veren bir söz de olabilir. Yaptığınız video kaydını http://bit.ly/19saniye adresinden bana gönderin. Ben de içlerinden güzel bir seçki hazırlayıp bu kanaldan yayınlayayım. Sizlere sizin dilinizle teşekkür etmiş olayım. Yayınlayacağım bu video potporisi içerisinde verilen en güzel bilgiyi de hep birlikte seçeriz. Ne dersiniz? Peki ne zamana kadar gönderebilirsiniz? En fazla 19 saniyelik videonuzu göndermek için 19 Mayıs saat 19:19’a kadar süreniz var ve süre başladı. \r\n~\r\nSTT ► http://bit.ly/stt\\-serisi\r\nOKU ► http://bit.ly/oku\\-serisi\r\nİZLE ► http://bit.ly/izle\\-serisi\r\nVLOG ► http://bit.ly/barisozcan\\-VLOG\r\n~\r\nhttp://twitter.com/BarisOzcan\r\nhttp://google.com/+BarisOzcan\r\nhttp://facebook.com/BarisOzcan\r\nhttp://instagram.com/BarisOzcan\r\nhttp://www.snapchat.com/add/ozcanbaris\r\nhttp://BarisOzcan.com/sikca\\-sorulan\\-sorular', 1, '2017-05-22 00:49:39', 'ar'),
+(12, 12, 'The user have been fired from the set because of swear to izmir marşı', 'Şu sıralar Payitaht Abdülhamid dizisinde rol alan oyuncu Ebubekir Öztürk’ün bir araçta, yanındaki kişilerle birlikte söylediği küfürlü İzmir Marşı, videonun sosyal medyada yayılmasının ardından en çok konuşulan konularından biri oldu. \r\n\r\nKolpaçino filmindeki \'Ganyotçu\' karakteriyle hafızalara kazınan oyuncu Ebubekir Öztürk\'e sosyal medyadan tepkiler yağdı...\r\n\r\nTepkiler üzerine oyuncunun anlaşmalı olduğu yapım şirketi Es Film, sözleşmenin iptal edildiğini ve oyuncunun TRT\'de yayınlanan Payitaht Abdülhamit adlı diziden çıkarıldığını bildirdi. Öztürk ise avukatı aracılığıyla yaptığı açıklamada videonun kesilerek yayınlandığını iddia ederken, ilgili görüntüler nedeniyle özür diledi.\r\n\'\'haberler,Son dakika Haberler,Dünyadan Haberler,\r\nNews from World,News,last minute news\'\'', 1, '2017-05-22 01:01:30', 'tr');
 
 -- --------------------------------------------------------
 
@@ -539,16 +537,14 @@ INSERT INTO `subtitles` (`pk_subtitle_id`, `media_id`, `media_name`, `media_desc
 --
 
 DROP TABLE IF EXISTS `teams`;
-CREATE TABLE IF NOT EXISTS `teams` (
-  `pk_team_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `teams` (
+  `pk_team_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
-  `params` json DEFAULT NULL,
-  PRIMARY KEY (`pk_team_id`),
-  KEY `created_by` (`created_by`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `params` json DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `teams`
@@ -567,18 +563,14 @@ INSERT INTO `teams` (`pk_team_id`, `name`, `description`, `created_at`, `created
 --
 
 DROP TABLE IF EXISTS `team_members`;
-CREATE TABLE IF NOT EXISTS `team_members` (
-  `pk_team_member_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `team_members` (
+  `pk_team_member_id` int(11) NOT NULL,
   `since` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `team_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `type` varchar(15) NOT NULL,
-  `params` json DEFAULT NULL,
-  PRIMARY KEY (`pk_team_member_id`),
-  UNIQUE KEY `unique_team_member` (`team_id`,`user_id`),
-  KEY `team_id` (`team_id`) USING BTREE,
-  KEY `user_id` (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `params` json DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `team_members`
@@ -595,18 +587,15 @@ INSERT INTO `team_members` (`pk_team_member_id`, `since`, `team_id`, `user_id`, 
 --
 
 DROP TABLE IF EXISTS `team_topics`;
-CREATE TABLE IF NOT EXISTS `team_topics` (
-  `pk_topic_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `team_topics` (
+  `pk_topic_id` int(11) NOT NULL,
   `title` tinytext NOT NULL,
   `content` longtext NOT NULL,
   `team_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
-  `status` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`pk_topic_id`),
-  KEY `team_id` (`team_id`) USING BTREE,
-  KEY `created_by` (`created_by`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `status` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `team_topics`
@@ -622,16 +611,13 @@ INSERT INTO `team_topics` (`pk_topic_id`, `title`, `content`, `team_id`, `create
 --
 
 DROP TABLE IF EXISTS `team_topic_messages`;
-CREATE TABLE IF NOT EXISTS `team_topic_messages` (
-  `pk_tt_message_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `team_topic_messages` (
+  `pk_tt_message_id` int(11) NOT NULL,
   `topic_id` int(11) NOT NULL,
   `message` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`pk_tt_message_id`),
-  KEY `topic_id` (`topic_id`) USING BTREE,
-  KEY `user_id` (`created_by`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `created_by` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `team_topic_messages`
@@ -648,23 +634,22 @@ INSERT INTO `team_topic_messages` (`pk_tt_message_id`, `topic_id`, `message`, `c
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `pk_user_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `pk_user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(75) NOT NULL,
   `last_visit` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fullname` varchar(50) DEFAULT NULL,
-  `registration_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`pk_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+  `registration_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`, `fullname`, `registration_date`) VALUES
-(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-05-19 07:00:06', 'M. Yasin Birer', '2017-04-07 21:00:00'),
+(1, 'mybirer', 'e10adc3949ba59abbe56e057f20f883e', 'mybirer@gmail.com', '2017-05-22 01:15:38', 'M. Yasin Birer', '2017-04-07 21:00:00'),
 (7, 'moderator', 'e10adc3949ba59abbe56e057f20f883e', 'moderator@localhost.com', '2017-05-02 16:27:47', 'Moderatör Kardeş', '2017-04-20 07:59:12'),
 (8, 'cevirmen', 'e10adc3949ba59abbe56e057f20f883e', 'cevirmen@localhost.com', '2017-05-10 19:32:07', 'Çevirmen Kardeşimiz', '2017-04-20 08:05:38'),
 (28, 'ahmetcan23', '202cb962ac59075b964b07152d234b70', 'ahmetcan@asdf.com', '2017-05-01 13:03:04', 'ahmetcan23', '2017-04-30 22:22:50'),
@@ -678,11 +663,10 @@ INSERT INTO `users` (`pk_user_id`, `username`, `password`, `email`, `last_visit`
 --
 
 DROP TABLE IF EXISTS `user_groups`;
-CREATE TABLE IF NOT EXISTS `user_groups` (
-  `pk_group_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` tinytext NOT NULL,
-  PRIMARY KEY (`pk_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+CREATE TABLE `user_groups` (
+  `pk_group_id` int(11) NOT NULL,
+  `name` tinytext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_groups`
@@ -700,11 +684,10 @@ INSERT INTO `user_groups` (`pk_group_id`, `name`) VALUES
 --
 
 DROP TABLE IF EXISTS `user_profiles`;
-CREATE TABLE IF NOT EXISTS `user_profiles` (
+CREATE TABLE `user_profiles` (
   `pk_user_id` int(11) NOT NULL,
   `profile_key` varchar(100) NOT NULL,
-  `profile_value` text NOT NULL,
-  KEY `pk_user_id` (`pk_user_id`)
+  `profile_value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -714,14 +697,11 @@ CREATE TABLE IF NOT EXISTS `user_profiles` (
 --
 
 DROP TABLE IF EXISTS `user_usergroup_map`;
-CREATE TABLE IF NOT EXISTS `user_usergroup_map` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user_usergroup_map` (
+  `id` int(11) NOT NULL,
   `pk_user_id` int(11) NOT NULL,
-  `pk_group_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `pkUserID` (`pk_user_id`),
-  KEY `pkAuthGroupID` (`pk_group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+  `pk_group_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_usergroup_map`
@@ -746,13 +726,12 @@ INSERT INTO `user_usergroup_map` (`id`, `pk_user_id`, `pk_group_id`) VALUES
 --
 
 DROP TABLE IF EXISTS `view_levels`;
-CREATE TABLE IF NOT EXISTS `view_levels` (
-  `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `view_levels` (
+  `pk_view_level_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `groups` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded group id list',
-  `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list',
-  PRIMARY KEY (`pk_view_level_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+  `modules` varchar(5120) NOT NULL DEFAULT '[]' COMMENT 'JSON encoded module list'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `view_levels`
@@ -760,10 +739,212 @@ CREATE TABLE IF NOT EXISTS `view_levels` (
 
 INSERT INTO `view_levels` (`pk_view_level_id`, `title`, `groups`, `modules`) VALUES
 (2, 'Public Area', '[7,3,4]', '{"posts":["add","edit","show"]}'),
-(4, 'Manager Area', '[3]', '{"dashboard":[],"users":["add","edit","remove","list_all"],"user_groups":["add","edit","remove","list_all"],"view_levels":["add","edit","remove","list_all"],"pages":["add","edit","remove","list_all"],"posts":["add","edit","remove","list_all"],"forms":["add","edit","remove","list_all","show"],"medias":["add","edit","remove","list","list_all","show"],"teams":["add","edit","remove","list","list_all","show"],"languages":["add","edit","remove","list"],"topics":["add","edit","remove","list","list_all","show"],"translations":["add","remove","list","list_all","show"]}'),
+(4, 'Manager Area', '[3]', '{"dashboard":[],"users":["add","edit","remove","list_all"],"user_groups":["add","edit","remove","list_all"],"view_levels":["add","edit","remove","list_all"],"pages":["add","edit","remove","list_all"],"posts":["add","edit","remove","list_all"],"medias":["add","edit","remove","list","list_all","show"],"teams":["add","edit","remove","list","list_all","show"],"topics":["add","edit","remove","list","list_all","show"],"translations":["add","remove","list","list_all","show"]}'),
 (5, 'Translator Area', '[4]', '{"dashboard":["add","edit"],"medias":["add","edit"]}'),
 (6, 'Moderator Area', '[7]', '{}');
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`pk_comment_id`),
+  ADD KEY `parent_id` (`parent_comment_id`) USING BTREE,
+  ADD KEY `created_by` (`created_by`) USING BTREE,
+  ADD KEY `modified_by` (`modified_by`) USING BTREE;
+
+--
+-- Indexes for table `languages`
+--
+ALTER TABLE `languages`
+  ADD PRIMARY KEY (`pk_lang_id`),
+  ADD KEY `lang_code` (`lang_code`) USING BTREE;
+
+--
+-- Indexes for table `medias`
+--
+ALTER TABLE `medias`
+  ADD PRIMARY KEY (`pk_media_id`),
+  ADD KEY `pk_team_id` (`pk_team_id`) USING BTREE,
+  ADD KEY `created_by` (`created_by`) USING BTREE,
+  ADD KEY `lang_code` (`lang_code`) USING BTREE;
+
+--
+-- Indexes for table `modules`
+--
+ALTER TABLE `modules`
+  ADD PRIMARY KEY (`pk_module_id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`pk_post_id`),
+  ADD KEY `created_by` (`created_by`) USING BTREE,
+  ADD KEY `modified_by` (`modified_by`) USING BTREE;
+
+--
+-- Indexes for table `sentences`
+--
+ALTER TABLE `sentences`
+  ADD PRIMARY KEY (`pk_sentence_id`),
+  ADD KEY `subtitle_id` (`subtitle_id`);
+
+--
+-- Indexes for table `subtitles`
+--
+ALTER TABLE `subtitles`
+  ADD PRIMARY KEY (`pk_subtitle_id`),
+  ADD KEY `media_id` (`media_id`),
+  ADD KEY `created_by` (`created_by`) USING BTREE,
+  ADD KEY `lang_code` (`lang_code`) USING BTREE;
+
+--
+-- Indexes for table `teams`
+--
+ALTER TABLE `teams`
+  ADD PRIMARY KEY (`pk_team_id`),
+  ADD KEY `created_by` (`created_by`) USING BTREE;
+
+--
+-- Indexes for table `team_members`
+--
+ALTER TABLE `team_members`
+  ADD PRIMARY KEY (`pk_team_member_id`),
+  ADD UNIQUE KEY `unique_team_member` (`team_id`,`user_id`),
+  ADD KEY `team_id` (`team_id`) USING BTREE,
+  ADD KEY `user_id` (`user_id`) USING BTREE;
+
+--
+-- Indexes for table `team_topics`
+--
+ALTER TABLE `team_topics`
+  ADD PRIMARY KEY (`pk_topic_id`),
+  ADD KEY `team_id` (`team_id`) USING BTREE,
+  ADD KEY `created_by` (`created_by`) USING BTREE;
+
+--
+-- Indexes for table `team_topic_messages`
+--
+ALTER TABLE `team_topic_messages`
+  ADD PRIMARY KEY (`pk_tt_message_id`),
+  ADD KEY `topic_id` (`topic_id`) USING BTREE,
+  ADD KEY `user_id` (`created_by`) USING BTREE;
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`pk_user_id`);
+
+--
+-- Indexes for table `user_groups`
+--
+ALTER TABLE `user_groups`
+  ADD PRIMARY KEY (`pk_group_id`);
+
+--
+-- Indexes for table `user_profiles`
+--
+ALTER TABLE `user_profiles`
+  ADD KEY `pk_user_id` (`pk_user_id`);
+
+--
+-- Indexes for table `user_usergroup_map`
+--
+ALTER TABLE `user_usergroup_map`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pkUserID` (`pk_user_id`),
+  ADD KEY `pkAuthGroupID` (`pk_group_id`);
+
+--
+-- Indexes for table `view_levels`
+--
+ALTER TABLE `view_levels`
+  ADD PRIMARY KEY (`pk_view_level_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `pk_comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `languages`
+--
+ALTER TABLE `languages`
+  MODIFY `pk_lang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=294;
+--
+-- AUTO_INCREMENT for table `medias`
+--
+ALTER TABLE `medias`
+  MODIFY `pk_media_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `modules`
+--
+ALTER TABLE `modules`
+  MODIFY `pk_module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `pk_post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `sentences`
+--
+ALTER TABLE `sentences`
+  MODIFY `pk_sentence_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `subtitles`
+--
+ALTER TABLE `subtitles`
+  MODIFY `pk_subtitle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `teams`
+--
+ALTER TABLE `teams`
+  MODIFY `pk_team_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `team_members`
+--
+ALTER TABLE `team_members`
+  MODIFY `pk_team_member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `team_topics`
+--
+ALTER TABLE `team_topics`
+  MODIFY `pk_topic_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `team_topic_messages`
+--
+ALTER TABLE `team_topic_messages`
+  MODIFY `pk_tt_message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `pk_user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+--
+-- AUTO_INCREMENT for table `user_groups`
+--
+ALTER TABLE `user_groups`
+  MODIFY `pk_group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `user_usergroup_map`
+--
+ALTER TABLE `user_usergroup_map`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+--
+-- AUTO_INCREMENT for table `view_levels`
+--
+ALTER TABLE `view_levels`
+  MODIFY `pk_view_level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Constraints for dumped tables
 --

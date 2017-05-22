@@ -49,7 +49,6 @@
 
                 $db = Db::getInstance();
                 $req = $db->prepare('INSERT INTO medias (name, description, media_url, media_type, thumbnail, created_at, created_by, lang_code , pk_team_id) VALUES (:name, :description,:media_url, :media_type,:thumbnail, NOW() , :created_by, :lang_code, :pk_team_id)');
-                var_dump($params);
                 $res=$req->execute(array(
                     'name' => $params['name'],
                     'description' => $params['description'],

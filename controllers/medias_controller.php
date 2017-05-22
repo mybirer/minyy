@@ -154,7 +154,7 @@ class MediasController implements ModuleInterface
             MessageHelper::setMessage(T::__("Error",true),"danger","ban",T::__("Media not found! Please select from the list!",true));
             MediasController::getList();
         }
-        if(!($langCode==$media->lang_code || array_key_exists($langCode,$media->subtitles))){
+        if(!array_key_exists($langCode,$media->subtitles)){
             MessageHelper::setMessage(T::__("Error",true),"danger","ban",T::__("Subtitle not found! Please click from the list!",true));
             ViewHelper::setTitle('Minyy | Medias');
             ViewHelper::getView('medias','show_media');

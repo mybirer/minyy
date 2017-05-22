@@ -164,7 +164,7 @@
                 for($i=0;$i<count($params['sentences']);$i++){
                     $sentence=$params['sentences'][$i];
                     if($i==0){
-                        $query="DELETE FROM sentences WHERE subtitle_id=:subtitle_id; INSERT INTO sentences (subtitle_id, text, start_time, end_time, order_number) VALUES ";
+                        $query="DELETE FROM sentences WHERE subtitle_id=:subtitle_id; UPDATE subtitles SET media_name=:media_name, media_description=:media_description WHERE pk_subtitle_id=:pk_subtitle_id; INSERT INTO sentences (subtitle_id, text, start_time, end_time, order_number) VALUES ";
                     }
                     $query.=sprintf("('%s','%s','%s','%s','%s')",
                                     $params['subtitle_id'],
@@ -182,7 +182,10 @@
                 $res=false;
                 if(!empty($query)){
                     $req = $db->prepare($query);
-                    $res=$req->execute(array('subtitle_id'=>$params['subtitle_id']));
+                    $res=$req->execute(array('subtitle_id'=>$params['subtitle_id'],
+                                                'media_name'=>$params['media_title'],
+                                                'media_description'=>$params['media_description'],
+                                                'pk_subtitle_id'=>$params['subtitle_id']));
                 }
                 if($res){
                     $return['status']=true;

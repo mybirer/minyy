@@ -12,8 +12,8 @@
         <div class="col-xs-12 col-md-4 up-block">
             <div class="title-container">
                 <h3 class="video-title">
-                    <span><?php echo $subtitle->media_title; ?></span> <a href="#" data-toggle="openModal" data-target="#editSubtitleTitleModal"><i class="fa fa-pencil"></i></a>
-                    <input type="hidden" name="media_title" value="<?php echo $subtitle->media_title; ?>" />
+                    <span><?php echo $subtitle->media_name; ?></span> <a href="#" data-toggle="openModal" data-target="#editSubtitleTitleModal"><i class="fa fa-pencil"></i></a>
+                    <input type="hidden" name="media_title" value="<?php echo $subtitle->media_name; ?>" />
                     <input type="hidden" name="media_description" value="<?php echo $subtitle->media_description; ?>" />
                 </h3>
             </div>

@@ -110,7 +110,7 @@ if(isset($ot)){
 			}
 		break;
 		case 'ssb'://ssb stands for save subtitles
-			if(isset($ui) && isset($token) && isset($mi) && isset($si) && isset($texts) && isset($ends) && isset($starts) && Functions::checkToken($ui,$token)){
+			if(isset($ui) && isset($token) && isset($mi) && isset($si) && isset($texts) && isset($ends) && isset($starts) && isset($media_title) && isset($media_description) && Functions::checkToken($ui,$token)){
 				$sentences=array();
 				for($i=0;$i<count($texts);$i++){
 					$sentences[]=array(
@@ -122,7 +122,9 @@ if(isset($ot)){
 				}
 				$params=array(
 					'subtitle_id'=>$si,
-					'sentences'=>$sentences
+					'sentences'=>$sentences,
+					'media_title'=>$media_title,
+					'media_description'=>$media_description
 				);
 				$req=Subtitles::insertSentences($params);
 				if (!$req['status']) {

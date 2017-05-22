@@ -40,14 +40,13 @@
             </div>
             <div class="box box-primary">
                 <div class="box-header">
-                    <h2 class="box-title">Comments • 94</h2>
+                    <h2 class="box-title">Comments • <?php echo count($comments);?></h2>
                 </div>
                 <div class="box-body">
                     <form action="#" method="post" class="form-horizontal">
                         <div class="col-sm-1 user-block">
                             <img class="img-circle " src="assets/img/user1-128x128.jpg" alt="User Image">
                         </div>
-                        <!-- .img-push is used to add margin to elements next to floating images -->
                         <div class="img-push col-sm-8">
                             <textarea type="text" class="form-control input-sm" placeholder="Press enter to post comment"></textarea>
                         </div>
@@ -118,13 +117,17 @@
                     </div>
                     <p><?php T::__('This video is in ');?><b><?php echo $languages[$media->lang_code]['lang_name']; ?></b></p>
                     <p><a href="#" data-toggle="openModal" data-target="#addSubtitleModal"> <i class="fa fa-pencil"></i> <?php T::__('Add a new language!'); ?></a></p>
-                    <p><?php echo count($media->subtitles)+1; ?> <?php T::__('Languages'); ?></p>
+                    <p><?php echo count($media->subtitles); ?> <?php T::__('Languages'); ?></p>
                     <hr />
                     <p><b><?php T::__('Languages'); ?></b></p>
                     <ul class="list-unstyled text-muted">
-                        <li><i class="fa fa-circle text-yellow"></i> <a href="index.php?controller=module&action=medias&do=editor&id=<?php echo $media->pk_media_id; ?>&ml=<?php echo $media->lang_code; ?>"><?php echo $languages[$media->lang_code]['lang_name']; ?></a> (<?php T::__('original'); ?>) (<?php T::__('incomplete'); ?>)</li>
                         <?php foreach($media->subtitles as $subtitle): ?>
-                        <li><i class="fa fa-circle text-yellow"></i> <a href="index.php?controller=module&action=medias&do=editor&id=<?php echo $media->pk_media_id; ?>&ml=<?php echo $subtitle['lang_code']; ?>"><?php echo $languages[$subtitle['lang_code']]['lang_name']; ?></a> (<?php T::__('incomplete'); ?>)</li>
+                        <li>
+                            <i class="fa fa-circle text-yellow"></i>
+                            <a href="index.php?controller=module&action=medias&do=editor&id=<?php echo $media->pk_media_id; ?>&ml=<?php echo $subtitle['lang_code']; ?>">
+                                <?php echo $languages[$subtitle['lang_code']]['lang_name']; ?>
+                            </a> <?php echo $media->lang_code==$subtitle['lang_code'] ? '('.T::__('original',true).')' : '' ?> (<?php T::__('incomplete'); ?>)
+                        </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
