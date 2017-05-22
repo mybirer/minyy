@@ -56,7 +56,7 @@ $controllers = array(   'page' => [
                                 'icon'=>''
                             ],
                             'logout'=>[
-                                'public'=>false,
+                                'public'=>true,
                                 'name'=>'',
                                 'icon'=>''
                             ]

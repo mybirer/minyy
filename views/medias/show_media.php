@@ -2,6 +2,7 @@
 <?php
     global $media;
     global $languages;
+    global $comments;
 ?>
 <section class="content-header">
     <h1>
@@ -57,92 +58,50 @@
                 </div>
                 <hr style="margin-top: 10px;margin-bottom: 10px;">
                 <div class="box-body">
-                    <div class="post">
+                    <?php foreach($comments as $comment): ?>
+                    <div class="post" data-comment-id="<?php echo $comment->pk_comment_id; ?>">
                         <div class="user-block">
                             <img class="img-circle img-bordered-sm" src="assets/img/user1-128x128.jpg" alt="user image">
                                 <span class="username">
-                                <a href="#"><?php echo $media->user_fullname; ?></a>
+                                <a href="#"><?php echo $comment->created_by_fullname; ?></a>
                                 </span>
-                            <span class="description">Shared publicly - 7:30 PM today</span>
+                            <span class="description"><?php echo $comment->created_at; ?></span>
                         </div>
-                        <!-- /.user-block -->
                         <p>
-                            Lorem ipsum represents a long-held tradition for designers,
-                            typographers and the like. Some people hate it and argue for
-                            its demise, but others ignore the hate as they create awesome
-                            tools to help create filler text for everyone from bacon lovers
-                            to Charlie Sheen fans.
+                            <?php echo $comment->content; ?>
                         </p>
                         <ul class="list-inline">
-                            <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
                             <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
                             </li>
                             <li class="pull-right">
                             <a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
-                                (5)</a></li>
-                        </ul>
-
-                        <input class="form-control input-sm" type="text" placeholder="Type a comment">
-                    </div>
-                    <div class="post">
-                        <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="assets/img/user1-128x128.jpg" alt="user image">
-                                <span class="username">
-                                <a href="#"><?php echo $media->user_fullname; ?></a>
-                                </span>
-                            <span class="description">Shared publicly - 7:30 PM today</span>
-                        </div>
-                        <!-- /.user-block -->
-                        <p>
-                            Lorem ipsum represents a long-held tradition for designers,
-                            typographers and the like. Some people hate it and argue for
-                            its demise, but others ignore the hate as they create awesome
-                            tools to help create filler text for everyone from bacon lovers
-                            to Charlie Sheen fans.
-                        </p>
-                        <ul class="list-inline">
-                            <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                            <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                            </li>
-                            <li class="pull-right">
-                            <a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments
-                                (5)</a></li>
+                                (<?php echo count($comment->child_comments);?>)</a></li>
                         </ul>
                         <div class="box-footer box-comments">
+                        <?php foreach($comment->child_comments as $child):?>
                         <div class="box-comment">
-                            <!-- User image -->
-                            <img class="img-circle img-sm" src="assets/img/user3-128x128.jpg" alt="User Image">
-
-                            <div class="comment-text">
-                                <span class="username">
-                                    Maria Gonzales
-                                    <span class="text-muted pull-right">8:03 PM Today</span>
-                                </span><!-- /.username -->
-                            It is a long established fact that a reader will be distracted
-                            by the readable content of a page when looking at its layout.
-                            </div>
-                            <!-- /.comment-text -->
-                        </div>
-                        <!-- /.box-comment -->
-                        <div class="box-comment">
-                            <!-- User image -->
                             <img class="img-circle img-sm" src="assets/img/user5-128x128.jpg" alt="User Image">
-
                             <div class="comment-text">
                                 <span class="username">
-                                    Nora Havisham
-                                    <span class="text-muted pull-right">8:03 PM Today</span>
-                                </span><!-- /.username -->
-                            The point of using Lorem Ipsum is that it has a more-or-less
-                            normal distribution of letters, as opposed to using
-                            'Content here, content here', making it look like readable English.
+                                    <?php echo $child->created_by_fullname; ?>
+                                    <span class="text-muted pull-right"><?php echo $child->created_at; ?></span>
+                                </span>
+                            <?php echo $child->content; ?>
                             </div>
-                            <!-- /.comment-text -->
                         </div>
-                        <!-- /.box-comment -->
+                        <?php endforeach;?>
+                        <form>
+                            <div class="input-group">
+                                <input type="hidden" name="parent_id" value="<?php echo $comment->pk_comment_id; ?>">
+                                <input class="form-control input-sm" type="text" placeholder="Type a comment">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary btn-sm">Send</button>
+                                </div>
+                            </div>
+                        </form>
                         </div>
-                        <input class="form-control input-sm" type="text" placeholder="Type a comment">
                     </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
