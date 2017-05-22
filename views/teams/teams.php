@@ -48,7 +48,7 @@
                 </thead>
                 <tbody style="cursor: pointer;">
                 <?php $i=$params['offset']+1; foreach($objList as $team): ?>
-                <tr data-id="<?php echo $team->pk_team_id; ?>">
+                <tr data-action="teams" data-id="<?php echo $team->pk_team_id; ?>">
                     <td><a data-toggle="tooltip" title="Düzenle" class="text-red" href="index.php?controller=module&action=teams&do=edit&id=<?php echo $team->pk_team_id; ?>"><i class="fa fa-edit"></i></a></td>
                     <td class="has-link"><?php echo $team->name; ?></td>
                     <td class="has-link"><?php echo $team->created_at; ?></td>

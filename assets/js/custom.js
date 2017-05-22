@@ -31,7 +31,7 @@ $(function() {
         return false;
     });
     $('td.has-link').on('click',function(){
-        window.location.href = "index.php?controller=module&action=medias&do=show&id=" + $(this).parent().data("id");
+        window.location.href = "index.php?controller=module&action="+$(this).parent().data("action")+"&do=show&id=" + $(this).parent().data("id");
         return false;
     });
     $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({

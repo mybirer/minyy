@@ -112,7 +112,16 @@ class MediasController implements ModuleInterface
     }
     public static function show($id){
         global $media;
+        global $comments;
         $media=Medias::getObj($id);
+        $gparams=[
+            "search_term"=>"",
+            "order_by"=>"name",
+            "order_dir"=>"asc",
+            "limit"=>"1000",
+            "offset"=>"0"
+        ];
+        $comments=Comments::getModuleComments($id,'medias',$gparams);
         if(empty($media)){
             MessageHelper::setMessage(T::__("Error",true),"danger","ban",T::__("Media not found! Please select from the list!",true));
             MediasController::getList();

@@ -1,7 +1,7 @@
 <?php
 defined('_MYINC') or die();
 
-class PostsController implements ModuleInterface
+class PagesController implements ModuleInterface
 {
     public static function getList($params=array()) {
         //required libraries
@@ -17,7 +17,7 @@ class PostsController implements ModuleInterface
         
         $offset=($page-1)*$limit;
         $params=[
-            "post_type"=>"post",
+            "post_type"=>"page",
             "search_term"=>$search_term,
             "order_by"=>$order_by,
             "order_dir"=>$order_dir,
@@ -41,7 +41,7 @@ class PostsController implements ModuleInterface
             "limit"=>"1000",
             "offset"=>"0"
         ];
-        ViewHelper::setTitle('Minyy | Posts');
+        ViewHelper::setTitle('Minyy | Pages');
         ViewHelper::getView('posts','posts');
     }
     public static function add() {
@@ -53,7 +53,7 @@ class PostsController implements ModuleInterface
                         'post_status'=>$_POST['status']=='publish'?'publish':'draft',
                         'comment_status'=>isset($_POST['comment_status'])?'on':'off',
                         'guid'=>com_create_guid(),
-                        'post_type'=>'post',
+                        'post_type'=>'page',
                         'featured_image'=>'fetured image',
                         'post_params'=>'');
             $req=Posts::insert($_DATA);
@@ -66,9 +66,8 @@ class PostsController implements ModuleInterface
             
         }
         
-        ViewHelper::setTitle('Minyy | Posts');
+        ViewHelper::setTitle('Minyy | Pages');
         ViewHelper::getView('posts','add_post');
-        
     }
     public static function edit($id) {
         global $obj;
@@ -80,7 +79,7 @@ class PostsController implements ModuleInterface
                             'post_content'=>$_POST['content'],
                             'post_status'=>$_POST['status']=='publish'?'publish':'draft',
                             'comment_status'=>isset($_POST['comment_status'])?'on':'off',
-                            'post_type'=>'post',
+                            'post_type'=>'page',
                             'featured_image'=>'fetured image',
                             'post_params'=>'');
             $req=Posts::update($id,$_DATA);
@@ -89,19 +88,18 @@ class PostsController implements ModuleInterface
             }else{
                 MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
             }
-            PostsController::getList();
+            PagesController::getList();
         }
         else{
             $obj = Posts::getObj($id);
-            if($obj->post_type != 'post'){
-                MessageHelper::setMessage(T::__("Error",true),"danger","ban",'Post not found!!');
-                PostsController::getList();
+            if($obj->post_type != 'page'){
+                MessageHelper::setMessage(T::__("Error",true),"danger","ban",'Page not found!!');
+                PagesController::getList();
             }else{
-                ViewHelper::setTitle('Minyy | Posts');
+                ViewHelper::setTitle('Minyy | Pages');
                 ViewHelper::getView('posts','edit_post');
             }
-        }
-
+        }   
     }
     public static function remove($id) {
         $id=isset($id) && !empty($id) ? (int) Functions::clearString($id) : -1;
@@ -112,7 +110,7 @@ class PostsController implements ModuleInterface
         else{
             MessageHelper::setMessage(T::__("Success",true),"success","check",$req['message']);
         }
-        PostsController::getList();
+        PagesController::getList();
     }
 }
 ?>

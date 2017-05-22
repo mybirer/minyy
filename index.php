@@ -23,5 +23,6 @@ require_once('models/medias_model.php');
 require_once('models/topics_model.php');
 require_once('models/subtitles_model.php');
 require_once('models/languages_model.php');
+require_once('models/comments_model.php');
 
 require_once('routes.php');

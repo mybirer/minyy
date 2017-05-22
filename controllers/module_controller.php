@@ -91,6 +91,27 @@ class ModuleController
             break;
         }
     }
+    public function pages() {
+        require_once('controllers/pages_controller.php');
+        $do=isset($_GET['do']) ? $_GET['do'] : "list";
+        switch($do){
+            case "add":
+            PagesController::add();
+            break;
+            case "edit":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            PagesController::edit($id);
+            break;
+            case "remove":
+            $id=isset($_GET['id']) && !empty($_GET['id']) ? (int) Functions::clearString($_GET['id']) : -1;
+            PagesController::remove($id);
+            break;
+            case "list":
+            default:
+            PagesController::getList();
+            break;
+        }
+    }
     public function medias() {
         global $languages;
         $gparams=[
