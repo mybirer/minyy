@@ -157,7 +157,7 @@
 
             $query='SELECT m.*,u.username,u.fullname,t.name as team_name FROM minyy.medias as m LEFT JOIN minyy.users as u on m.created_by=u.pk_user_id LEFT JOIN minyy.teams as t on t.pk_team_id=m.pk_team_id ';
             if(!empty($params['search_term'])){
-                $query.=" WHERE lower(concat(pk_media_id, '', created_by, '', created_at , '', media_type, '', lang_code, '', pk_team_id, '', media_url)) LIKE :search_term";
+                $query.=" WHERE lower(concat( media_type, '',m.name, '',m.description, '', lang_code, '',  media_url)) LIKE :search_term";
             }
             $query.=" ORDER BY $order_by $order_dir LIMIT :offset , :limit";
 

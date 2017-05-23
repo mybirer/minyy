@@ -66,6 +66,27 @@
         <div class="col-xs-12 col-md-5 down-block">
             <div class="subtitle-container">
             <ul class="subtitle-list">
+            <?php foreach($subtitle->sentences as $sentence): ?>
+            <li class="sub">
+                <span class="timing">--</span>
+                <span class="subtitle-text"><?php echo $sentence['text']; ?></span>
+                <div class="sub-toolbox">
+                    <div class="sub-toolbox-inside">
+                        <a href="#" class="sub-tools"><i class="fa fa-wrench"></i></a>
+                        <ul class="sub-toolbox-menu">
+                            <li><a class="jump-to" title="Seek to subtitle"><i class="fa fa-sign-in"></i></a></li>
+                            <li><a class="insert-top" title="Insert subtitle above"><i class="fa fa-arrow-circle-o-up"></i></a></li>
+                            <li><a class="insert-down" title="Insert subtitle below"><i class="fa fa-arrow-circle-o-down"></i></a></li>
+                            <li><a class="remove" title="Delete subtitle"><i class="fa fa-close"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <textarea class="subtitle-edit" name="texts[]"><?php echo $sentence['text']; ?></textarea>
+                <input type="hidden" name="starts[]" value="<?php echo $sentence['start_time']; ?>">
+                <input type="hidden" name="ends[]" value="<?php echo $sentence['end_time']; ?>">
+            </li>
+            <?php endforeach; ?>
+            <?php if(empty($subtitle->sentences)): ?>
             <li class="sub">
                 <span class="timing">--</span>
                 <span class="subtitle-text"><?php T::__('Type a subtitle and press Enter'); ?></span>
@@ -84,6 +105,7 @@
                 <input type="hidden" name="starts[]" value="19.191494040054323">
                 <input type="hidden" name="ends[]" value="22.881494040054656">
             </li>
+            <?php endif; ?>
             </ul>
             </div>
         </div>

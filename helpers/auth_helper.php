@@ -95,7 +95,7 @@ class AuthHelper
         $return['status']=false;
         $return['message']=T::__("Please fill the blanks!",true);
         return $return;
-    }
+    } 
 
     public static function userHasAccess($currentUser,$controller,$action,$do){
         if($controller!="module"){ //todo şimdilik sadece module düzeyinde view level sorguluyoruz...
@@ -108,6 +108,7 @@ class AuthHelper
             "limit"=>"1000",
             "offset"=>"0"
         ];
+
         $viewLevels=ViewLevels::getObjList($params);
         if(array_key_exists($action,$currentUser->modules)){//kullanıcı o modüle erişebilir demek
             if(empty($do)){//eğer do yoksa OK
